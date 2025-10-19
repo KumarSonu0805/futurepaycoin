@@ -1,1 +1,1 @@
-<?php ehco 'Testing'; ?>
+<?php echo "Testing"; ?>

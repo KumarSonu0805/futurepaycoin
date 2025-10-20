@@ -1,6 +1,6 @@
 <?php
 class Member_model extends CI_Model{
-	var $user_prefix="AL";
+	var $user_prefix="FP";
 	var $random_user=true;
 	var $downline_table="members";
 	var $downline_order="refid";
@@ -124,7 +124,7 @@ class Member_model extends CI_Model{
         //print_pre($ancestors,true);
 		if($getancestors->num_rows()>0){
             $ancestors=$getancestors->unbuffered_row()->ancestors;
-            $ancestors=explode(',',$ancestors);
+            $ancestors=!empty($ancestors)?explode(',',$ancestors):array();
             if(is_array($ancestors)){
                 foreach($ancestors as $key=>$ancestor){
                     $level_id=$key+1;

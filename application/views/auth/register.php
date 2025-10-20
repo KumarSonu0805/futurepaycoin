@@ -6,6 +6,7 @@ if(!empty($this->input->get('sponsor'))){
 ?>
       <section class="loginsection">
          <div class="container">
+            <?= form_open('login/memberregistration','onSubmit="return validate();"'); ?>
             <div class="login-card">
                <div class="login-logo">
                   <img src="<?= file_url('assets/images/future-coin.png'); ?>" alt="future pay" width="100" />
@@ -20,65 +21,29 @@ if(!empty($this->input->get('sponsor'))){
                      placeholder="Enter Your Sponsor Id"
                          value="<?= $sponsor ?>"
                      />
+                                    <input type="hidden" name="refid" id="refid">
                </div>
                 <div id="refdiv" class=" mb-3"></div>
                <div class="mb-3">
+                  <label for="name" class="form-label">Sponsor Name</label>
+                  <input type="text" class="form-control" name="" id="refname" placeholder="SPONSOR NAME" readonly/>
+               </div>
+               <div class="mb-3">
                   <label for="name" class="form-label">Name</label>
-                  <input
-                     type="text"
-                     class="form-control"
-                     id="password"
-                     placeholder="Enter Your Name"
-                     />
+                  <input type="text" class="form-control" name="name" id="name" placeholder="Name" required/>
                </div>
                <div class="mb-3">
-                  <label for="email" class="form-label">Email</label>
-                  <input
-                     type="text"
-                     class="form-control"
-                     id="password"
-                     placeholder="Enter Your Email"
-                     />
+                  <label for="name" class="form-label">Mobile</label>
+                  <input type="text" class="form-control" name="mobile" id="mobile" placeholder="Mobile" pattern="[\d]{10}" maxlength="10" title="Enter valid 10-Digit Mobile No.">
                </div>
                <div class="mb-3">
-                  <label for="mobile" class="form-label">Mobile</label>
-                  <input
-                     type="text"
-                     class="form-control"
-                     id="password"
-                     placeholder="Enter Your Mobile"
-                     />
+                  <label for="name" class="form-label">Wallet Address</label>
+                  <input type="text" class="form-control" name="wallet_address" id="wallet_address" readonly placeholder="Wallet Address">
                </div>
-                 <div class="mb-3">
-                  <label for="password" class="form-label">Password</label>
-                  <input
-                     type="text"
-                     class="form-control"
-                     id="password"
-                     placeholder="Enter Your Password"
-                     />
-               </div>
-               <div class="mb-3">
-                  <label for="transaction" class="form-label">Transaction Password</label>
-                  <input
-                     type="text"
-                     class="form-control"
-                     id="transaction"
-                     placeholder="Enter Your Transaction Password"
-                     />
-               </div>
-                <div class="mb-3">
-                  <label for="country" class="form-label">Country</label>
-                  <select class="form-control" aria-label="Select Country">
-                    <option selected>Select Country</option>
-                    <option value="1">India</option>
-                    <option value="2">Bangladesh</option>
-                    <option value="3">Japan</option>
-                    </select>
-               </div>
+                <div class="text-danger text-center mb-2"><?= $this->session->flashdata('reg_err_msg'); ?>
                 <div class="mb-3">
                   <div class="futureBtn">
-                     <button>Create New Account</button>
+                     <button type="submit" id="savebtn" name="register">Create New Account</button>
                   </div>
                </div>
                <div class="mb-3 createpassword">
@@ -91,6 +56,7 @@ if(!empty($this->input->get('sponsor'))){
                   </div>
                </div>
             </div>
+            <?= form_close(); ?>
          </div>
       </section>
 

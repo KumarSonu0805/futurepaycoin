@@ -118,6 +118,7 @@ if(!empty($this->input->get('sponsor'))){
                 }
             </script>
     <script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js/dist/web3.min.js"></script>
+    <script src="<?= file_url('includes/custom/switch.js'); ?>"></script>
     <script>
                 // Import Web3.js
         if (typeof window.ethereum !== 'undefined') {

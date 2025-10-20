@@ -1,0 +1,159 @@
+                <?php
+                    if($page_type=='auth'){
+                        !empty($content)?$this->load->view($content):'';
+                    }
+                    else{
+                ?>
+                <?php
+                    if(!empty($content_script)){
+                        foreach($content_script as $key=>$script){
+                            if($key=="link"){
+                                if(is_array($script)){
+                                    foreach($script as $single_script){
+                                        echo "<script src='$single_script'></script>\n\t";
+                                    }
+                                }
+                                else{
+                                    echo "<script src='$script'></script>\n\t";
+                                }
+                            }
+                            elseif($key=="file"){
+                                if(is_array($script)){
+                                    foreach($script as $single_script){
+                                        echo "<script src='".file_url("$single_script")."'></script>\n\t";
+                                    }
+                                }
+                                else{
+                                    echo "<script src='".file_url("$script")."'></script>\n\t";
+                                }
+                            }
+                        }
+                    }
+                ?>
+              <div class="dashboard container-fluid d-flex">
+                <div class="">
+                 <nav class="sidebar border-end d-none d-md-block fixed" id="sidebar">
+
+                    <div class="sidebar-wrapper desktopmobilebar">
+                       <?php $this->load->view('includes/sidebar'); ?>
+                    </div>
+                 </nav>
+                 <div class="offcanvas offcanvas-start mobilesidebar" tabindex="-1" id="mobileSidebar" aria-labelledby="mobileSidebarLabel">
+                    <div class="offcanvas-header">
+                       <div class="text-center sidemenulogo d-flex align-items-center">
+                          <img src="./images/future-coin.png" alt="Logo">
+                          <h5 class="mt-2">Future Pay Coin</h5>
+                       </div>
+                       <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"></button>
+                    </div>
+                    <div class="offcanvas-body p-0">
+                       <nav class="">
+                          <ul class="nav flex-column" id="mobileAccordion">
+                             <div class="nav-linktitle">Member Dashboard</div>
+                             <li class="nav-item"><a class="nav-link" href="#"><i class="fa-solid fa-house"></i> Dashboards</a></li>
+                             <li class="nav-item"><a class="nav-link" href="#"><i class="fas fa-chart-line"></i> AI Trading</a></li>
+                             <li class="nav-item"><a class="nav-link" href="#"><i class="fa-regular fa-square-plus"></i> New Registration</a></li>
+                             <li class="nav-item">
+                                <a class="nav-link d-flex justify-content-between align-items-center" data-bs-toggle="collapse" href="#mobileProfileMenu">
+                                <span><i class="fa-solid fa-user"></i> Profile</span>
+                                <i class="fas fa-chevron-down"></i>
+                                </a>
+                                <div class="collapse" id="mobileProfileMenu" data-bs-parent="#mobileAccordion">
+                                   <ul class="nav flex-column ms-3">
+                                      <li class="nav-item"><a class="nav-link" href="#">User Summary</a></li>
+                                      <li class="nav-item"><a class="nav-link" href="#">Change Password</a></li>
+                                      <li class="nav-item"><a class="nav-link" href="#">Wallet Address</a></li>
+                                   </ul>
+                                </div>
+                             </li>
+                             <li class="nav-item">
+                                <a class="nav-link d-flex justify-content-between align-items-center" data-bs-toggle="collapse" href="#mobileDepositeMenu">
+                                <span><i class="fa-solid fa-money-bill-transfer"></i> Deposite Section</span>
+                                <i class="fas fa-chevron-down"></i>
+                                </a>
+                                <div class="collapse" id="mobileDepositeMenu" data-bs-parent="#mobileAccordion">
+                                   <ul class="nav flex-column ms-3">
+                                      <li class="nav-item"><a class="nav-link" href="#">Deposite Fund</a></li>
+                                      <li class="nav-item"><a class="nav-link" href="#">Deposite Fund History</a></li>
+                                   </ul>
+                                </div>
+                             </li>
+                             <li class="nav-item">
+                                <a class="nav-link d-flex justify-content-between align-items-center" data-bs-toggle="collapse" href="#mobileStakingMenu">
+                                <span><i class="fa-solid fa-money-bill-transfer"></i> Staking Section</span>
+                                <i class="fas fa-chevron-down"></i>
+                                </a>
+                                <div class="collapse" id="mobileStakingMenu" data-bs-parent="#mobileAccordion">
+                                   <ul class="nav flex-column ms-3">
+                                      <li class="nav-item"><a class="nav-link" href="#">Staking Fund</a></li>
+                                      <li class="nav-item"><a class="nav-link" href="#">Staking Fund History</a></li>
+                                   </ul>
+                                </div>
+                             </li>
+                             <li class="nav-item mt-3">
+                                <a class="nav-link" href="#"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
+                             </li>
+                          </ul>
+                       </nav>
+                    </div>
+                  </div>
+                 </div>
+                 <div class="main-content">
+                       <?php $this->load->view('includes/header'); ?>
+                       <?php !empty($content)?$this->load->view($content):''; ?>
+                       <?php $this->load->view('includes/footer'); ?>
+                    
+                  </div>
+              </div>
+                
+                <?php /*?><div class="main-panel">
+                    <div class="content">
+                        <div class="page-inner">
+                            <div class="page-header">
+                                <h4 class="page-title"><?= $title; ?></h4>
+                                <?php
+                                if(!empty($breadcrumbs)){
+                                ?>
+                                <ul class="breadcrumbs">
+                                    <?php
+                                    if(!isset($breadcrumb['active']) && $this->uri->segment(1)!=''){ $breadcrumb['active']=$title; }
+                                    foreach($breadcrumb as $link=>$crumb){
+                                        if($link=='active'){
+                                            echo '<li class="breadcrumb-item active" aria-current="page">'.$crumb.'</li>';
+                                        }
+                                        else{
+                                            echo '<li class="breadcrumb-item"><a href="'.base_url($link).'">'.$crumb.'</a></li>';
+                                        }
+                                    }	
+                                    ?>
+                                    <li class="nav-home">
+                                        <a href="#">
+                                            <i class="flaticon-home"></i>
+                                        </a>
+                                    </li>
+                                    <li class="separator">
+                                        <i class="flaticon-right-arrow"></i>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="#">Base</a>
+                                    </li>
+                                    <li class="separator">
+                                        <i class="flaticon-right-arrow"></i>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="#">Avatars</a>
+                                    </li>
+                                </ul>
+                                <?php
+                                }
+                                ?>
+                            </div>
+                            <?php !empty($content)?$this->load->view($content):''; ?>
+                        </div>
+                    </div>
+                    <?php $this->load->view($footer); ?>
+                </div><?php */?>
+
+                <?php
+                    }
+                ?>

@@ -28,7 +28,7 @@ $member['wallet_address']=empty($member['wallet_address'])?'':$member['wallet_ad
 									if(isset($member['wallet_address']) && $member['wallet_address']!=''){
                                         echo form_open_multipart('deposit/savedeposit/', 'id="myform" onSubmit="return validate()"'); 
                                 ?>
-                                    <div class="form-group">
+                                    <div class="form-group mb-2">
                                         <button type="button" class="btn btn-sm btn-primary" onClick="connectWallet()">Connect To Wallet</button>
                                     </div>
                                     <div id="walletAddress" class="address d-none"></div>

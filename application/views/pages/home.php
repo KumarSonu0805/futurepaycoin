@@ -180,7 +180,7 @@ else{
                            <div class="card card-primary card-outline">
                               <div class="card-body box-profile">
                                  <div class="text-center">
-                                       <img class="profile-user-img img-fluid img-circle bg-info" src="<?php if(!empty($this->session->photo)){echo file_url($this->session->photo);}else{echo file_url('assets/images/avatar.jpg');} ?>" alt="<?= $user['name']; ?> photo">
+                                       <img class="profile-user-img img-fluid img-circle bg-info" src="<?php echo ($user['photo']); ?>" alt="<?= $user['name']; ?> photo">
                                  </div>
 
                                  <h5 class="profile-username text-center"><?= $user['username']; ?></h5>

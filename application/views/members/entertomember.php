@@ -1,3 +1,4 @@
+				<div class="main-deshboard-section">
 					<div class="row">
 						<div class="col-md-6">
 							<div class="card">
@@ -13,9 +14,10 @@
                                                 <input type="text" class="form-control input-full" id="member_id" name="member_id" placeholder="Enter Member ID">
                                             </div>
                                         </div>
-                                        <button type="submit" class="btn btn-sm btn-success">Enter to Member Dashboard</button>
+                                        <button type="submit" class="mt-2 btn btn-sm btn-success">Enter to Member Dashboard</button>
                                     <?= form_close(); ?>
 								</div>
 							</div>
 						</div>
 					</div>
+				</div>

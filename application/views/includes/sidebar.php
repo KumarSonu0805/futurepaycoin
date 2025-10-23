@@ -5,6 +5,17 @@
    </div>
    <ul class="nav flex-column" id="sidebarAccordion">
       <div class="nav-linktitle">Member Dashboard</div>
+        <?php
+            if($this->session->sess_type=='admin_access'){
+        ?>
+      <li class="nav-item">
+         <a class="nav-link" href="<?= base_url('login/backtoadmin/'); ?>">
+         <i class="fa-solid fa-arrow-left"></i> Back To Admin Panel
+         </a>
+      </li>
+      <?php
+            }
+      ?>
       <li class="nav-item">
          <a class="nav-link" href="<?= base_url('home/'); ?>">
          <i class="fa-solid fa-house"></i> Home
@@ -56,10 +67,18 @@
                <li class="nav-item"><a class="nav-link" href="<?= base_url('members/directmembers/'); ?>">Direct Members</a></li>
                 <?php
                     }
+                    else{
+                ?>
+               <li class="nav-item"><a class="nav-link" href="<?= base_url('members/entertomember/'); ?>">Enter To Member</a></li>
+                <?php
+                    }
                 ?>
             </ul>
          </div>
       </li>
+      <?php
+         if($this->session->role=='member'){
+      ?>
       <li class="nav-item">
          <a class="nav-link" data-bs-toggle="collapse" href="#depositeMenu" role="button" aria-expanded="false" aria-controls="depositeMenu">
          <i class="fa-solid fa-money-bill-transfer"></i> Deposit
@@ -72,6 +91,9 @@
             </ul>
          </div>
       </li>
+      <?php
+         }
+      ?>
       <li class="nav-item">
          <a class="nav-link" href="<?= base_url('logout/'); ?>">
          <i class="fa-solid fa-right-from-bracket"></i> Logout

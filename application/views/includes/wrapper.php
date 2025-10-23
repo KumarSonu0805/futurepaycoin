@@ -41,7 +41,7 @@
                  <div class="offcanvas offcanvas-start mobilesidebar" tabindex="-1" id="mobileSidebar" aria-labelledby="mobileSidebarLabel">
                     <div class="offcanvas-header">
                        <div class="text-center sidemenulogo d-flex align-items-center">
-                          <img src="./images/future-coin.png" alt="Logo">
+                          <img src="<?= file_url('assets/images/future-coin.png'); ?>" alt="Logo">
                           <h5 class="mt-2">Future Pay Coin</h5>
                        </div>
                        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"></button>

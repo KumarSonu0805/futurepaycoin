@@ -99,7 +99,8 @@ defined('HEADER_BG')           OR define('HEADER_BG','dark2');
 defined('SIDEBAR_BG')          OR define('SIDEBAR_BG','dark2'); 
 defined('CONTENT_BG')          OR define('CONTENT_BG','dark'); 
 
-defined('DEDUCTION')           OR define('DEDUCTION',10); 
+defined('DEDUCTION')           OR define('DEDUCTION',6); 
+defined('MIN_WITHDRAW')        OR define('MIN_WITHDRAW',15); 
 
 if(isset($_SERVER['HTTP_HOST']) && ($_SERVER['HTTP_HOST']=='localhost' || $_SERVER['HTTP_HOST']=='192.168.29.123')){
     defined('MIN_BAL')              OR define('MIN_BAL',0); //Minimum

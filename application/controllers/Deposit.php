@@ -9,6 +9,10 @@ class Deposit extends MY_Controller {
         $this->load->model('');
         $this->load->library('template');
         //checkactivation();
+        checklogin();
+        if($this->session->role!='member'){
+            redirect('/');
+        }
     }
 
     public function index() {

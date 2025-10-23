@@ -1,4 +1,5 @@
 
+            <div class="main-deshboard-section">
                 <div class="card">
                     <div class="card-header">
                         <h3 class="card-title"><?php echo $title; ?></h3>
@@ -11,6 +12,7 @@
                         </div>
                     </div>
                 </div>
+            </div>
     <script>
 	
 		$(document).ready(function(e) {
@@ -83,21 +85,21 @@
                         formatter: function(cell){
                             let amount = Number(cell.getValue());
                             amount=amount==Math.round(amount)?Math.round(amount):amount.toFixed(8);
-                            return amount+' DXC'
+                            return '$'+amount
                         }
                     },
                     { title: "Deduction", field: "deduction_amount" ,
                         formatter: function(cell){
                             let amount = Number(cell.getValue());
                             amount=amount==Math.round(amount)?Math.round(amount):amount.toFixed(8);
-                            return amount+' DXC'
+                            return '$'+amount
                         }
                     },
                     { title: "Payable Amount", field: "payable_amount" ,
                         formatter: function(cell){
                             let amount = Number(cell.getValue());
                             amount=amount==Math.round(amount)?Math.round(amount):amount.toFixed(8);
-                            return amount+' DXC'
+                            return '$'+amount
                         }
                     },
                     { 
@@ -196,44 +198,35 @@
 			}
 		}
 	</script>
-    <script src="https://cdn.jsdelivr.net/npm/web3@1.10.0/dist/web3.min.js"></script>
-    <?php
-        if(WORK_ENV=='development'){
-    ?>
-    <script src="<?= file_url('test/config-new.js'); ?>"></script> 
-    <?php
-        }
-        else{
-    ?>
-    <script src="<?= file_url('includes/js/contract.js'); ?>"></script> 
-    <?php
-        }
-    ?>   
+    <script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js/dist/web3.min.js"></script>
     <script>
         const BSC_CHAIN_ID = '0x38'; // 56 in decimal for Binance Smart Chain Mainnet
-        let web3 = new Web3(window.ethereum);
-        let userAddress;
-        const TOKEN_ABI = [
-          /* transfer(address,uint256) */
-          {
-            "constant": false,
-            "inputs": [
-              { "name": "_to",    "type": "address" },
-              { "name": "_value", "type": "uint256" }
-            ],
-            "name": "transfer",
-            "outputs": [{ "name": "", "type": "bool" }],
-            "type": "function"
-          },
-          /* decimals() – so we always convert amounts correctly */
-          {
-            "constant": true,
-            "inputs": [],
-            "name": "decimals",
-            "outputs": [{ "name": "", "type": "uint8" }],
-            "type": "function"
-          }
+        const USDT_CONTRACT_ADDRESS = '0x55d398326f99059fF775485246999027B3197955'; // USDT BEP20 Address
+        const USDT_ABI = [ // Minimal ABI for token interactions
+            {
+                "constant": false,
+                "inputs": [
+                    { "name": "_spender", "type": "address" },
+                    { "name": "_value", "type": "uint256" }
+                ],
+                "name": "approve",
+                "outputs": [{ "name": "", "type": "bool" }],
+                "type": "function"
+            },
+            {
+                "constant": false,
+                "inputs": [
+                    { "name": "_to", "type": "address" },
+                    { "name": "_value", "type": "uint256" }
+                ],
+                "name": "transfer",
+                "outputs": [{ "name": "", "type": "bool" }],
+                "type": "function"
+            }
         ];
+
+        let web3;
+        let userAddress;
 
         // Connect to Wallet
         async function connectWallet() {
@@ -265,48 +258,29 @@
                 alert('No Ethereum-compatible browser extension detected.');
             }
         }
-        async function sendDXC(id, recipient, amount) {
-            $('#body-overlay').fadeIn();
-            if (!web3.utils.isAddress(recipient) || Number(amount) <= 0) {
-                return alert("Please enter a valid recipient address and amount.");
-            }
 
-            try {
-                /* Initialise contract */
-                const token = new web3.eth.Contract(TOKEN_ABI, tokenAddress);
+        async function sendUSDT(recipient,amount) {
+            if(confirm("Confirm approve Withdrawal?")){
+                if (!recipient || amount <= 0) {
+                    alert('Please enter valid recipient address and amount.');
+                    return;
+                }
 
-                /* Get token decimals once so we convert properly */
-                const decimals = await token.methods.decimals().call();
-                const factor   = web3.utils.toBN(10).pow(web3.utils.toBN(decimals));
+                const usdtContract = new web3.eth.Contract(USDT_ABI, USDT_CONTRACT_ADDRESS);
+                try {
+                    const tx = await usdtContract.methods
+                        .transfer(recipient, web3.utils.toWei(amount.toString(), 'ether'))
+                        .send({ from: userAddress });
 
-                // Convert amount to smallest unit (as string without scientific notation)
-                const scaled = (Number(amount) * (10 ** decimals)).toLocaleString('fullwide', { useGrouping: false });
-
-                const value = web3.utils.toBN(scaled); // BN instance, safe to use
-
-                /* Convert human amount → smallest unit (uint256) */
-                //const value = web3.utils.toBN(amount).mul(factor);   // BigNumber math
-
-                /* Send transaction */
-                const txReceipt = await token.methods
-                .transfer(recipient, value)
-                .send({ from: userAddress });
-
-                console.log("Transaction successful:", txReceipt);
-
-                /* OPTIONAL: notify your backend */
-                approveWithdrawal(id,txReceipt.transactionHash)
-                //alert("Withdrawal approved successfully!");
-            } catch (err) {
-                $('#body-overlay').fadeOut();
-                console.error("Transaction failed:", err);
-                logError(id,err);
-                alert("Transaction failed – check console for details.");
+                    console.log('Transaction successful:', tx);
+                    approveWithdrawal(id,tx.transactionHash)
+                    alert('Withdrawal Approved  successfully!');
+                } catch (error) {
+                    console.error('Transaction failed:', error);
+                }
             }
         }
         window.onload=function(){
             connectWallet();
         }
     </script>
-    
-    	

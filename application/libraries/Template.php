@@ -110,6 +110,8 @@ class Template {
 			$this->loadalertify();
 		}
 		
+		$this->loadsweetalert2();
+
         $data['styles']=$this->styles;
 		$data['top_script']=$this->top_script;
 		$data['content_script']=$this->content_script;
@@ -130,6 +132,10 @@ class Template {
 	function loadtoastr(){
 		$this->styles['file'][]="includes/plugins/toastr/toastr.min.css";
 		$this->bottom_script['file'][]="includes/plugins/toastr/toastr.min.js";
+	}
+	
+	function loadsweetalert2(){
+		$this->content_script['link'][]="https://cdn.jsdelivr.net/npm/sweetalert2@11";
 	}
 	
 	function loaddatatable(){

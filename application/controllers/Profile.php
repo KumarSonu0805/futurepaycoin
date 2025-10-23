@@ -21,7 +21,7 @@ class Profile extends CI_Controller {
             unset($data['updateprofile']);
             $user=getuser();
             $result=$this->account->updateuser($data,['id'=>$user['id']]);
-            if($result===true){
+            if($result['status']===true){
                 $this->session->set_userdata("name",file_url($data['name']));
                 $this->session->set_flashdata("msg",$result['message']);
             }

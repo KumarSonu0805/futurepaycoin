@@ -1,4 +1,5 @@
 
+            <div class="main-deshboard-section">
                 <div class="card">
                     <div class="card-header">
                         <h3 class="card-title"><?php echo $title; ?></h3>
@@ -11,6 +12,7 @@
                         </div>
                     </div>
                 </div>
+            </div>
     <script>
 	
 		$(document).ready(function(e) {
@@ -83,7 +85,21 @@
                         formatter: function(cell){
                             let amount = Number(cell.getValue());
                             amount=amount==Math.round(amount)?Math.round(amount):amount.toFixed(8);
-                            return amount+' DXC'
+                            return '$'+amount
+                        }
+                    },
+                    { title: "Deduction", field: "deduction_amount" , width:140,
+                        formatter: function(cell){
+                            let amount = Number(cell.getValue());
+                            amount=amount==Math.round(amount)?Math.round(amount):amount.toFixed(8);
+                            return '$'+amount
+                        }
+                    },
+                    { title: "Paid Amount", field: "payable_amount" , width:140,
+                        formatter: function(cell){
+                            let amount = Number(cell.getValue());
+                            amount=amount==Math.round(amount)?Math.round(amount):amount.toFixed(8);
+                            return '$'+amount
                         }
                     },
                     { 

@@ -127,6 +127,34 @@
                                    </ul>
                                 </div>
                              </li>
+                             <li class="nav-item">
+                                <a class="nav-link d-flex justify-content-between align-items-center" data-bs-toggle="collapse" href="#mobileWalletMenu">
+                                <span><i class="fa-solid fa-money-bill-transfer"></i> wallet</span>
+                                <i class="fas fa-chevron-down"></i>
+                                </a>
+                                <div class="collapse" id="mobileWalletMenu" data-bs-parent="#mobileAccordion">
+                                   <ul class="nav flex-column ms-3">
+                                      <li class="nav-item"><a class="nav-link" href="<?= base_url('wallet/withdrawal/'); ?>">Withdrawal</a></li>
+                                      <li class="nav-item"><a class="nav-link" href="<?= base_url('wallet/withdrawalhistory/'); ?>">Withdrawal History</a></li>
+                                   </ul>
+                                </div>
+                             </li>
+                             <?php
+                                }
+                                else{
+                            ?>
+                             <li class="nav-item">
+                                <a class="nav-link d-flex justify-content-between align-items-center" data-bs-toggle="collapse" href="#mobileWalletMenu">
+                                <span><i class="fa-solid fa-money-bill-transfer"></i> wallet</span>
+                                <i class="fas fa-chevron-down"></i>
+                                </a>
+                                <div class="collapse" id="mobileWalletMenu" data-bs-parent="#mobileAccordion">
+                                   <ul class="nav flex-column ms-3">
+                                        <li class="nav-item"><a class="nav-link" href="<?= base_url('wallet/withdrawalrequests/'); ?>">Withdrawal Requests</a></li>
+                                        <li class="nav-item"><a class="nav-link" href="<?= base_url('wallet/history/'); ?>">Withdrawal History</a></li>
+                                   </ul>
+                                </div>
+                             </li>
                              <?php
                                 }
                             ?>

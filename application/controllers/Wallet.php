@@ -205,7 +205,10 @@ class Wallet extends MY_Controller {
             $member=$this->member->getmemberdetails($data['regid']);
             $user=getuser();
             $avl_balance=getavlbalance($user);
-            if($avl_balance>=$data['amount']){
+            if($data['amount']<MIN_WITHDRAW){
+				$this->session->set_flashdata("err_msg","Invalid Request Amount!");
+            }
+            elseif($avl_balance>=$data['amount']){
                 $data['deduction']=DEDUCTION;
                 $data['deduction_amount']=($data['amount']*DEDUCTION)/100;
                 $data['payable_amount']=$data['amount']-$data['deduction_amount'];

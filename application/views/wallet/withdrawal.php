@@ -1,8 +1,20 @@
 <?php
-$tokenrate=getTokenRate();
-$settings=$this->setting->getsettings(['name'=>'coin_rate'],'single');
-$rate=$settings['value'];
+$member['wallet_address']=empty($member['wallet_address'])?'':$member['wallet_address'];
 ?>
+<style>
+    
+    .address{
+        margin-top: 15px;
+        padding: 10px;
+        background-color: #4ca229;
+        border: 1px solid #80d13c;
+        border-radius: 5px;
+        font-size: 1rem;
+        text-align: center;
+        color: #ffffff;
+    }
+</style>
+        <div class="main-deshboard-section">
             <div class="col-12">
                 <div class="card">
                     <div class="card-header"><?= $title; ?></div>
@@ -12,9 +24,9 @@ $rate=$settings['value'];
                             <div class="col-md-5">
                                 <div class="card card-outline">
                                     <div class="card-body box-profile">
-                                        <div class="row">
+                                        <div class="row mb-2">
                                             <div class="col-12 text-center">
-                                                <div id="wallet-address" class="badge btn btn-success"><?= $member['wallet_address']; ?></div>
+                                                <div id="wallet-address" class="address"><?= $member['wallet_address']; ?></div>
                                             </div>
                                         </div>
                                 <?php 
@@ -38,29 +50,19 @@ $rate=$settings['value'];
                                     </div>
                                     <div class="form-group">
                                         <?php
-                                            echo create_form_input("text","","Wallet Balance (DXC)",false,$avl_balance,array("id"=>"avl_balance","readonly"=>"true")); 
+                                            echo create_form_input("text","","Wallet Balance",false,$avl_balance,array("id"=>"avl_balance","readonly"=>"true")); 
                                         ?>
                                     </div>
                                     <div class="form-group">
                                         <?php
-                                            echo create_form_input("text","","Wallet Balance (USDT)",false,$avl_balance*$tokenrate,array("id"=>"avl_usdt","readonly"=>"true")); 
-                                        ?>
-                                    </div>
-                                    <div class="form-group">
-                                        <?php
-                                            echo create_form_input('text','amount','Withdrawal Amount (DXC)',true,'',array("id"=>"amount","Placeholder"=>"Withdrawal Amount (DXC)","autocomplete"=>"off","min"=>0));
+                                            echo create_form_input('text','amount','Withdrawal Amount',true,'',array("id"=>"amount","Placeholder"=>"Withdrawal Amount","autocomplete"=>"off","min"=>MIN_WITHDRAW));
                                         ?><p class="text-danger"></p>
                                     </div>
-                                    <div class="form-group">
-                                        <?php
-                                            echo create_form_input('text','amount_usdt','Withdrawal Amount (USDT)',true,'',array("id"=>"amount_usdt","Placeholder"=>"Withdrawal Amount (USDT)","autocomplete"=>"off","min"=>0,'readonly'=>true));
-                                        ?>
-                                    </div>
                                     <?php
-                                        echo create_form_input("hidden","rate","",false,$tokenrate,['id'=>'rate']); 
                                         echo create_form_input("hidden","regid","",false,$user['id']); 
                                     ?>
-                                    <small class="text-danger">*Note: 10% will be deducted from the withdrawal amount!</small><br>
+                                    <small class="text-danger">*Note: Minimun withdrawal amount is $<?= MIN_WITHDRAW ?>!</small><br>
+                                    <small class="text-danger">*Note: <?= DEDUCTION ?>% will be deducted from the withdrawal amount!</small><br>
                                     <button type="submit" class="btn btn-sm btn-success" name="requestwithdrawal" value="Request">Request Withdrawal</button>
                                 <?php 
                                         echo form_close(); 
@@ -84,76 +86,33 @@ $rate=$settings['value'];
                     </div>
                 </div>
             </div>
+        </div>
 
                     <script src="https://cdn.jsdelivr.net/npm/web3@1.10.0/dist/web3.min.js"></script>
                 <script>
                 let web3 = new Web3(window.ethereum);
 
-                const poolAbi = [{
-                  "inputs": [],
-                  "name": "slot0",
-                  "outputs": [
-                    { "internalType": "uint160", "name": "sqrtPriceX96", "type": "uint160" },
-                    { "internalType": "int24", "name": "tick", "type": "int24" },
-                    { "internalType": "uint16", "name": "observationIndex", "type": "uint16" },
-                    { "internalType": "uint16", "name": "observationCardinality", "type": "uint16" },
-                    { "internalType": "uint16", "name": "observationCardinalityNext", "type": "uint16" },
-                    { "internalType": "uint8", "name": "feeProtocol", "type": "uint8" },
-                    { "internalType": "bool", "name": "unlocked", "type": "bool" }
-                  ],
-                  "stateMutability": "view",
-                  "type": "function"
-                }];
-
-                const poolAddress = "0xd793764dc7968715661c9682fff67edb6de1fdac";
-
-                const contract = new web3.eth.Contract(poolAbi, poolAddress);
-
-                async function getV3Price() {
-                    const slot0 = await contract.methods.slot0().call();
-                    const sqrtPriceX96 = BigInt(slot0.sqrtPriceX96);
-                    const price = Number(sqrtPriceX96 ** 2n) / (2 ** 192);
-                    var rate=price.toFixed(8);
-                    var avl=$('#avl_balance').val();
-                    avl*=rate;
-                    $('#avl_usdt').val(avl);
-                    $('#rate').val(rate);
-                    console.log("Approx price:", price.toFixed(8));
-                    console.log("Approx price:", avl);
-                }
                     $(document).ready(function(e) {
                         $('#amount').keyup(function(){
                             var avl=Number($('#avl_balance').val());
                             var amount=Number($(this).val());
-                            var amount_usdt=0;
-                            var rate=Number($('#rate').val());
                             if(isNaN(amount)){ amount=0; }
-                            amount_usdt=amount*rate;
                             if(amount>avl){
                                 alert("Withdrawal Amount should be less than Available Balance!");
                                 $(this).val('');
-                                $('#amount_usdt').val('');
-                            }
-                            else{
-                                $('#amount_usdt').val(amount_usdt);
-                                if(isNaN($('#avl_usdt').val()) || $('#avl_usdt').val()==0){
-                                    var avl_usdt=avl*rate;
-                                    $('#avl_usdt').val(avl_usdt);
-                                }
                             }
                         });
-                        getV3Price();
                     });
                     function validate(){
                         var avl=Number($('#avl_balance').val());
-                        var amount=Number($('#amount_usdt').val());
+                        var amount=Number($('#amount').val());
                         if(isNaN(amount)){ 
                             amount=0; 
                             alert("Enter Valid Withdrawal Amount!");
                             return false;
                         }
-                        if(amount<1){
-                            alert("Minimum Withdrawal Amount is 1 USDT!");
+                        if(amount<Number('<?= MIN_WITHDRAW ?>') ){
+                            alert("Minimum Withdrawal Amount is $<?= MIN_WITHDRAW ?>!");
                             return false;
                         }
                         if(amount>avl){

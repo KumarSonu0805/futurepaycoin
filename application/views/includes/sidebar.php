@@ -91,6 +91,34 @@
             </ul>
          </div>
       </li>
+      <li class="nav-item">
+         <a class="nav-link" data-bs-toggle="collapse" href="#walletMenu" role="button" aria-expanded="false" aria-controls="walletMenu">
+         <i class="fa-solid fa-money-bill-transfer"></i> Wallet
+         <i class="fas fa-chevron-down ms-auto"></i>
+         </a>
+         <div class="collapse" id="walletMenu" data-bs-parent="#sidebarAccordion">
+            <ul class="nav flex-column ms-3">
+               <li class="nav-item"><a class="nav-link" href="<?= base_url('wallet/withdrawal/'); ?>">Withdrawal</a></li>
+               <li class="nav-item"><a class="nav-link" href="<?= base_url('wallet/withdrawalhistory/'); ?>">Withdrawal History</a></li>
+            </ul>
+         </div>
+      </li>
+      <?php
+         }
+         else{
+      ?>
+      <li class="nav-item">
+         <a class="nav-link" data-bs-toggle="collapse" href="#walletMenu" role="button" aria-expanded="false" aria-controls="walletMenu">
+         <i class="fa-solid fa-money-bill-transfer"></i> Wallet
+         <i class="fas fa-chevron-down ms-auto"></i>
+         </a>
+         <div class="collapse" id="walletMenu" data-bs-parent="#sidebarAccordion">
+            <ul class="nav flex-column ms-3">
+               <li class="nav-item"><a class="nav-link" href="<?= base_url('wallet/withdrawalrequests/'); ?>">Withdrawal Requests</a></li>
+               <li class="nav-item"><a class="nav-link" href="<?= base_url('wallet/history/'); ?>"> Withdrawal History</a></li>
+            </ul>
+         </div>
+      </li>
       <?php
          }
       ?>

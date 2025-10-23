@@ -15,7 +15,7 @@ class Member_model extends CI_Model{
 		$userdata=$data['userdata'];
 		$memberdata=$data['memberdata'];
         if($memberdata['wallet_address']!==NULL){
-            $check=$this->db->get_where('members',['wallet_address'=>$memberdata['wallet_address']])->num_rows();
+            $check=0;//$this->db->get_where('members',['wallet_address'=>$memberdata['wallet_address']])->num_rows();
         }
         else{
             $check=0;

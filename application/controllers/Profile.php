@@ -6,7 +6,7 @@ class Profile extends CI_Controller {
 		parent::__construct();
 		checklogin();
         if($this->session->role!='member'){
-            redirect('/');
+            redirect('changepassword/');
 		}
 	}
     

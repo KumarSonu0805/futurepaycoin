@@ -37,7 +37,7 @@
 		?>   
         
         <!-- Custom CSS -->
-        <link rel="stylesheet" href="<?= file_url('includes/custom/custom.css'); ?>">
+        <link rel="stylesheet" href="<?= file_url('includes/custom/custom.css?v=1'); ?>">
         <!--   Core JS Files   -->
         <script src="<?= file_url('includes/js/core/jquery.3.2.1.min.js'); ?>"></script>
         <?php

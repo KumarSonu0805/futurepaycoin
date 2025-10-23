@@ -590,6 +590,11 @@ class Member_model extends CI_Model{
 		$check=$this->db->get_where("investments",array("regid"=>$regid,"tx_hash"=>$data['tx_hash']))->num_rows();
 		if($check==0){
 			if($this->db->insert("investments",$data)){
+                $member=$this->member->getmemberdetails($regid);
+                if($this->db->get_where("investments",array("regid"=>$regid))->num_rows()==1 && $member['status']==0){
+                    $updata=array('package'=>$data['amount'],'activation_date'=>date('Y-m-d'),'activation_time'=>date('H:i:s'),'status'=>1);
+                    $this->db->update('members',$updata,['regid'=>$regid]);
+                }
 				return array('status'=>true,'message'=>'Deposit Saved Successfully');
 			}
 			else{

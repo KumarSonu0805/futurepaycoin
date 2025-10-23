@@ -1,6 +1,19 @@
 <?php
 $min=MIN_DEPOSIT;
 ?>
+<style>
+    
+    .address{
+        margin-top: 15px;
+        padding: 10px;
+        background-color: #4ca229;
+        border: 1px solid #80d13c;
+        border-radius: 5px;
+        font-size: 1rem;
+        text-align: center;
+        color: #ffffff;
+    }
+</style>
             <div class="main-deshboard-section">
                 <div class="card">
                     <div class="card-header"><?= $title; ?></div>
@@ -14,6 +27,10 @@ $min=MIN_DEPOSIT;
 									if(isset($member['wallet_address']) && $member['wallet_address']!=''){
                                         echo form_open_multipart('deposit/savedeposit/', 'id="myform" onSubmit="return validate()"'); 
                                 ?>
+                                    <div class="form-group">
+                                        <button type="button" class="btn btn-sm btn-primary" onClick="connectWallet()">Connect To Wallet</button>
+                                    </div>
+                                    <div id="walletAddress" class="address d-none"></div>
                                     <div class="form-group d-none">
                                         <?php
                                             echo create_form_input("date","date","Date",true,date('Y-m-d')); 
@@ -128,7 +145,8 @@ $min=MIN_DEPOSIT;
                             try {
                                 const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
                                 userAddress = accounts[0];
-                                //document.getElementById('walletAddress').textContent = userAddress;
+                                document.getElementById('walletAddress').textContent = userAddress;
+                                $('#walletAddress').removeClass('d-none');
                                 //document.getElementById('walletInfo').style.display = 'block';
                                 //document.getElementById('formContainer').style.display = 'block';
 
@@ -154,7 +172,7 @@ $min=MIN_DEPOSIT;
 
                     async function sendUSDT(recipient,amount) {
                         $('#body-overlay').fadeIn();
-                        await connectWallet();
+                        //await connectWallet();
                         if(userAddress.toLowerCase()!='<?= strtolower($member['wallet_address']); ?>'){
                             var message='Saved Wallet Address does not match Connected Wallet Address!';
                             alert(message);

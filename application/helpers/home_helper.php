@@ -18,11 +18,11 @@
 		}  
 	}
 
-	if(!function_exists('getstaked')) {
-  		function getstaked() {
+	if(!function_exists('getdeposits')) {
+  		function getdeposits() {
     		$CI = get_instance();
             $user=getuser();
-            $history=$CI->member->getstakinghistory($user['id'],1);
+            $history=$CI->member->getdeposits(['t1.regid'=>$user['id']]);
             $amounts=!empty($history)?array_column($history,'amount'):array();
             return !empty($amounts)?array_sum($amounts):0;
 		}  

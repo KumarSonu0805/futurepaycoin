@@ -110,7 +110,7 @@
                                  </div>
                               </li>
                               <li>
-                                 <h4>Basic</h4>
+                                 <h4>--</h4>
                                  <p>Current Rank</p>
                               </li>
                            </ul>
@@ -172,7 +172,7 @@
                                     <li>
                                        <h5>Fund Wallet</h5>
                                        <h2>
-                                          $ 0.00
+                                          $ <?= getdeposits(); ?>
                                        </h2>
                                        <div class="progress" role="progressbar" aria-label="Basic example" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100">
                                           <div class="progress-bar w-75"></div>

@@ -1,4 +1,5 @@
 
+            <div class="main-deshboard-section">
                 <div class="card">
                     <div class="card-header">
                         <h3 class="card-title"><?php echo $title; ?></h3>
@@ -60,6 +61,7 @@
                         </div>
                     </div>
                 </div>
+            </div>
     <script>
 	
 		$(document).ready(function(e) {

@@ -6,20 +6,18 @@
    <ul class="nav flex-column" id="sidebarAccordion">
       <div class="nav-linktitle">Member Dashboard</div>
       <li class="nav-item">
-         <a class="nav-link">
-         <i class="fa-solid fa-house"></i> Dashboards
+         <a class="nav-link" href="<?= base_url('home/'); ?>">
+         <i class="fa-solid fa-house"></i> Dashboard
          </a>
       </li>
-      <li class="nav-item">
-         <a class="nav-link">
-         <i class="fas fa-chart-line"></i> AI Trading
-         </a>
-      </li>
-      <li class="nav-item">
+      <li class="nav-item d-none">
          <a class="nav-link">
          <i class="fa-regular fa-square-plus"></i> New Registration
          </a>
       </li>
+        <?php
+            if($this->session->role=='member'){
+        ?>
       <li class="nav-item">
          <a class="nav-link" data-bs-toggle="collapse" href="#profileMenu" role="button" aria-expanded="false" aria-controls="profileMenu">
          <i class="fa-solid fa-user"></i> Profile
@@ -28,85 +26,55 @@
          <div class="collapse" id="profileMenu" data-bs-parent="#sidebarAccordion">
             <ul class="nav flex-column ms-3">
                <li class="nav-item"><a class="nav-link" href="#">User Summary</a></li>
-               <li class="nav-item"><a class="nav-link" href="#">Change Password</a></li>
+               <li class="nav-item"><a class="nav-link" href="<?= base_url('changepassword/') ?>">Change Password</a></li>
                <li class="nav-item"><a class="nav-link" href="#">Wallet Address</a></li>
+            </ul>
+         </div>
+      </li>
+        <?php
+            }
+       else{
+        ?>
+      <li class="nav-item">
+         <a class="nav-link" href="<?= base_url('changepassword/') ?>">
+         <i class="fa-regular fa-square-plus"></i> Change Password
+         </a>
+      </li>
+       <?php
+       }
+        ?>
+      <li class="nav-item">
+         <a class="nav-link" data-bs-toggle="collapse" href="#membersMenu" role="button" aria-expanded="false" aria-controls="membersMenu">
+         <i class="fa-solid fa-users"></i> Members
+         <i class="fas fa-chevron-down ms-auto"></i>
+         </a>
+         <div class="collapse" id="membersMenu" data-bs-parent="#sidebarAccordion">
+            <ul class="nav flex-column ms-3">
+               <li class="nav-item"><a class="nav-link" href="<?= base_url('members/memberlist/'); ?>">Downline Members</a></li>
+                <?php
+                    if($this->session->role=='member'){
+                ?>
+               <li class="nav-item"><a class="nav-link" href="<?= base_url('members/directmembers/'); ?>">Direct Members</a></li>
+                <?php
+                    }
+                ?>
             </ul>
          </div>
       </li>
       <li class="nav-item">
          <a class="nav-link" data-bs-toggle="collapse" href="#depositeMenu" role="button" aria-expanded="false" aria-controls="depositeMenu">
-         <i class="fa-solid fa-money-bill-transfer"></i> Deposite Section
+         <i class="fa-solid fa-money-bill-transfer"></i> Deposit Section
          <i class="fas fa-chevron-down ms-auto"></i>
          </a>
          <div class="collapse" id="depositeMenu" data-bs-parent="#sidebarAccordion">
             <ul class="nav flex-column ms-3">
-               <li class="nav-item"><a class="nav-link" href="#">Deposite Fund</a></li>
-               <li class="nav-item"><a class="nav-link" href="#">Deposite Fund History</a></li>
+               <li class="nav-item"><a class="nav-link" href="#">Deposit Fund</a></li>
+               <li class="nav-item"><a class="nav-link" href="#">Deposit Fund History</a></li>
             </ul>
          </div>
       </li>
       <li class="nav-item">
-         <a class="nav-link" data-bs-toggle="collapse" href="#stakingMenu" role="button" aria-expanded="false" aria-controls="stakingMenu">
-         <i class="fa-solid fa-money-bill-transfer"></i> Staking Section
-         <i class="fas fa-chevron-down ms-auto"></i>
-         </a>
-         <div class="collapse" id="stakingMenu" data-bs-parent="#sidebarAccordion">
-            <ul class="nav flex-column ms-3">
-               <li class="nav-item"><a class="nav-link" href="#">Staking Fund</a></li>
-               <li class="nav-item"><a class="nav-link" href="#">Staking Fund History</a></li>
-            </ul>
-         </div>
-      </li>
-      <li class="nav-item">
-         <a class="nav-link" data-bs-toggle="collapse" href="#incomeMenu" role="button" aria-expanded="false" aria-controls="incomeMenu">
-         <i class="fa-solid fa-money-bill-transfer"></i> Income
-         <i class="fas fa-chevron-down ms-auto"></i>
-         </a>
-         <div class="collapse" id="incomeMenu" data-bs-parent="#sidebarAccordion">
-            <ul class="nav flex-column ms-3">
-               <li class="nav-item"><a class="nav-link" href="#">Staking Fund</a></li>
-               <li class="nav-item"><a class="nav-link" href="#">Staking Fund History</a></li>
-            </ul>
-         </div>
-      </li>
-      <li class="nav-item">
-         <a class="nav-link" data-bs-toggle="collapse" href="#rewardMenu" role="button" aria-expanded="false" aria-controls="rewardMenu">
-         <i class="fa-solid fa-money-bill-transfer"></i> Reward Section
-         <i class="fas fa-chevron-down ms-auto"></i>
-         </a>
-         <div class="collapse" id="rewardMenu" data-bs-parent="#sidebarAccordion">
-            <ul class="nav flex-column ms-3">
-               <li class="nav-item"><a class="nav-link" href="#">Staking Fund</a></li>
-               <li class="nav-item"><a class="nav-link" href="#">Staking Fund History</a></li>
-            </ul>
-         </div>
-      </li>
-      <li class="nav-item">
-         <a class="nav-link" data-bs-toggle="collapse" href="#royaltyMenu" role="button" aria-expanded="false" aria-controls="royaltyMenu">
-         <i class="fa-solid fa-money-bill-transfer"></i> Royalty Section
-         <i class="fas fa-chevron-down ms-auto"></i>
-         </a>
-         <div class="collapse" id="royaltyMenu" data-bs-parent="#sidebarAccordion">
-            <ul class="nav flex-column ms-3">
-               <li class="nav-item"><a class="nav-link" href="#">Staking Fund</a></li>
-               <li class="nav-item"><a class="nav-link" href="#">Staking Fund History</a></li>
-            </ul>
-         </div>
-      </li>
-      <li class="nav-item">
-         <a class="nav-link" data-bs-toggle="collapse" href="#psecMenu" role="button" aria-expanded="false" aria-controls="psecMenu">
-         <i class="fa-solid fa-money-bill-transfer"></i> P2P Section
-         <i class="fas fa-chevron-down ms-auto"></i>
-         </a>
-         <div class="collapse" id="psecMenu" data-bs-parent="#sidebarAccordion">
-            <ul class="nav flex-column ms-3">
-               <li class="nav-item"><a class="nav-link" href="#">Staking Fund</a></li>
-               <li class="nav-item"><a class="nav-link" href="#">Staking Fund History</a></li>
-            </ul>
-         </div>
-      </li>
-      <li class="nav-item">
-         <a class="nav-link">
+         <a class="nav-link" href="<?= base_url('logout/'); ?>">
          <i class="fa-solid fa-right-from-bracket"></i> Logout
          </a>
       </li>

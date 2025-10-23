@@ -23,8 +23,6 @@
 
 .form-control:disabled, 
 .form-control[readonly] {
-    background: #393c50 !important;
-    border-color: #666c91 !important;
 }
 
 

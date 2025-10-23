@@ -19,7 +19,7 @@ if(!empty($this->input->get('sponsor'))){
                      class="form-control"
                      id="ref"
                      placeholder="Enter Your Sponsor Id"
-                         value="<?= $sponsor ?>"
+                         value="<?= $sponsor ?>" required
                      />
                                     <input type="hidden" name="refid" id="refid">
                </div>
@@ -36,7 +36,7 @@ if(!empty($this->input->get('sponsor'))){
                   <label for="name" class="form-label">Mobile</label>
                   <input type="text" class="form-control" name="mobile" id="mobile" placeholder="Mobile" pattern="[\d]{10}" maxlength="10" title="Enter valid 10-Digit Mobile No.">
                </div>
-               <div class="mb-3">
+               <div class="mb-3 d-none">
                   <label for="name" class="form-label">Wallet Address</label>
                   <input type="text" class="form-control" name="wallet_address" id="wallet_address" readonly placeholder="Wallet Address">
                </div>
@@ -109,13 +109,6 @@ if(!empty($this->input->get('sponsor'))){
                     });
                 }
 
-                function validate(){
-                    if($('#password').val()!=$('#repassword').val()){
-                        alert('Passwords Do Not Match!');
-                       return false;
-                    }
-                    $('#savebtn').hide();
-                }
             </script>
     <script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js/dist/web3.min.js"></script>
     <script src="<?= file_url('includes/custom/switch.js'); ?>"></script>
@@ -213,10 +206,10 @@ if(!empty($this->input->get('sponsor'))){
         }
 
         function validate(){
-            if($('#wallet_address').val()==''){
+            /*if($('#wallet_address').val()==''){
                 connectToWallet();
                 return false;
-            }
+            }*/
         }
 
     </script>

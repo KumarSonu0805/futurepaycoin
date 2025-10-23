@@ -9,7 +9,7 @@ class Login extends MY_Controller {
     }
     
     public function index(){
-        loginredirect();
+        //
 		$this->session->unset_userdata("username");
         if($this->session->flashdata('msg')=='Registered Successfully!'){
             $user=getuser();
@@ -17,8 +17,11 @@ class Login extends MY_Controller {
             $data['user']=$user;
             $data['member']=$member;
         }
+        else{
+            loginredirect();
+        }
         $data['title']="Login";
-        $this->template->load('auth','walletlogin',$data,'auth');       
+        $this->template->load('auth','login',$data,'auth');       
     }
     
     public function register(){
@@ -66,7 +69,15 @@ class Login extends MY_Controller {
 		$result=$this->account->login($data);
 		if($result['status']===true){
             $user=$result['user'];
-            if($user['role']=='admin' || $user['role']=='member'){
+            $ref=!empty($_SERVER['HTTP_REFERER'])?$_SERVER['HTTP_REFERER']:'';
+            $section='member';
+            if($ref==''){
+                $section='member';
+            }
+            elseif(strpos($ref,'Admin')!==false){
+                $section='admin';
+            }
+            if(($section=='admin' && $user['role']=='admin') || ($section=='member' && $user['role']=='member')){
                 $this->session->unset_userdata('sess_type');
                 $this->startsession($user);
                 loginredirect();
@@ -130,7 +141,7 @@ class Login extends MY_Controller {
 				$userdata['status']="1";
 				
 				$memberdata['name']=$data['name'];
-				$memberdata['wallet_address']=!empty($data['wallet_address'])?$data['wallet_address']:'';
+				$memberdata['wallet_address']=!empty($data['wallet_address'])?$data['wallet_address']:NULL;
 				$memberdata['refid']=$referrer['id'];
 				$memberdata['date']=date('Y-m-d');
 				$memberdata['time']=date('H:i:s');

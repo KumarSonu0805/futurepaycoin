@@ -29,7 +29,7 @@ class Home extends MY_Controller {
         else{
             redirect('home/');
         }
-        $data['title']="Edit Password";
+        $data['title']="Change Password";
         //$data['subtitle']="Sample Subtitle";
         $data['breadcrumb']=array();
         $data['alertify']=true;

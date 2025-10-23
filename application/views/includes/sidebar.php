@@ -67,7 +67,7 @@
          </a>
          <div class="collapse" id="depositeMenu" data-bs-parent="#sidebarAccordion">
             <ul class="nav flex-column ms-3">
-               <li class="nav-item"><a class="nav-link" href="<?= base_url('deposit/'); ?>">Deposit Fund</a></li>
+               <li class="nav-item"><a class="nav-link" href="<?= base_url('deposit/'); ?>">Add Deposit</a></li>
                <li class="nav-item"><a class="nav-link" href="<?= base_url('deposit/depositlist/'); ?>">Deposit History</a></li>
             </ul>
          </div>

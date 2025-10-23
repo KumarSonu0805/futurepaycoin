@@ -50,9 +50,10 @@
                        <nav class="">
                           <ul class="nav flex-column" id="mobileAccordion">
                              <div class="nav-linktitle">Member Dashboard</div>
-                             <li class="nav-item"><a class="nav-link" href="#"><i class="fa-solid fa-house"></i> Dashboards</a></li>
-                             <li class="nav-item"><a class="nav-link" href="#"><i class="fas fa-chart-line"></i> AI Trading</a></li>
-                             <li class="nav-item"><a class="nav-link" href="#"><i class="fa-regular fa-square-plus"></i> New Registration</a></li>
+                             <li class="nav-item"><a class="nav-link" href="<?= base_url('home/'); ?>"><i class="fa-solid fa-house"></i> Home</a></li>
+                            <?php
+                                if($this->session->role=='member'){
+                            ?>
                              <li class="nav-item">
                                 <a class="nav-link d-flex justify-content-between align-items-center" data-bs-toggle="collapse" href="#mobileProfileMenu">
                                 <span><i class="fa-solid fa-user"></i> Profile</span>
@@ -60,38 +61,55 @@
                                 </a>
                                 <div class="collapse" id="mobileProfileMenu" data-bs-parent="#mobileAccordion">
                                    <ul class="nav flex-column ms-3">
-                                      <li class="nav-item"><a class="nav-link" href="#">User Summary</a></li>
-                                      <li class="nav-item"><a class="nav-link" href="#">Change Password</a></li>
-                                      <li class="nav-item"><a class="nav-link" href="#">Wallet Address</a></li>
+                                        <li class="nav-item"><a class="nav-link" href="<?= base_url('profile/'); ?>">Profile</a></li>
+                                        <li class="nav-item"><a class="nav-link" href="<?= base_url('changepassword/') ?>">Change Password</a></li>
+                                   </ul>
+                                </div>
+                             </li>
+                            <?php
+                                }
+                                else{
+                                    ?>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="<?= base_url('changepassword/') ?>">
+                                    <i class="fa-regular fa-square-plus"></i> Change Password
+                                    </a>
+                                </li>
+                                <?php
+                                }
+                            ?>
+                             <li class="nav-item">
+                                <a class="nav-link d-flex justify-content-between align-items-center" data-bs-toggle="collapse" href="#mobileMemberMenu">
+                                <span><i class="fa-solid fa-users"></i> Members</span>
+                                <i class="fas fa-chevron-down"></i>
+                                </a>
+                                <div class="collapse" id="mobileMemberMenu" data-bs-parent="#mobileAccordion">
+                                   <ul class="nav flex-column ms-3">
+                                    <li class="nav-item"><a class="nav-link" href="<?= base_url('members/memberlist/'); ?>">Downline Members</a></li>
+                                        <?php
+                                            if($this->session->role=='member'){
+                                        ?>
+                                    <li class="nav-item"><a class="nav-link" href="<?= base_url('members/directmembers/'); ?>">Direct Members</a></li>
+                                        <?php
+                                            }
+                                        ?>
                                    </ul>
                                 </div>
                              </li>
                              <li class="nav-item">
                                 <a class="nav-link d-flex justify-content-between align-items-center" data-bs-toggle="collapse" href="#mobileDepositeMenu">
-                                <span><i class="fa-solid fa-money-bill-transfer"></i> Deposite Section</span>
+                                <span><i class="fa-solid fa-money-bill-transfer"></i> Deposit</span>
                                 <i class="fas fa-chevron-down"></i>
                                 </a>
                                 <div class="collapse" id="mobileDepositeMenu" data-bs-parent="#mobileAccordion">
                                    <ul class="nav flex-column ms-3">
-                                      <li class="nav-item"><a class="nav-link" href="#">Deposite Fund</a></li>
-                                      <li class="nav-item"><a class="nav-link" href="#">Deposite Fund History</a></li>
-                                   </ul>
-                                </div>
-                             </li>
-                             <li class="nav-item">
-                                <a class="nav-link d-flex justify-content-between align-items-center" data-bs-toggle="collapse" href="#mobileStakingMenu">
-                                <span><i class="fa-solid fa-money-bill-transfer"></i> Staking Section</span>
-                                <i class="fas fa-chevron-down"></i>
-                                </a>
-                                <div class="collapse" id="mobileStakingMenu" data-bs-parent="#mobileAccordion">
-                                   <ul class="nav flex-column ms-3">
-                                      <li class="nav-item"><a class="nav-link" href="#">Staking Fund</a></li>
-                                      <li class="nav-item"><a class="nav-link" href="#">Staking Fund History</a></li>
+                                      <li class="nav-item"><a class="nav-link" href="<?= base_url('deposit/'); ?>">Add Deposit</a></li>
+                                      <li class="nav-item"><a class="nav-link" href="<?= base_url('deposit/depositlist/'); ?>">Deposit List</a></li>
                                    </ul>
                                 </div>
                              </li>
                              <li class="nav-item mt-3">
-                                <a class="nav-link" href="#"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
+                                <a class="nav-link" href="<?= base_url('logout/'); ?>"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
                              </li>
                           </ul>
                        </nav>

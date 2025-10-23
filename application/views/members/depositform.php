@@ -1,5 +1,6 @@
 <?php
 $min=MIN_DEPOSIT;
+$member['wallet_address']=empty($member['wallet_address'])?'':$member['wallet_address'];
 ?>
 <style>
     
@@ -64,6 +65,12 @@ $min=MIN_DEPOSIT;
                                     <button type="button" class="btn btn-sm btn-success" id="savebtn" name="savedeposit" value="Request">Add Deposit</button>
                                 <?php 
                                         echo form_close(); 
+                                    }
+                                    else{
+                                ?>
+                                <p class="text-danger">Wallet Address Not Added!</p>
+                                <a href="<?= base_url('profile/') ?>" class="btn btn-sm btn-primary">Update Wallet Address</a>
+                                <?php
                                     }
                                 ?>
                                     </div>

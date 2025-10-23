@@ -135,9 +135,21 @@
                         </div>
                         <div class="col-lg-4 col-md-4 col-sm-6">
                             <div class="card card-primary card-outline">
-                                <div class="card-body box-profile">
-                                    <h3 class="profile-username text-center">Linked Wallet Address</h3>
+                                <div class="card-body box-profile text-center">
+                                    <h3 class="profile-username">Linked Wallet Address</h3>
+                                    <?php
+                                        if(empty($member['wallet_address'])){
+                                    ?>
+                                    <button type="button" class="btn btn-sm btn-primary" onClick="connectWallet()">Connect To Wallet</button>
+                                    <div id="walletAddress" class="address d-none"></div>
+                                    <?php
+                                        }
+                                        else{
+                                    ?>
                                     <p class="address"><?= $member['wallet_address']; ?></p>
+                                    <?php
+                                        }
+                                    ?>
                                 </div>
                             </div>
                         </div>
@@ -145,6 +157,8 @@
                     </div>
                 </div>
             </div>
+            <script src="https://cdn.jsdelivr.net/npm/web3@1.10.0/dist/web3.min.js"></script>
+            <script src="<?= base_url('includes/custom/switch.js'); ?>"></script>
                 <script>
 
                     function getPhoto(input){
@@ -183,5 +197,33 @@
                             //$('.change-photo').show();
                         }
                     }
+
+                    
+                    async function connectWallet() {
+                        if (window.ethereum) {
+                            web3 = new Web3(window.ethereum);
+                            try {
+                                const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+                                userAddress = accounts[0];
+                                document.getElementById('walletAddress').textContent = userAddress;
+                                $('#walletAddress').removeClass('d-none');
+                                $.post('<?= base_url('profile/updatewallet') ?>',{wallet_address:userAddress},function(){
+                                    window.location.reload();
+                                });
+                            } catch (error) {
+                                console.error('User denied wallet connection:', error);
+                            }
+                        } else {
+                            alert('No Ethereum-compatible browser extension detected.');
+                        }
+                    }
+
+                    switchToBSC().then(result => {
+                        if (result) {
+                            
+                        } else {
+                            logError("Wallet not connected");
+                        }
+                      });
 
                 </script>

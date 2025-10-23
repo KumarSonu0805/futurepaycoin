@@ -32,6 +32,21 @@ class Profile extends CI_Controller {
 		redirect('profile/');
     }
     
+    public function updatewallet(){
+        $wallet_address=$this->input->post('wallet_address');
+        if(!empty($wallet_address)){
+            $user=getuser();
+            $data=array('wallet_address'=>$wallet_address);
+            if($this->db->update('members',$data,['regid'=>$user['id']])){
+                $this->session->set_flashdata("msg","Wallet Address Updated!");
+            }
+            else{
+                $error=$this->db->error();
+                $this->session->set_flashdata("err_msg",$error['message']);
+            }
+        }
+    }
+    
     public function updatephoto(){
 		if($this->input->post('updatephoto')!==NULL){
             $name=$this->input->post('name');

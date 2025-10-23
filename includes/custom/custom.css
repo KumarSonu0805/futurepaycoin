@@ -20,12 +20,13 @@
     /* padding: 20px 40px; */
     box-shadow: 0 0 24px 0 rgba(3, 31, 66, 0.1);
 }
-
-.form-control:disabled, 
-.form-control[readonly] {
+h1, h2, h3, h4, h5, h6{
+    font-weight: 500;
 }
-
-
+footer{
+    position: fixed;
+    bottom: 0;
+}
 @media (max-width: 350px){
     .login-box .card {
         width: 95%;

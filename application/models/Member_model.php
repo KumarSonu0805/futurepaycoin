@@ -585,5 +585,32 @@ class Member_model extends CI_Model{
         return $array;
     }
     
+    public function savedeposit($data){
+		$regid=$data['regid'];
+		$check=$this->db->get_where("investments",array("regid"=>$regid,"tx_hash"=>$data['tx_hash']))->num_rows();
+		if($check==0){
+			if($this->db->insert("investments",$data)){
+				return array('status'=>true,'message'=>'Deposit Saved Successfully');
+			}
+			else{
+                $err=$this->db->error();
+                return array("status"=>false,"message"=>$err['message']);
+			}
+		}
+		else{
+			return array("status"=>false,"message"=>"Deposit already Saved!");
+		}
+	}
+	
+	public function getdeposits($where=array(),$type='all'){
+        $this->db->where(['t1.auto'=>0,'t1.status!='=>0]);
+		$this->db->select("t1.*");
+		$this->db->from('investments t1');
+		$this->db->where($where);
+		$query=$this->db->get();
+		if($type=='all'){ $array=$query->result_array(); }
+		else{ $array=$query->row_array(); }
+		return $array;
+	}
     
 }

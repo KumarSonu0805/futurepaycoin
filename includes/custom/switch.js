@@ -9,7 +9,7 @@ const bscMainnetParams = {
 
 async function switchToBSC() {
   if (!window.ethereum) { 
-      alert('To Directly Transfer Amount a Web3 wallet (like MetaMask or Trust Wallet or Token Pocket or SafePal) is required. Please install or open it.'); 
+      alert('A Web3 wallet (like MetaMask or Trust Wallet or Token Pocket or SafePal) is required. Please install or open it.'); 
       return false; 
   }
   try {

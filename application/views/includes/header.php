@@ -2,7 +2,7 @@
    <button class="btn btn-outline-secondary d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#mobileSidebar" aria-controls="mobileSidebar">
       <i class="fas fa-bars"></i>
       </button>
-   <h4 class="mb-0">Dashboard</h4>
+   <h4 class="mb-0"><?= $title; ?></h4>
    <div class="d-flex align-items-center gap-3 topmenuadmin">
       <form class="search-bar d-none" onsubmit="return handleSearch(event)">
          <i class="fas fa-search search-icon" onclick="document.getElementById('searchForm').submit()"></i>
@@ -11,16 +11,16 @@
       </form>
       <div class="dropdown">
          <a href="#" class="d-flex align-items-center text-decoration-none" id="profileDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-         <img src="<?= file_url('assets/images/future-coin.png'); ?>" alt="Profile" width="36" class="rounded-circle">
+         <img src="<?php if(!empty($this->session->photo)){echo file_url($this->session->photo);}else{echo file_url('assets/images/avatar.jpg');} ?>" alt="Profile" width="36" height="36" class="rounded-circle">
          <span class="ms-2 fw-semibold text-dark d-none d-md-inline"></span>
          </a>
       <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
     <li>
         <div class="dropdown-profile d-flex align-items-center px-3 py-2">
-            <img src="<?= file_url('assets/images/future-coin.png'); ?>" alt="future-coin">
+            <img src="<?php if(!empty($this->session->photo)){echo file_url($this->session->photo);}else{echo file_url('assets/images/avatar.jpg');} ?>" alt="future-coin">
             <div class="ms-2">
-                <h5>Future Coin</h5>
-                <p>@future-coin</p>
+                <h5><?= $this->session->name; ?></h5>
+                <p><?= $this->session->username ?></p>
             </div>
         </div>
     </li>

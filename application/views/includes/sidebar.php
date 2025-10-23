@@ -7,7 +7,7 @@
       <div class="nav-linktitle">Member Dashboard</div>
       <li class="nav-item">
          <a class="nav-link" href="<?= base_url('home/'); ?>">
-         <i class="fa-solid fa-house"></i> Dashboard
+         <i class="fa-solid fa-house"></i> Home
          </a>
       </li>
       <li class="nav-item d-none">
@@ -25,9 +25,8 @@
          </a>
          <div class="collapse" id="profileMenu" data-bs-parent="#sidebarAccordion">
             <ul class="nav flex-column ms-3">
-               <li class="nav-item"><a class="nav-link" href="#">User Summary</a></li>
+               <li class="nav-item"><a class="nav-link" href="<?= base_url('profile/'); ?>">Profile</a></li>
                <li class="nav-item"><a class="nav-link" href="<?= base_url('changepassword/') ?>">Change Password</a></li>
-               <li class="nav-item"><a class="nav-link" href="#">Wallet Address</a></li>
             </ul>
          </div>
       </li>
@@ -63,13 +62,13 @@
       </li>
       <li class="nav-item">
          <a class="nav-link" data-bs-toggle="collapse" href="#depositeMenu" role="button" aria-expanded="false" aria-controls="depositeMenu">
-         <i class="fa-solid fa-money-bill-transfer"></i> Deposit Section
+         <i class="fa-solid fa-money-bill-transfer"></i> Deposit
          <i class="fas fa-chevron-down ms-auto"></i>
          </a>
          <div class="collapse" id="depositeMenu" data-bs-parent="#sidebarAccordion">
             <ul class="nav flex-column ms-3">
                <li class="nav-item"><a class="nav-link" href="#">Deposit Fund</a></li>
-               <li class="nav-item"><a class="nav-link" href="#">Deposit Fund History</a></li>
+               <li class="nav-item"><a class="nav-link" href="#">Deposit History</a></li>
             </ul>
          </div>
       </li>

@@ -1,4 +1,4 @@
 
            <footer>
-               <p>© 2025 Admin Panel Developed by <a href="#">Tripledots Software Services Pvt. Ltd.</a></p>
+               <p>© 2025 <?= PROJECT_NAME ?></p>
             </footer>

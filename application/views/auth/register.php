@@ -36,7 +36,7 @@ if(!empty($this->input->get('sponsor'))){
                   <label for="name" class="form-label">Mobile</label>
                   <input type="text" class="form-control" name="mobile" id="mobile" placeholder="Mobile" pattern="[\d]{10}" maxlength="10" title="Enter valid 10-Digit Mobile No.">
                </div>
-               <div class="mb-3 d-none">
+               <div class="mb-3">
                   <label for="name" class="form-label">Wallet Address</label>
                   <input type="text" class="form-control" name="wallet_address" id="wallet_address" readonly placeholder="Wallet Address">
                </div>
@@ -113,12 +113,7 @@ if(!empty($this->input->get('sponsor'))){
     <script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js/dist/web3.min.js"></script>
     <script src="<?= file_url('includes/custom/switch.js'); ?>"></script>
     <script>
-                // Import Web3.js
-        if (typeof window.ethereum !== 'undefined') {
-            const web3 = new Web3(window.ethereum);
-        } else {
-            alert('A Web3 wallet (like MetaMask or Trust Wallet) is required. Please install or open it.');
-        }
+        switchToBSC();
 
         const BEP20_CHAIN_ID = '0x38'; // Mainnet Chain ID for Binance Smart Chain
         const BEP20_RPC_URL = 'https://bsc-dataseed.binance.org/'; // RPC URL for Binance Smart Chain Mainnet
@@ -196,7 +191,7 @@ if(!empty($this->input->get('sponsor'))){
                     displayError('An error occurred while connecting to your wallet. Please try again.');
                 }
             } finally {
-                resetButton();
+                //resetButton();
             }
         }
         
@@ -206,10 +201,10 @@ if(!empty($this->input->get('sponsor'))){
         }
 
         function validate(){
-            /*if($('#wallet_address').val()==''){
+            if($('#wallet_address').val()==''){
                 connectToWallet();
                 return false;
-            }*/
+            }
         }
 
     </script>

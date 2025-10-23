@@ -20,6 +20,24 @@
 		}  
 	}
 
+	if(!function_exists('countdirects')) {
+  		function countdirects() {
+    		$CI = get_instance();
+            $user=getuser();
+            $members=$CI->db->get_where('members',['refid'=>$user['id']])->num_rows();
+            return $members;
+		}  
+	}
+
+	if(!function_exists('countteam')) {
+  		function countteam() {
+    		$CI = get_instance();
+            $user=getuser();
+            $members=$CI->db->get_where('level_members',['regid'=>$user['id']])->num_rows();
+            return $members;
+		}  
+	}
+
 	if(!function_exists('getavlbalance')){
         function getavlbalance($user){
             $CI = get_instance();

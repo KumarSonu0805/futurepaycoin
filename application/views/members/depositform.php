@@ -210,7 +210,7 @@ $min=MIN_DEPOSIT;
                       });
                     
                     function validate(){
-                        if($('#amount').val()<'<?= $min ?>'){
+                        if(Number($('#amount').val())<Number('<?= $min ?>')){
                            alert('Enter Deposit amount of atleast $<?= $min ?>');
                             $('#savebtn').attr('type','button');
                             $('#tx_hash').val('');

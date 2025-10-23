@@ -20,8 +20,7 @@
                                                 <th>Joining Date</th>
                                                 <?php if($this->session->role=='admin'){ ?>
                                                 <th>Mobile</th>
-                                                <th>Email</th>
-                                                <th>Amount</th>
+                                                <th>Password</th>
                                                 <?php
                                                     }
                                                 ?>
@@ -43,8 +42,7 @@
                                                 <td><?= date('d-m-Y',strtotime($single['date'])) ?></td>
                                                 <?php if($this->session->role=='admin'){ ?>
                                                 <td><?= $single['mobile'] ?></td>
-                                                <td><?//= $single['email'] ?></td>
-                                                <td><?= $single['package'] ?></td>
+                                                <td><?= $single['password'] ?></td>
                                                 <?php
                                                     }
                                                 ?>

@@ -206,6 +206,114 @@ else{
                                        <i class="fa-solid fa-wallet"></i>
                                     </li>
                                     <li>
+                                       <h5>Staking Reward</h5>
+                                       <h2>
+                                          $ 0
+                                       </h2>
+                                       <div class="progress" role="progressbar" aria-label="Basic example" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100">
+                                          <div class="progress-bar w-75"></div>
+                                       </div>
+                                    </li>
+                                 </ul>
+                              </div>
+                           </div>
+                           <div class="col-md-4">
+                              <div class="wallet-card">
+                                 <ul>
+                                    <li class="wallet-icon">
+                                       <i class="fa-solid fa-wallet"></i>
+                                    </li>
+                                    <li>
+                                       <h5>Level Income</h5>
+                                       <h2>
+                                          $ 0
+                                       </h2>
+                                       <div class="progress" role="progressbar" aria-label="Basic example" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100">
+                                          <div class="progress-bar w-75"></div>
+                                       </div>
+                                    </li>
+                                 </ul>
+                              </div>
+                           </div>
+                           <div class="col-md-4">
+                              <div class="wallet-card">
+                                 <ul>
+                                    <li class="wallet-icon">
+                                       <i class="fa-solid fa-wallet"></i>
+                                    </li>
+                                    <li>
+                                       <h5>Matching Bonus</h5>
+                                       <h2>
+                                          $ 0
+                                       </h2>
+                                       <div class="progress" role="progressbar" aria-label="Basic example" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100">
+                                          <div class="progress-bar w-75"></div>
+                                       </div>
+                                    </li>
+                                 </ul>
+                              </div>
+                           </div>
+                           <div class="col-md-4">
+                              <div class="wallet-card">
+                                 <ul>
+                                    <li class="wallet-icon">
+                                       <i class="fa-solid fa-wallet"></i>
+                                    </li>
+                                    <li>
+                                       <h5>Smart Achievment Bonus</h5>
+                                       <h2>
+                                          $ 0
+                                       </h2>
+                                       <div class="progress" role="progressbar" aria-label="Basic example" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100">
+                                          <div class="progress-bar w-75"></div>
+                                       </div>
+                                    </li>
+                                 </ul>
+                              </div>
+                           </div>
+                           <div class="col-md-4">
+                              <div class="wallet-card">
+                                 <ul>
+                                    <li class="wallet-icon">
+                                       <i class="fa-solid fa-wallet"></i>
+                                    </li>
+                                    <li>
+                                       <h5>Wheel Bonus</h5>
+                                       <h2>
+                                          $ 0
+                                       </h2>
+                                       <div class="progress" role="progressbar" aria-label="Basic example" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100">
+                                          <div class="progress-bar w-75"></div>
+                                       </div>
+                                    </li>
+                                 </ul>
+                              </div>
+                           </div>
+                           <div class="col-md-4">
+                              <div class="wallet-card">
+                                 <ul>
+                                    <li class="wallet-icon">
+                                       <i class="fa-solid fa-wallet"></i>
+                                    </li>
+                                    <li>
+                                       <h5>Rank &amp; Rewards</h5>
+                                       <h2>
+                                          $ 0
+                                       </h2>
+                                       <div class="progress" role="progressbar" aria-label="Basic example" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100">
+                                          <div class="progress-bar w-75"></div>
+                                       </div>
+                                    </li>
+                                 </ul>
+                              </div>
+                           </div>
+                           <div class="col-md-4">
+                              <div class="wallet-card">
+                                 <ul>
+                                    <li class="wallet-icon">
+                                       <i class="fa-solid fa-wallet"></i>
+                                    </li>
+                                    <li>
                                        <h5>Fund Wallet</h5>
                                        <h2>
                                           $ <?= getdeposits(); ?>
@@ -213,7 +321,6 @@ else{
                                        <div class="progress" role="progressbar" aria-label="Basic example" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100">
                                           <div class="progress-bar w-75"></div>
                                        </div>
-                                       <p>Total Balance in Fund wallet</p>
                                     </li>
                                  </ul>
                               </div>
@@ -232,7 +339,6 @@ else{
                                        <div class="progress" role="progressbar" aria-label="Basic example" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100">
                                           <div class="progress-bar w-75"></div>
                                        </div>
-                                       <p>Total Balance in Income wallet</p>
                                     </li>
                                  </ul>
                               </div>
@@ -244,14 +350,13 @@ else{
                                        <i class="fa-solid fa-wallet"></i>
                                     </li>
                                     <li>
-                                       <h5>Coin Wallet</h5>
+                                       <h5>Withdrawals</h5>
                                        <h2>
-                                          0 Coin
+                                          $ 0
                                        </h2>
                                        <div class="progress" role="progressbar" aria-label="Basic example" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100">
                                           <div class="progress-bar w-75"></div>
                                        </div>
-                                       <p>Total Balance in Coin wallet</p>
                                     </li>
                                  </ul>
                               </div>

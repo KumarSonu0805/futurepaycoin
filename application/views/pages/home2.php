@@ -22,8 +22,6 @@
    color: #000;
    font-size: 14px;
    }
-
-
 </style>
 <?php
    if($this->session->role=='admin'){
@@ -194,17 +192,15 @@
                   <p class="textActive">Active</p>
                   <div class="row">
                      <div class="col-md-12">
-                    <h5>Referral Link</h5>
-                       
+                        <h5>Referral Link</h5>
                         <div class="input-group my-2 referral-link">
-  <input type="text" class="form-control text-truncate" id="referralInput" 
-         value="<?= base_url('register/?sponsor='.$user['username']); ?>" readonly>
-  <button class="btn addonBtn" type="button" onclick="copyLink()">
-    <i class="fa fa-clipboard"></i> Copy
-  </button>
-</div>
-
-                </div>
+                           <input type="text" class="form-control text-truncate" id="referralInput" 
+                              value="<?= base_url('register/?sponsor='.$user['username']); ?>" readonly>
+                           <button class="btn addonBtn" type="button" onclick="copyLink()">
+                           <i class="fa fa-clipboard"></i> Copy
+                           </button>
+                        </div>
+                     </div>
                   </div>
                   <div class="row d-none">
                      <div class="col-lg-6">
@@ -620,7 +616,7 @@
             </div>
          </div>
          <div class="col-lg-6">
-             <div class="datatable-card">
+            <div class="datatable-card">
                <h2>Ranks</h2>
                <div class="table-responsive">
                   <table class="table table-striped table-hover align-middle fundHistory">
@@ -636,8 +632,7 @@
                      <tbody>
                         <tr>
                            <td><img src="<?= file_url('assets/images/avatar.jpg'); ?>" alt="logo" width="30px"><span>Avatar</span>
-                          
-                        </td>
+                           </td>
                            <td>$10,000</td>
                            <td>$1000</td>
                            <td class="text-success">Maruti Alto</td>
@@ -645,8 +640,8 @@
                         </tr>
                         <tr>
                            <td><img src="<?= file_url('assets/images/avatar.jpg'); ?>" alt="logo" width="30px">
-                       <span>Avatar</span>
-                        </td>
+                              <span>Avatar</span>
+                           </td>
                            <td>$12,000</td>
                            <td>$1,500</td>
                            <td class="text-success">Royal Enfield</td>
@@ -654,8 +649,8 @@
                         </tr>
                         <tr>
                            <td><img src="<?= file_url('assets/images/avatar.jpg'); ?>" alt="logo" width="30px">
-                     <span>Avatar</span>
-                        </td>
+                              <span>Avatar</span>
+                           </td>
                            <td>$15,000</td>
                            <td>$2,000</td>
                            <td class="text-success">Laptop</td>
@@ -663,17 +658,17 @@
                         </tr>
                         <tr>
                            <td><img src="<?= file_url('assets/images/avatar.jpg'); ?>" alt="logo" width="30px">
-                      <span>Avatar</span>
-                        </td>
+                              <span>Avatar</span>
+                           </td>
                            <td>$18,000</td>
                            <td>$3,000</td>
                            <td class="text-success">iPhone</td>
                            <td><span class="badge-success">Approved</span></td>
                         </tr>
-                          <tr>
+                        <tr>
                            <td><img src="<?= file_url('assets/images/avatar.jpg'); ?>" alt="logo" width="30px">
-                     <span>Avatar</span>
-                        </td>
+                              <span>Avatar</span>
+                           </td>
                            <td>$15,000</td>
                            <td>$2,000</td>
                            <td class="text-success">Laptop</td>
@@ -681,8 +676,8 @@
                         </tr>
                         <tr>
                            <td><img src="<?= file_url('assets/images/avatar.jpg'); ?>" alt="logo" width="30px">
-                    <span>Avatar</span>
-                        </td>
+                              <span>Avatar</span>
+                           </td>
                            <td>$18,000</td>
                            <td>$3,000</td>
                            <td class="text-success">iPhone</td>
@@ -690,17 +685,17 @@
                         </tr>
                         <tr>
                            <td><img src="<?= file_url('assets/images/avatar.jpg'); ?>" alt="logo" width="30px">
-                     <span>Avatar</span>
-                        </td>
+                              <span>Avatar</span>
+                           </td>
                            <td>$20,000</td>
                            <td>$5,000</td>
                            <td class="text-success">Scooter</td>
-                          <td><span class="badge-cancelled">Pending</span></td>
+                           <td><span class="badge-cancelled">Pending</span></td>
                         </tr>
                         <tr>
                            <td><img src="<?= file_url('assets/images/avatar.jpg'); ?>" alt="logo" width="30px">
-                      <span>Avatar</span>
-                        </td>
+                              <span>Avatar</span>
+                           </td>
                            <td>$22,000</td>
                            <td>$7,000</td>
                            <td class="text-success">Smartwatch</td>
@@ -708,15 +703,13 @@
                         </tr>
                         <tr>
                            <td><img src="<?= file_url('assets/images/avatar.jpg'); ?>" alt="logo" width="30px">
-                      <span>Avatar</span>
-                        </td>
+                              <span>Avatar</span>
+                           </td>
                            <td>$25,000</td>
                            <td>$8,000</td>
                            <td class="text-success">TV</td>
                            <td><span class="badge-cancelled">Pending</span></td>
                         </tr>
-                      
-                        
                      </tbody>
                   </table>
                </div>

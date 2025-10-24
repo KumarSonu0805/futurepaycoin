@@ -22,15 +22,12 @@
                      </li>
                      <li class="nav-item">
                         <a class="nav-link" href="contactus.php">Contact Us</a>
-                     </li>
-                       <li class="nav-item">
-                        <a class="nav-link" href="#">Login</a>
-                     </li>
-                    
+                     </li>                    
                   </ul>
                </div>
             </div>
             <div>
+               <a class="loginbtn" href="#">Login</a>
                <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNav">
                <!-- <span class="navbar-toggler-icon"></span> -->
                 <img src="assets/images/menu.png" alt="menu icon" width="24">

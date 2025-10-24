@@ -367,7 +367,26 @@ width: 60px;
   transform: translateY(-3px);
   box-shadow: 0 0 25px rgba(255, 215, 0, 0.8);
 }
-
+.loginbtn{
+      display: inline-block;
+margin-left: 16px;
+    padding: 8px 20px;
+    font-size: 1rem;
+    font-weight: 600;
+    text-decoration: none;
+    color: var(--Black-Rock);
+    background: linear-gradient(90deg, #fab12f, #ffcc00);
+    border-radius: 50px;
+    box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+    transition: all 0.3s 
+ease;
+}
+.loginbtn:hover {
+  background: linear-gradient(90deg, #fab12f, #ffd700);
+  color: var(--Black-Rock);
+  transform: translateY(-3px);
+  box-shadow: 0 0 25px rgba(255, 215, 0, 0.8);
+}
 /* banner end */
 /* about section start */
 .bitcoin-card {
@@ -1114,6 +1133,9 @@ background: var(--Dark-Orange);
 }
 .bitcoin-navbar {
     padding: 0!important;
+}
+.loginbtn {
+    font-size: .89rem;
 }
 }
 @media(max-width:425px){

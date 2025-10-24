@@ -84,12 +84,12 @@ class Login extends MY_Controller {
             }
             else{ 
                 $this->session->set_flashdata('logerr',"Wrong Username or Password!");
-                redirect('login/');
+                redirect($_SERVER['HTTP_REFERER']);
             }
 		}
 		else{ 
 			$this->session->set_flashdata('logerr',$result['message']);
-			redirect('login/');
+			redirect($_SERVER['HTTP_REFERER']);
 		}
 	}
 	

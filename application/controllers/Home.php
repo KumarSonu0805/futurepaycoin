@@ -1,13 +1,9 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
-
 class Home extends MY_Controller {
-    
     public function __construct() {
         parent::__construct();
-        // Load global models, check auth, etc.
     }
-    
     public function index(){
         checklogin();
         $data=['title'=>'Home'];
@@ -19,7 +15,18 @@ class Home extends MY_Controller {
         }  
         $this->template->load('pages','home',$data);
     }
-    
+     public function index2(){
+        checklogin();
+        $data=['title'=>'Home'];
+        if($this->session->role=='admin' && $this->session->user==md5(1)){
+        }
+        else{
+            $data['user']=getuser();
+            $data['member']=$this->member->getmemberdetails($data['user']['id']);
+        }  
+        $data['datatable'] = true;
+        $this->template->load('pages','home2',$data);
+    }
 	public function changepassword(){
         checklogin();
         $getuser=$this->account->getuser(array("md5(id)"=>$this->session->user));
@@ -35,7 +42,6 @@ class Home extends MY_Controller {
         $data['alertify']=true;
 		$this->template->load('pages','changepassword',$data);
 	}
-    
     public function updatepassword(){
         if($this->input->post('updatepassword')!==NULL){
             $old_password=$this->input->post('old_password');
@@ -65,7 +71,6 @@ class Home extends MY_Controller {
         }
         redirect($_SERVER['HTTP_REFERER']);
     }
-    
     public function updatecoinrate(){
         session_write_close();  
         $this->setting->generatesettings();
@@ -75,7 +80,6 @@ class Home extends MY_Controller {
         $result=$this->setting->updatesetting($data);
         echo $result['message'];
     }
-    
     public function updatewallet(){
         $handle = fopen('./wallet.txt', 'r');
         if ($handle) {
@@ -104,7 +108,6 @@ class Home extends MY_Controller {
             echo "Unable to open file.";
         }
     }
-    
     public function checkcompound(){
         $principal=10;
         $dailyRate=0.009;
@@ -123,7 +126,6 @@ class Home extends MY_Controller {
             echo $principal;
             echo '<br>';
         }
-        
         echo '<br>--------------------------------<br>';
         $principal = 10;       // Initial deposit
         $days = 10;            // Number of compounding days
@@ -138,7 +140,6 @@ class Home extends MY_Controller {
             echo "Final Amount after $days days: $" . number_format($finalAmount, 6) . "<br>";
             echo "Total Reward: $" . number_format($totalReward, 6) . "<br>";
         }
-        
         echo '<br>--------------------------------<br>';
         $dailyRate = 0.009;
         $totalDays = 10;
@@ -147,17 +148,14 @@ class Home extends MY_Controller {
         $deposit1Amount = 10;
         $deposit1Days = 10;
         $final1 = $this->income->calculateDailyCompound($deposit1Amount, $dailyRate, $deposit1Days);
-
         // Second deposit: $10 on Day 5 → active for (10 - 5) = 5 days
         $deposit2Amount = 10;
         $deposit2Days = 5;
         $final2 = $this->income->calculateDailyCompound($deposit2Amount, $dailyRate, $deposit2Days);
-
         // Total final amount and reward
         $finalTotal = $final1 + $final2;
         $totalPrincipal = $deposit1Amount + $deposit2Amount;
         $totalReward = $finalTotal - $totalPrincipal;
-
         // Output
         echo "Final Amount after $totalDays days: $" . number_format($finalTotal, 6) . "<br>";
         echo "Total Reward: $" . number_format($totalReward, 6) . "<br>";

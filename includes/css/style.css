@@ -10,6 +10,7 @@
   --particle-count-color: #13e8e9; 
   --card-bg: rgba(255, 255, 255, 0.1); 
   --shadow-color: rgba(0, 0, 0, 0.3);
+  --light-green:#B4E50D;
 }
 body {
   margin: 0;
@@ -302,6 +303,7 @@ canvas {
   padding: 16px 20px;
 }
 .topmenubar h4{
+  font-size: 1rem;
   color:#1c1c2b;
 }
 .search-bar {
@@ -631,7 +633,7 @@ footer a:hover {
 .staking-card {
   background: var(--white);
   border-radius: 12px;
-  padding: 40px 20px 25px; 
+  padding:18px; 
   width: 100%;
   text-align: center;
   position: relative; 
@@ -653,8 +655,8 @@ footer a:hover {
   color: var(--white);
 }
 .staking-card .stakingicon {
-  width: 60px;
-  height: 60px;
+  width: 50px;
+  height: 50px;
   margin: 0 auto; 
   position: absolute;
   top: -30px; 
@@ -674,8 +676,8 @@ footer a:hover {
 }
 
 .staking-card h5 {
-  margin: 35px 0 5px;
-  font-size: 1rem;
+  margin: 18px 0 5px;
+  font-size: .89rem;
   font-weight: 600;
   color: var(--Black-Rock);
  
@@ -877,6 +879,154 @@ background: var(--card-bg);
   box-shadow: 0 4px 10px rgba(255, 204, 0, 0.4);
 }
 /* check box start */
+/* dashboard profile start */
+.dash-user-profile {
+  text-align: center;
+}
+
+.dash-user-profile{
+   background: 
+    linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), 
+    url('../images/golden-background.jpg') center/cover no-repeat;
+  background-size: cover;
+  padding: 0 20px 30px 20px;
+  border-radius: 10px;
+width: 100%;
+  color: var(--white);
+  margin: 40px 0;
+}
+
+.dash-profile-bg img {
+  margin-top: -40px;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  border: 3px solid #fff;
+  margin-bottom: 10px;
+ 
+}
+.dash-profile-bg p{
+  color: var(--accent-color);
+}
+.dash-profile-bg h2 {
+  font-size: 1.5rem;
+  margin: 5px 0;
+}
+.dash-profile-bg .referral-link button{
+  border: none;
+}
+ .referral-link {
+  background-color: #82caf1; 
+  font-size: 1rem;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+  color: var(--white); 
+   padding: 8px;
+}
+
+.referral-link input.form-control {
+  border: none;
+  background: transparent;
+  font-size: 14px;
+  color: #0c1e3c;
+  padding: 0;
+  box-shadow: none;
+}
+
+.referral-link input.form-control:focus {
+  box-shadow: none;
+}
+
+.referral-link button.addonBtn {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 13px;
+  padding: 8px;
+  border-radius: 0!important;
+background:var(--white) ;
+}
+
+.referral-link button.btn i {
+  font-size: 14px;
+}
+
+@media (max-width: 576px) {
+  .referral-link {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .referral-link input.form-control,
+  .referral-link button.btn {
+    width: 100%;
+  }
+}
+.dashbord-table table span{
+color:  var(--light-green);
+
+}
+.dashbord-table table tr td{
+  padding: 10px;
+  font-size: .89rem;
+  text-align: left;
+  color: var(--white);
+  background: transparent;
+}
+.dash-user-profile .futureBtn a{
+background: linear-gradient(135deg, #ffcc00, #ff9900);
+    border: none;
+    padding: 12px 25px;
+    border-radius: 8px;
+    margin-top: 15px;
+    cursor: pointer;
+    color: var(--Black-Rock);
+    font-size: .89rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    box-shadow: 0 5px 15px rgba(255, 204, 0, 0.4);
+    transition: all 0.3s 
+ease;
+text-decoration: none;
+margin-bottom: 20px;
+}
+.dash-user-profile .futureBtn button{
+background: linear-gradient(135deg, #00ff15, #346d06);
+    border: none;
+    padding: 12px 25px;
+    border-radius: 8px;
+    cursor: pointer;
+    color: var(--Black-Rock);
+    font-size: .89rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    box-shadow: 0 5px 15px rgba(255, 204, 0, 0.4);
+    transition: all 0.3s 
+ease;
+text-decoration: none;
+
+}
+.dash-profile-bg .row{
+  align-items: center;
+}
+.dashbord-table .left-record{
+color: var(--accent-color);
+
+}
+.dash-user-profile .futureBtn{
+margin-bottom: 20px;
+}
+.dash-user-profile .textActive{
+color: var(--light-green);
+font-size: 1rem;
+}
+
+/* dashboard profile end */
+
 /* Style checkboxes and radio like input fields */
 .user-profile-form .custom-input-checkbox,
 .user-profile-form .custom-input-radio {
@@ -982,7 +1132,15 @@ background: var(--card-bg);
       border-bottom: 2px solid #f1f1f1;
       padding-bottom: 10px;
     }
+    .datatable-card span{
+      font-size: 12px;
+    }
+.dashboard-datatable {
+  margin-bottom: 80px;
+}
+/* start */
 
+/* end */
     table.dataTable thead th {
       background: #f8f9fa;
       color: #333;
@@ -1000,7 +1158,23 @@ background: var(--card-bg);
 
     .badge-cancelled {
       background: #ff4d4d;
-      color: #fff;
+      color: var(--white);
+      padding: 6px 10px;
+      border-radius: 6px;
+      font-size: 0.8rem;
+      font-weight: 500;
+    }
+     .badge-success {
+      background: var(--Medium-Forest-Green);
+      color: var(--white);
+      padding: 6px 10px;
+      border-radius: 6px;
+      font-size: 0.8rem;
+      font-weight: 500;
+    }
+     .badge-warning {
+      background: var(--accent-color);
+      color: var(--white);
       padding: 6px 10px;
       border-radius: 6px;
       font-size: 0.8rem;
@@ -1019,7 +1193,7 @@ background: var(--card-bg);
   box-shadow: none;
 }
 .active>.page-link, .page-link.active {
-    z-index: 3;
+    z-index: 1;
     background-color: var(--accent-color);
     border-color: var(--accent-color);
 }
@@ -1145,6 +1319,9 @@ font-size: 1rem;
 div.table-responsive>div.dataTables_wrapper>div.row {
     gap: 6px;
 }
+.datatable-card{
+  margin-bottom: 20px;
+}
 }
 
 @media(max-width: 768px) {
@@ -1260,6 +1437,16 @@ margin-bottom: 30px;
   .loginsection {
     padding: 20px 0
   }
+  .dash-profile-bg img {
+    width: 80px;
+    height: 80px;
+  }
+  .staking-card{
+    margin-top: 35px;
+  }
+  .topmenubar {
+    padding: 12px;
+}
 }
 @media(max-width:545px){
   .search-bar {

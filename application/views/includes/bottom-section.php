@@ -62,5 +62,21 @@
          });
       </script>
         <script src="<?= file_url('includes/custom/custom.js'); ?>"></script>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script>
+  $(document).ready(function() {
+    $('.fundHistory').dataTable({
+      "pageLength": 10,
+      "lengthMenu": [5, 10, 25, 50, 100],
+      "order": [[0, "asc"]],
+        "language": {
+            "paginate": {
+                "previous": "&#8592;", 
+                "next": "&#8594;"      
+            }
+        }
+    });
+  });
+</script>
    </body>
 </html>

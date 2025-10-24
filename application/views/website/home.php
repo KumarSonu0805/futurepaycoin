@@ -172,41 +172,6 @@
             </div>
          </div>
       </section>
-      <section class="register-section">
-         <div class="container">
-            <div class="register-content">
-               <div class="headline">
-                  <h3>
-                     Register <span>With Us</span>
-                  </h3>
-                  <p>we do the magic</p>
-               </div>
-               <div class="row">
-                  <div class="col-lg-4">
-                     <input type="text" class="form-control" id="name" placeholder="Name*">
-                  </div>
-                  <div class="col-lg-4">
-                     <input type="email" class="form-control" id="email" placeholder="Email*">
-                  </div>
-                  <div class="col-lg-4">
-                     <input type="text" class="form-control" id="number" placeholder="Contact Number*">
-                  </div>
-                  <div class="col-lg-4">
-                     <input type="text" class="form-control" id="password" placeholder="Password*">
-                  </div>
-                  <div class="col-lg-4">
-                     <input type="text" class="form-control" id="repassword" placeholder="Re-Type Password*">
-                  </div>
-                  <div class="col-lg-4">
-                     <input type="text" class="form-control" id="referal" placeholder="Referal code(Optional)">
-                  </div>
-                  <div class="col-12 text-center">
-                     <button>Get Start</button>
-                  </div>
-               </div>
-            </div>
-         </div>
-      </section>
       <section class="live-chart-section">
          <div class="container">
             <div class="live-chart-content">

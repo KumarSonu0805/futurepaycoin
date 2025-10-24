@@ -17,7 +17,7 @@
             }
       ?>
       <li class="nav-item">
-         <a class="nav-link" href="<?= base_url('home/'); ?>">
+         <a class="nav-link" href="<?= base_url('home/index2'); ?>">
          <i class="fa-solid fa-house"></i> Home
          </a>
       </li>

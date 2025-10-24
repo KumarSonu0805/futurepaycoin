@@ -12,16 +12,16 @@
                         <a class="nav-link active" href="index.php">Home</a>
                      </li>
                      <li class="nav-item">
-                        <a class="nav-link" href="#">About Us</a>
+                        <a class="nav-link" href="aboutus.php">About Us</a>
                      </li>
                      <li class="nav-item">
-                        <a class="nav-link" href="#">Service</a>
+                        <a class="nav-link" href="service.php">Service</a>
                      </li>
                      <li class="nav-item">
-                        <a class="nav-link" href="#">Market Updates</a>
+                        <a class="nav-link" href="market-update.php">Market Updates</a>
                      </li>
                      <li class="nav-item">
-                        <a class="nav-link" href="#">Contact Us</a>
+                        <a class="nav-link" href="contactus.php">Contact Us</a>
                      </li>
                   </ul>
                </div>

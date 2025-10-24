@@ -27,7 +27,7 @@
                </div>
             </div>
             <div>
-               <a class="loginbtn" href="#">Login</a>
+               <a class="loginbtn" href="login/">Login</a>
                <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNav">
                <!-- <span class="navbar-toggler-icon"></span> -->
                 <img src="assets/images/menu.png" alt="menu icon" width="24">

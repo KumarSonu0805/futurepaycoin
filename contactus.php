@@ -33,15 +33,7 @@
                         <p>We are here for you always! please fill up the information and feel free ask if you have any query.</p>
                      </div>
                      <h4>More Information</h4>
-                     <ul class="contact-list">
-                        <li>
-                           <i class="fa-solid fa-location-dot"></i>
-                        </li>
-                        <li>
-                           <h5>Address</h5>
-                           <p>2nd floor - Raghuwar Heights, Ratu Road</p>
-                        </li>
-                     </ul>
+                    
                      <ul class="contact-list">
                         <li>
                            <i class="fa-solid fa-envelope"></i>
@@ -101,7 +93,6 @@
             </div>
          </div>
       </section>
-      <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d7324.462173580437!2d85.310217!3d23.379856!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39f4e1ff1c55bacd%3A0xbd730f5ae2453d28!2sTripledots%20Software%20Services%20Pvt.%20Ltd.!5e0!3m2!1sen!2sin!4v1760415564495!5m2!1sen!2sin" width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
       <?php include "./common/footer.php"?>
       <?php include "./common/vendor.php" ?>
    </body>

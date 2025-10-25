@@ -110,7 +110,7 @@ if(isset($_SERVER['HTTP_HOST']) && ($_SERVER['HTTP_HOST']=='localhost' || $_SERV
 }
 else{
     defined('MIN_BAL')              OR define('MIN_BAL',0); //Minimum
-    defined('MIN_DEPOSIT')          OR define('MIN_DEPOSIT',1); //Minimum Deposit
+    defined('MIN_DEPOSIT')          OR define('MIN_DEPOSIT',50); //Minimum Deposit
     defined('ADMIN_ADDRESS')        OR define('ADMIN_ADDRESS','0x409c8270215EDA59923cdCE8Ff6aAe825cf07B22'); //ADMIN Address
     defined('WORK_ENV')             OR define('WORK_ENV','production'); 
 }

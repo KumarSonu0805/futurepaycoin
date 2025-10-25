@@ -7,7 +7,7 @@
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
         <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-        <link href="<?= file_url('includes/css/style.css'); ?>" rel="stylesheet"/>
+        <link href="<?= file_url('includes/css/style.css?v=1'); ?>" rel="stylesheet"/>
         <link rel="icon" type="image/png" href="<?= file_url('assets/images/future-coin.png'); ?>" />
         <?php
 			if(!empty($styles)){
@@ -37,7 +37,7 @@
 		?>   
         
         <!-- Custom CSS -->
-        <link rel="stylesheet" href="<?= file_url('includes/custom/custom.css?v=1'); ?>">
+        <link rel="stylesheet" href="<?= file_url('includes/custom/custom.css?v=1.1'); ?>">
         <!--   Core JS Files   -->
         <script src="<?= file_url('includes/js/core/jquery.3.2.1.min.js'); ?>"></script>
         <?php

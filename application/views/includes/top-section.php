@@ -39,7 +39,7 @@
         <!-- Custom CSS -->
         <link rel="stylesheet" href="<?= file_url('includes/custom/custom.css?v=1.1'); ?>">
         <!--   Core JS Files   -->
-        <script src="<?= file_url('includes/js/core/jquery.3.2.1.min.js'); ?>"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
         <?php
             if(!empty($top_script)){
                 foreach($top_script as $key=>$script){

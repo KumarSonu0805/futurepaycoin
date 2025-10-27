@@ -1,0 +1,391 @@
+/**
+ *Submitted for verification at BscScan.com on 2025-08-06
+*/
+
+// SPDX-License-Identifier: MIT
+pragma solidity 0.8.20;
+
+/**
+ * @title BEP20Token
+ * @dev BEP20 token with extended functionality:
+ *      - Fixed 18 decimals
+ *      - Owner-controlled minting and burning
+ *      - Pausing and blacklisting of addresses
+ *      - Metadata storage (IPFS hash) with owner update
+ *      - Two-step ownership transfer with renounce option
+ *      - Safe token recovery (blocks recovering own token)
+ *      - Safer allowance adjustments (increase/decreaseAllowance)
+ * 
+ * Designed for Binance Smart Chain (BEP20 standard).
+ * Compatible with PancakeSwap and other BEP20 DApps.
+ */
+abstract contract Context {
+    /**
+     * @dev Returns the address of the current caller.
+     */
+    function _msgSender() internal view virtual returns (address) {
+        return msg.sender;
+    }
+}
+
+interface IBEP20 {
+    function totalSupply() external view returns (uint256);
+    function balanceOf(address account) external view returns (uint256);
+    function transfer(address recipient, uint256 amount) external returns (bool);
+    function allowance(address owner, address spender) external view returns (uint256);
+    function approve(address spender, uint256 amount) external returns (bool);
+    function transferFrom(address sender, address recipient, uint256 amount) external returns (bool);
+
+    event Transfer(address indexed from, address indexed to, uint256 value);
+    event Approval(address indexed owner, address indexed spender, uint256 value);
+}
+
+interface IBEP20Metadata is IBEP20 {
+    function name() external view returns (string memory);
+    function symbol() external view returns (string memory);
+    function decimals() external view returns (uint8);
+}
+
+contract BEP20Token is Context, IBEP20, IBEP20Metadata {
+    // -------------------- State Variables --------------------
+    mapping(address => uint256) private _balances; // Track balances
+    mapping(address => mapping(address => uint256)) private _allowances; // Track allowances
+    mapping(address => bool) private _blacklist; // Track blacklisted addresses
+
+    uint256 private _totalSupply;
+    string private _name;
+    string private _symbol;
+    bool private _paused;
+
+    address private _owner;
+    address private _pendingOwner;
+
+    // Token metadata (stored as IPFS hash)
+    string public metadata_ipfs_hash;
+
+    // -------------------- Events --------------------
+    event OwnershipTransferred(address indexed previousOwner, address indexed newOwner);
+    event OwnershipTransferStarted(address indexed previousOwner, address indexed newOwner);
+    event Paused(address indexed account);
+    event Unpaused(address indexed account);
+    event Blacklisted(address indexed account);
+    event UnBlacklisted(address indexed account);
+    event TokensBurned(address indexed account, uint256 amount);
+    event TokensMinted(address indexed account, uint256 amount);
+    event TeamFinanceTokenMint(address owner);
+    event MetadataUpdated(string metadata_ipfs_hash);
+
+    // -------------------- Modifiers --------------------
+
+    /**
+     * @dev Throws if called by any account other than the owner.
+     */
+    modifier onlyOwner() {
+        require(_owner == _msgSender(), "Not the owner");
+        _;
+    }
+
+    /**
+     * @dev Throws if contract is paused.
+     */
+    modifier notPaused() {
+        require(!_paused, "Token is paused");
+        _;
+    }
+
+    /**
+     * @dev Throws if account is blacklisted.
+     * @param account The address to check.
+     */
+    modifier notBlacklisted(address account) {
+        require(!_blacklist[account], "Blacklisted address");
+        _;
+    }
+
+    /**
+     * @dev Ensures the provided address is valid.
+     * @param ethAddress Address to check.
+     */
+    modifier checkIsAddressValid(address ethAddress) {
+        require(ethAddress != address(0), "[Validation] invalid address");
+        _;
+    }
+
+    // -------------------- Constructor --------------------
+
+    /**
+     * @dev Constructor mints initial supply to owner and sets metadata.
+     * @param name_ Token name.
+     * @param symbol_ Token symbol.
+     * @param initialSupply Initial token supply (without decimals).
+     * @param owner_ Owner address.
+     * @param metadataHash IPFS hash for token metadata.
+     */
+    constructor(
+        string memory name_,
+        string memory symbol_,
+        uint256 initialSupply,
+        address owner_,
+        string memory metadataHash
+    )
+        checkIsAddressValid(owner_)
+    {
+        _name = name_;
+        _symbol = symbol_;
+        _owner = owner_;
+        metadata_ipfs_hash = metadataHash;
+        _mint(owner_, initialSupply * 10 ** decimals());
+        emit OwnershipTransferred(address(0), _owner);
+        emit TeamFinanceTokenMint(owner_);
+        emit MetadataUpdated(metadataHash);
+    }
+
+    // -------------------- Metadata --------------------
+
+    /**
+     * @dev Returns the metadata IPFS hash.
+     */
+    function metadata() public view returns (string memory) {
+        return metadata_ipfs_hash;
+    }
+
+    /**
+     * @dev Updates the metadata IPFS hash.
+     * @param newMetadata New IPFS hash string.
+     */
+    function updateMetadata(string memory newMetadata) public onlyOwner {
+        _updateMetadata(newMetadata);
+    }
+
+    /**
+     * @dev Internal function to update metadata.
+     * @param newMetadata New IPFS hash string.
+     */
+    function _updateMetadata(string memory newMetadata) internal {
+        metadata_ipfs_hash = newMetadata;
+        emit MetadataUpdated(newMetadata);
+    }
+
+    // -------------------- BEP20 Metadata --------------------
+    function name() public view override returns (string memory) { return _name; }
+    function symbol() public view override returns (string memory) { return _symbol; }
+    function decimals() public pure override returns (uint8) { return 18; }
+
+    function totalSupply() public view override returns (uint256) { return _totalSupply; }
+    function balanceOf(address account) public view override returns (uint256) { return _balances[account]; }
+    function paused() public view returns (bool) { return _paused; }
+
+    // -------------------- Transfers --------------------
+
+    /**
+     * @dev Moves `amount` tokens from caller to `recipient`.
+     */
+    function transfer(address recipient, uint256 amount)
+        public override
+        notPaused
+        notBlacklisted(_msgSender())
+        notBlacklisted(recipient)
+        returns (bool)
+    {
+        require(amount > 0, "Transfer amount must be greater than zero");
+        _transfer(_msgSender(), recipient, amount);
+        return true;
+    }
+
+    function allowance(address owner_, address spender_) public view override returns (uint256) {
+        return _allowances[owner_][spender_];
+    }
+
+    /**
+     * @dev Sets `amount` as the allowance for `spender` to spend on behalf of caller.
+     */
+    function approve(address spender, uint256 amount)
+        public override
+        notPaused
+        notBlacklisted(_msgSender())
+        notBlacklisted(spender)
+        returns (bool)
+    {
+        _approve(_msgSender(), spender, amount);
+        return true;
+    }
+
+    /**
+     * @dev Safely increases allowance for spender.
+     */
+    function increaseAllowance(address spender, uint256 addedValue)
+        public
+        notPaused
+        notBlacklisted(_msgSender())
+        notBlacklisted(spender)
+        returns (bool)
+    {
+        _approve(_msgSender(), spender, _allowances[_msgSender()][spender] + addedValue);
+        return true;
+    }
+
+    /**
+     * @dev Safely decreases allowance for spender.
+     */
+    function decreaseAllowance(address spender, uint256 subtractedValue)
+        public
+        notPaused
+        notBlacklisted(_msgSender())
+        notBlacklisted(spender)
+        returns (bool)
+    {
+        uint256 currentAllowance = _allowances[_msgSender()][spender];
+        require(currentAllowance >= subtractedValue, "Decreased allowance below zero");
+        unchecked { // Safe: require ensures no underflow
+            _approve(_msgSender(), spender, currentAllowance - subtractedValue);
+        }
+        return true;
+    }
+
+    /**
+     * @dev Transfers tokens from `sender` to `recipient` using allowance mechanism.
+     */
+    function transferFrom(address sender, address recipient, uint256 amount)
+        public override
+        notPaused
+        notBlacklisted(_msgSender())
+        notBlacklisted(sender)
+        notBlacklisted(recipient)
+        returns (bool)
+    {
+        _transfer(sender, recipient, amount);
+        uint256 currentAllowance = _allowances[sender][_msgSender()];
+        require(currentAllowance >= amount, "Transfer exceeds allowance");
+        unchecked { // Safe: require above ensures no underflow
+            _approve(sender, _msgSender(), currentAllowance - amount);
+        }
+        return true;
+    }
+
+    /**
+     * @dev Internal transfer function.
+     */
+    function _transfer(address sender, address recipient, uint256 amount) internal {
+        require(sender != address(0), "Transfer from zero address");
+        require(recipient != address(0), "Transfer to zero address");
+        require(amount > 0, "Transfer amount must be greater than zero");
+
+        uint256 senderBalance = _balances[sender];
+        require(senderBalance >= amount, "Transfer amount exceeds balance");
+        unchecked { // Safe: require ensures no underflow
+            _balances[sender] = senderBalance - amount;
+        }
+        _balances[recipient] += amount;
+        emit Transfer(sender, recipient, amount);
+    }
+
+    // -------------------- Mint & Burn --------------------
+
+    function _mint(address account, uint256 amount) internal {
+        require(account != address(0), "Mint to zero address");
+        require(amount > 0, "Mint amount must be greater than zero");
+
+        _totalSupply += amount;
+        _balances[account] += amount;
+        emit Transfer(address(0), account, amount);
+        emit TokensMinted(account, amount);
+    }
+
+    function _burn(address account, uint256 amount) internal {
+        require(account != address(0), "Burn from zero address");
+        require(amount > 0, "Burn amount must be greater than zero");
+
+        uint256 accountBalance = _balances[account];
+        require(accountBalance >= amount, "Burn exceeds balance");
+        unchecked { // Safe: require ensures no underflow
+            _balances[account] = accountBalance - amount;
+        }
+        _totalSupply -= amount;
+        emit Transfer(account, address(0), amount);
+        emit TokensBurned(account, amount);
+    }
+
+    function burn(uint256 amount)
+        public
+        notPaused
+        notBlacklisted(_msgSender())
+    {
+        _burn(_msgSender(), amount);
+    }
+
+    // -------------------- Admin Controls --------------------
+
+    function pause() public onlyOwner {
+        _paused = true;
+        emit Paused(_msgSender());
+    }
+
+    function unpause() public onlyOwner {
+        _paused = false;
+        emit Unpaused(_msgSender());
+    }
+
+    function blacklist(address account) public onlyOwner {
+        _blacklist[account] = true;
+        emit Blacklisted(account);
+    }
+
+    function unblacklist(address account) public onlyOwner {
+        _blacklist[account] = false;
+        emit UnBlacklisted(account);
+    }
+
+    function isBlacklisted(address account) public view returns (bool) {
+        return _blacklist[account];
+    }
+
+    function mint(address account, uint256 amount) public onlyOwner {
+        _mint(account, amount);
+    }
+
+    // -------------------- Ownership --------------------
+
+    function transferOwnership(address newOwner) public onlyOwner {
+        require(newOwner != address(0), "New owner is zero address");
+        _pendingOwner = newOwner;
+        emit OwnershipTransferStarted(_owner, newOwner);
+    }
+
+    function acceptOwnership() public {
+        require(msg.sender == _pendingOwner, "Not pending owner");
+        emit OwnershipTransferred(_owner, _pendingOwner);
+        _owner = _pendingOwner;
+        _pendingOwner = address(0);
+    }
+
+    /**
+     * @dev Renounces ownership of the contract.
+     */
+    function renounceOwnership() public onlyOwner {
+        emit OwnershipTransferred(_owner, address(0));
+        _owner = address(0);
+        _pendingOwner = address(0);
+    }
+
+    function owner() public view returns (address) {
+        return _owner;
+    }
+
+    function pendingOwner() public view returns (address) {
+        return _pendingOwner;
+    }
+
+    function _approve(address owner_, address spender, uint256 amount) internal {
+        require(owner_ != address(0), "Approve from zero address");
+        require(spender != address(0), "Approve to zero address");
+        _allowances[owner_][spender] = amount;
+        emit Approval(owner_, spender, amount);
+    }
+
+    // -------------------- Token Recovery --------------------
+
+    function recoverTokens(address tokenAddress, uint256 amount) external onlyOwner {
+        require(tokenAddress != address(this), "Cannot recover own token");
+        IBEP20(tokenAddress).transfer(owner(), amount);
+    }
+}

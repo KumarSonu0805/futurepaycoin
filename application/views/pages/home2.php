@@ -60,6 +60,24 @@
    ?>
 <div class="main-deshboard-section">
    <div class="status-cardsection">
+<!-- start -->
+   <div class="booster-timer d-flex justify-content-between align-items-center">
+         <div class="booster-label">
+            <h5 class="mb-0 fw-bold">Booster Timer</h5>
+         </div>
+         <div class="booster-status text-end">
+            <div class="booster-status text-end">
+            <div class="timer-box d-flex justify-content-end gap-2" id="timer">
+         <div class="time-item"><span id="days">07</span><small>Days</small></div>
+         <div class="time-item"><span id="hours">06</span><small>Hrs</small></div>
+         <div class="time-item"><span id="minutes">00</span><small>Min</small></div>
+         <div class="time-item"><span id="seconds">00</span><small>Sec</small></div>
+               </div>
+               <button class="btn btn-active d-none" id="activeBtn">Active</button>
+            </div>
+         </div>
+   </div>
+<!-- end -->
       <div class="row">
          <div class="col-lg-3 col-md-6 col-sm-6">
             <div class="status-card">
@@ -733,4 +751,29 @@
          console.error('Unable to copy link', err);
        });
    }
+</script>
+<script>
+  const countdownDuration = (7 * 24 * 60 * 60 + 6 * 60 * 60) * 1000;
+  const endTime = Date.now() + countdownDuration;
+
+  const timer = setInterval(() => {
+    const now = Date.now();
+    const distance = endTime - now;
+
+    if (distance <= 0) {
+      clearInterval(timer);
+      document.getElementById("timer").classList.add("d-none");
+      document.getElementById("activeBtn").classList.remove("d-none");
+      return;
+    }
+
+    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+    document.getElementById("days").textContent = days.toString().padStart(2, "0");
+    document.getElementById("hours").textContent = hours.toString().padStart(2, "0");
+    document.getElementById("minutes").textContent = minutes.toString().padStart(2, "0");
+    document.getElementById("seconds").textContent = seconds.toString().padStart(2, "0");
+  }, 1000);
 </script>

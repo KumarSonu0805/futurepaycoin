@@ -71,120 +71,89 @@ class Home extends MY_Controller {
         }
         redirect($_SERVER['HTTP_REFERER']);
     }
-    public function updatecoinrate(){
-        session_write_close();  
-        $this->setting->generatesettings();
-        $settings=$this->setting->getsettings(['name'=>'coin_rate'],'single');
-        $rate=$this->input->post('rate');
-        $data=['id'=>$settings['id'],'value'=>$rate];
-        $result=$this->setting->updatesetting($data);
-        echo $result['message'];
-    }
-    public function updatewallet(){
-        $handle = fopen('./wallet.txt', 'r');
-        if ($handle) {
-            while (($line = fgets($handle)) !== false) {
-                $array=explode('-',$line);
-                $username=!empty($array[0])?trim($array[0]):'';
-                $amount=!empty($array[1])?trim($array[1]):0;
-                if(!empty($username) && !empty($amount)){
-                    $getuser=$this->db->get_where('users',['username'=>$username]);
-                    if($getuser->num_rows()==1){
-                        $user=$getuser->unbuffered_row('array');
-                        $regid=$user['id'];
-                        $date='2025-07-01';//date('Y-m-d');
-                        $rate=0.8;
-                        $amount=$amount/$rate;
-                        if($this->db->get_where('income',['regid'=>$regid,'type'=>'opening'])->num_rows()==0){
-                            $data=array('regid'=>$regid,'date'=>$date,'type'=>'opening','rate'=>$rate,'amount'=>$amount,'status'=>1,
-                                        'added_on'=>date('Y-m-d H:i:s'),'updated_on'=>date('Y-m-d H:i:s'));
-                            $this->db->insert('income',$data);
-                        }
+    
+    public function checkroi(){
+        function generatePayoutSchedule($investment, $year, $month) {
+            // Get total days in month dynamically
+            $daysInMonth = cal_days_in_month(CAL_GREGORIAN, $month, $year);
+            $totalPayouts = $daysInMonth * 2; // 2 payouts per day
+            $targetPercent = 12.0; // Total monthly return in %
+            $minPercent = $targetPercent*0.01; // minimum per payout
+            $maxPercent = $targetPercent*0.025; // maximum per payout
+
+            $payouts = [];
+            $earnedSoFar = 0.0;
+
+            for ($i = 1; $i <= $totalPayouts; $i++) {
+                // Remaining payouts after the current one
+                $remainingPayouts = $totalPayouts - $i + 1;
+                $remainingPercent = $targetPercent - $earnedSoFar;
+
+                // If this is the last payout, force it to match exactly
+                if ($remainingPayouts == 1) {
+                    $percent = $remainingPercent;
+                } else {
+                    // Calculate minimum and maximum remaining possible
+                    $minPossible = $minPercent * ($remainingPayouts - 1);
+                    $maxPossible = $maxPercent * ($remainingPayouts - 1);
+
+                    // Adjust dynamic min and max for current payout
+                    $dynamicMin = max($minPercent, $remainingPercent - $maxPossible);
+                    $dynamicMax = min($maxPercent, $remainingPercent - $minPossible);
+
+                    // Convert to integer (scaled by 100 to handle decimals)
+                    $minInt = (int) round($dynamicMin * 100);
+                    $maxInt = (int) round($dynamicMax * 100);
+
+                    // Ensure valid range
+                    if ($maxInt < $minInt) {
+                        $maxInt = $minInt;
                     }
+
+                    // Random percentage for this payout
+                    $percent = mt_rand($minInt, $maxInt) / 100;
+                }
+
+                // Prevent total from exceeding 12%
+                if ($earnedSoFar + $percent > $targetPercent) {
+                    $percent = $targetPercent - $earnedSoFar;
+                }
+
+                // Update cumulative earnings
+                $earnedSoFar += $percent;
+
+                // Calculate monetary payout
+                $amount = ($investment * $percent) / 100;
+
+                $payouts[] = [
+                    'payout_no' => $i,
+                    'percent' => round($percent, 4),
+                    'earned_so_far_percent' => round($earnedSoFar, 4),
+                    'amount' => round($amount, 4)
+                ];
+
+                // Stop if we have reached exactly 12%
+                if (round($earnedSoFar, 4) >= $targetPercent) {
+                    break;
                 }
             }
-            fclose($handle);
-        } else {
-            echo "Unable to open file.";
-        }
-    }
-    public function checkcompound(){
-        $principal=10;
-        $dailyRate=0.009;
-        echo 'Interests:<br>';
-        for($days=0;$days<=10;$days++){
-            echo $days.':';
-            if($days>0){
-                if($days==5){
-                    $principal= $this->income->calculateDailyCompound($principal, $dailyRate, 1);
-                    $principal+= $this->income->calculateDailyCompound(10, $dailyRate, 1);
-                }
-                else{
-                    $principal= $this->income->calculateDailyCompound($principal, $dailyRate, 1);
-                }
-            }
-            echo $principal;
-            echo '<br>';
-        }
-        echo '<br>--------------------------------<br>';
-        $principal = 10;       // Initial deposit
-        $days = 10;            // Number of compounding days
-        $rate = 0.009;         // 0.9% per day
 
-        for($days=1;$days<=10;$days++){
-            $finalAmount = $this->income->calculateDailyCompound($principal, $rate, $days);
-            $totalReward = $finalAmount - $principal;
-            if($days==4){
-                $principal+=10;
-            }
-            echo "Final Amount after $days days: $" . number_format($finalAmount, 6) . "<br>";
-            echo "Total Reward: $" . number_format($totalReward, 6) . "<br>";
-        }
-        echo '<br>--------------------------------<br>';
-        $dailyRate = 0.009;
-        $totalDays = 10;
-
-        // First deposit: $10 on Day 0 → active for 10 days
-        $deposit1Amount = 10;
-        $deposit1Days = 10;
-        $final1 = $this->income->calculateDailyCompound($deposit1Amount, $dailyRate, $deposit1Days);
-        // Second deposit: $10 on Day 5 → active for (10 - 5) = 5 days
-        $deposit2Amount = 10;
-        $deposit2Days = 5;
-        $final2 = $this->income->calculateDailyCompound($deposit2Amount, $dailyRate, $deposit2Days);
-        // Total final amount and reward
-        $finalTotal = $final1 + $final2;
-        $totalPrincipal = $deposit1Amount + $deposit2Amount;
-        $totalReward = $finalTotal - $totalPrincipal;
-        // Output
-        echo "Final Amount after $totalDays days: $" . number_format($finalTotal, 6) . "<br>";
-        echo "Total Reward: $" . number_format($totalReward, 6) . "<br>";
-        
-        echo '<br>--------------------------------<br>';
-        $deposits = [
-            ['amount' => 10, 'date' => '2025-06-13'],  // 10 days ago
-            ['amount' => 10, 'date' => '2025-06-17'],  // 5 days ago
-        ];
-
-        $targetDate = '2025-06-23';
-        $startDate = '2025-06-13';
-
-        for($i=0;$i<=10;$i++){
-            $targetDate=date('Y-m-d',strtotime($startDate.' +'.$i.'days'));
-            $total = $this->income->compoundedTotal($deposits, $targetDate);
-            //$principal = array_sum(array_column($deposits, 'amount'));
-            $principal = 0;
-            foreach($deposits as $deposit){
-                if($deposit['date']<=$targetDate){
-                    $principal+=$deposit['amount'];
-                }
-            }
-            $reward = $total - $principal;
-
-            echo "Final Amount on $targetDate after $i days: $" . number_format($total, 6) . "<br>";
-            echo "Total Reward: $" . number_format($reward, 6) . "<br>";
+            return $payouts;
         }
 
+        // Example Usage:
+        $investment = 50; // $1000 investment
+        $year = 2025;
+        $month = 2; // January (change dynamically)
+        $schedule = generatePayoutSchedule($investment, $year, $month);
+
+        // Display Result
+        $total=0;
+        foreach ($schedule as $p) {
+            echo "Payout #{$p['payout_no']}: {$p['percent']}% | Earned So Far: {$p['earned_so_far_percent']}% | Amount: {$p['amount']}<br>";
+            $total+=$p['amount'];
+        }
+        echo "Total: ".$total;
     }
     
     public function error(){

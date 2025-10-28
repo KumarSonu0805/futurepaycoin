@@ -32,15 +32,18 @@
   		function getincome() {
     		$CI = get_instance();
             $user=getuser();
-            $incomes=array('direct'=>0,'level'=>0,'reward'=>0,'royalty'=>0,'ultraclub'=>0);
+            $incomes=array('roiincome'=>0,'matching'=>0,'level'=>0,'reward'=>0,'wheel'=>0,'achievement'=>0);
             $CI->db->select('type,sum(amount) as amount');
             $CI->db->group_by('type');
             $query=$CI->db->get_where('income',['regid'=>$user['id']]);
             $array=$query->result_array();
             $types=!empty($array)?array_column($array,'type'):array();
             
-            $index=array_search('direct',$types);
-            $incomes['direct']=$index!==false?$array[$index]['amount']:0;
+            $index=array_search('roiincome',$types);
+            $incomes['roiincome']=$index!==false?$array[$index]['amount']:0;
+            
+            $index=array_search('matching',$types);
+            $incomes['matching']=$index!==false?$array[$index]['amount']:0;
             
             $index=array_search('level',$types);
             $incomes['level']=$index!==false?$array[$index]['amount']:0;
@@ -62,7 +65,6 @@
             $incomes['withdrawal']=$withdrawal??0;
             
             $incomes['wallet_balance']=getavlbalance($user);
-            
             return $incomes;
 		}  
 	}

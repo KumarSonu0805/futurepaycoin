@@ -86,7 +86,7 @@ class Income_model extends CI_Model{
             $downline_ids=!empty($downline_ids)?array_column($downline_ids,'regid'):array();
             $downline_ids[] = $ref['regid']; // include leg head's business too
             if (!empty($downline_ids)) {
-                $this->db->select('sum(amount) as amount,sum(amount*rate) as total_amount');
+                $this->db->select('sum(amount) as amount');
                 
 				$this->db->group_start();
 				$regid_chunks = array_chunk($downline_ids,25);
@@ -98,8 +98,7 @@ class Income_model extends CI_Model{
                 $investments = $this->db->get('investments')->unbuffered_row('array');
                 $legs[] = [
                     'regid' => $ref['regid'],
-                    'business' => $investments['amount'],
-                    'business_usdt' => $investments['total_amount']
+                    'business' => $investments['amount']
                 ];
             }
         }
@@ -172,9 +171,9 @@ class Income_model extends CI_Model{
                         $roiincome=empty($roiincome)?0:$roiincome;
                         if($roiincome>0){
                             $amount=$roiincome*$rate;
-                            $where=array('regid'=>$regid,'date'=>$date,'member_id'=>$member_id,'type'=>'levelincome',
+                            $where=array('regid'=>$regid,'date'=>$date,'member_id'=>$member_id,'type'=>'level',
                                          'status'=>1);
-                            $data=array('regid'=>$regid,'date'=>$date,'member_id'=>$member_id,'type'=>'levelincome',
+                            $data=array('regid'=>$regid,'date'=>$date,'member_id'=>$member_id,'type'=>'level',
                                             'rate'=>$rate,'amount'=>$amount,'status'=>1,
                                             'added_on'=>date('Y-m-d H:i:s'),'updated_on'=>date('Y-m-d H:i:s'));
                             if($this->db->get_where('income',$where)->num_rows()==0){

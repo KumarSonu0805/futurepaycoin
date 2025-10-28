@@ -67,9 +67,19 @@ if($this->session->role=='admin'){
 <?php
 }
 else{
+    $b=false;
+    if($member['status']==1){
+        $activation=date('Y-m-d H:i:s',strtotime($member['activation_date'].' '.$member['activation_time']));
+        $expiry=date('Y-m-d H:i:s',strtotime($activation.' +7 days 6 hours'));
+        $atime=strtotime($activation);
+        $etime=strtotime($expiry);
+        $rem=$etime-time();
+        $b=true;
+    }
 ?>
 <div class="main-deshboard-section">
    <div class="status-cardsection">
+       <?php if($b){ ?> 
     <!-- start -->
    <div class="booster-timer d-flex justify-content-between align-items-center">
          <div class="booster-label">
@@ -79,7 +89,7 @@ else{
             <div class="booster-status text-end">
             <div class="timer-box d-flex justify-content-end gap-2" id="timer">
          <div class="time-item"><span id="days">07</span><small>Days</small></div>
-         <div class="time-item"><span id="hours">06</span><small>Hrs</small></div>
+         <div class="time-item"><span id="hours">00</span><small>Hrs</small></div>
          <div class="time-item"><span id="minutes">00</span><small>Min</small></div>
          <div class="time-item"><span id="seconds">00</span><small>Sec</small></div>
                </div>
@@ -88,6 +98,7 @@ else{
          </div>
    </div>
     <!-- end -->
+       <?php } ?>
       <div class="row">
          <div class="col-lg-3 col-md-6 col-sm-6">
             <div class="status-card">
@@ -643,8 +654,9 @@ else{
                         });
                     }
                 </script>
+                <?php if($b){ ?>
                 <script>
-                  const countdownDuration = (7 * 24 * 60 * 60 + 6 * 60 * 60) * 1000;
+                  const countdownDuration = Number('<?= $rem; ?>')*1000;
                   const endTime = Date.now() + countdownDuration;
 
                   const timer = setInterval(() => {
@@ -668,3 +680,4 @@ else{
                     document.getElementById("seconds").textContent = seconds.toString().padStart(2, "0");
                   }, 1000);
                 </script>
+                <?php } ?>

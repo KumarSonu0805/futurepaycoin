@@ -32,6 +32,7 @@
     }
 </style>
 <?php
+$b=false;
 if($this->session->role=='admin'){
 ?>
             <div class="main-deshboard-section">

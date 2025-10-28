@@ -172,4 +172,30 @@ class Members extends MY_Controller {
             redirect('login/userlogin/'.$username);
         }
     }
+    
+    public function adminactivate(){
+        $data=$this->input->post();
+        $encid=$data['id'];
+        $amount=$data['amount'];
+        $getuser=$this->account->getuser(["md5(concat('regid-',id))"=>$encid]);
+        if($getuser['status']===true){
+            $user=$getuser['user'];
+            $member=$this->member->getmemberid($user['username'],'not activated');
+            if($member['regid']==0){
+                $this->session->set_flashdata('err_msg',$member['name']);
+            }
+            else{
+                $data=array('date'=>date('Y-m-d'),'regid'=>$user['id'],'amount'=>$amount,'tx_hash'=>'manual','status'=>1,
+                            'added_on'=>date('Y-m-d H:i:s'),'updated_on'=>date('Y-m-d H:i:s'));
+                
+                $result=$this->member->savedeposit($data);
+                if($result['status']===true){
+                    $this->session->set_flashdata("msg","Member Id Activated Successfully");
+                }
+                else{
+                    $this->session->set_flashdata("err_msg",$result['message']);
+                }
+            }
+        }
+    }
 }

@@ -25,6 +25,12 @@
                                                     }
                                                 ?>
                                                 <th>Wallet Address</th>
+                                                <th>Status</th>
+                                                <?php if($this->session->role=='admin'){ ?>
+                                                <th>Action</th>
+                                                <?php
+                                                    }
+                                                ?>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -32,6 +38,10 @@
                                                 if(!empty($members)){
                                                     $i=0;
                                                     foreach($members as $single){
+                                                        $status='<span class="text-danger">In-Active</span>';
+                                                        if($single['status']==1){
+                                                            $status='<span class="text-success">Active</span>';
+                                                        }
                                             ?>
                                             <tr>
                                                 <td><?= ++$i; ?></td>
@@ -47,6 +57,20 @@
                                                     }
                                                 ?>
                                                 <td><?= $single['wallet_address'] ?></td>
+                                                <td><?= $status; ?></td>
+                                                <?php if($this->session->role=='admin'){ ?>
+                                                <td>
+                                                    <?php
+                                                    if($single['status']==0){
+                                                    ?>
+                                                    <button type="button" value="<?= md5('regid-'.$single['regid']) ?>" class="btn btn-sm btn-success activate">Activate</button>
+                                                    <?php
+                                                    }
+                                                    ?>
+                                                </td>
+                                                <?php
+                                                    }
+                                                ?>
                                             </tr>
                                             <?php
                                                     }
@@ -117,6 +141,21 @@
             $('body').on('click','#clearSearch',function(){
                 document.getElementById("searchInput").value = "";
                 table.clearFilter();
+            });
+
+            $('body').on('click','.activate',function(){
+                var id=$(this).val();
+                var amount=prompt("Enter Package Amount (Min $50)");
+                amount=Number(amount);
+                amount=isNaN(amount)?0:amount;
+                if(amount>=50){
+                   $.post('<?= base_url('members/adminactivate') ?>',{id:id,amount:amount},function(){
+                       window.location.reload();
+                   });
+                }
+                else{
+                    alert("Enter amount greater than 50!")
+                }
             });
 
         });

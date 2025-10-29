@@ -489,8 +489,9 @@ background: linear-gradient(135deg, #004e92, #000428);
 }
 /* status card */
 .status-card {
-  background: var(--white);
-  border: 1px solid var(--Natural-Grey);
+  background: var(--bg-color);
+  border: 1px solid var(--accent-color);
+  color:var(--white);
   border-radius: 12px;
   padding: 20px 25px;
   box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
@@ -526,7 +527,7 @@ background: linear-gradient(135deg, #004e92, #000428);
 }
 .status-card h4 {
   margin: 0;
-  color: var(--Black-Rock);
+  color: var(--white);
   font-size: 1.5rem;
   font-weight: 600;
   opacity: .8;
@@ -535,7 +536,7 @@ background: linear-gradient(135deg, #004e92, #000428);
 
 .status-card p {
   margin-bottom: 0;
-  color: #666;
+  color: var(--accent-color);
   font-size: 0.85rem;
   text-align: end;
 }

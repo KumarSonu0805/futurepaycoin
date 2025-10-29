@@ -68,10 +68,10 @@ class Income_model extends CI_Model{
         if ($level == 2 && $directbusiness>=100){ 
             return $booster?0.20:0.10;
         }
-        if ($level >= 3 && $level <= 5 && $directbusiness==300 && $selfbusiness==100) return 0.05;
-        if ($level >= 6 && $level <= 10 && $directbusiness==500 && $selfbusiness==200) return 0.02;
-        if ($level >= 11 && $level <= 15 && $directbusiness==1500 && $selfbusiness==300) return 0.01;
-        if ($level >= 16 && $level <= 20 && $directbusiness==3000 && $selfbusiness==500) return 0.005;
+        if ($level >= 3 && $level <= 5 && $directbusiness>=300 && $selfbusiness>=100) return 0.05;
+        if ($level >= 6 && $level <= 10 && $directbusiness>=500 && $selfbusiness>=200) return 0.02;
+        if ($level >= 11 && $level <= 15 && $directbusiness>=1500 && $selfbusiness>=300) return 0.01;
+        if ($level >= 16 && $level <= 20 && $directbusiness>=3000 && $selfbusiness>=500) return 0.005;
         return 0;
     }
 
@@ -171,10 +171,10 @@ class Income_model extends CI_Model{
                         $roiincome=empty($roiincome)?0:$roiincome;
                         if($roiincome>0){
                             $amount=$roiincome*$rate;
-                            $where=array('regid'=>$regid,'date'=>$date,'member_id'=>$member_id,'type'=>'level',
-                                         'status'=>1);
-                            $data=array('regid'=>$regid,'date'=>$date,'member_id'=>$member_id,'type'=>'level',
-                                            'rate'=>$rate,'amount'=>$amount,'status'=>1,
+                            $where=array('regid'=>$regid,'date'=>$date,'member_id'=>$member_id,'level'=>$level,
+                                         'type'=>'level','status'=>1);
+                            $data=array('regid'=>$regid,'date'=>$date,'member_id'=>$member_id,'level'=>$level,
+                                        'type'=>'level','rate'=>$rate,'amount'=>$amount,'status'=>1,
                                             'added_on'=>date('Y-m-d H:i:s'),'updated_on'=>date('Y-m-d H:i:s'));
                             if($this->db->get_where('income',$where)->num_rows()==0){
                                 $this->db->insert('income',$data);

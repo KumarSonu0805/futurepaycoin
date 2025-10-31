@@ -214,7 +214,7 @@ class Members extends MY_Controller {
                     $this->session->set_flashdata('err_msg',"Booster Already Active!");
                 }
                 else{
-                    $data=array('photo'=>'manual','booster'=>1);
+                    $data=array('photo'=>'manual','booster'=>1,'booster_time'=>date('Y-m-d H:i:s'));
                     $result=$this->db->update('members',$data,['regid'=>$user['id']]);
                     if($result){
                         $this->session->set_flashdata("msg","Member Booster Activated Successfully");

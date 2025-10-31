@@ -1,5 +1,8 @@
 <?php
-$min=MIN_DEPOSIT;
+$min=200;
+if($_SERVER['HTTP_HOST']=='localhost'){
+    $min=0.01;
+}
 $member['wallet_address']=empty($member['wallet_address'])?'':$member['wallet_address'];
 ?>
 <style>
@@ -26,7 +29,7 @@ $member['wallet_address']=empty($member['wallet_address'])?'':$member['wallet_ad
                                     <div class="card-body box-profile">
                                 <?php 
 									if(isset($member['wallet_address']) && $member['wallet_address']!=''){
-                                        echo form_open_multipart('deposit/savedeposit/', 'id="myform" onSubmit="return validate()"'); 
+                                        echo form_open_multipart('deposit/savebooster/', 'id="myform" onSubmit="return validate()"'); 
                                 ?>
                                     <div class="form-group mb-2">
                                         <button type="button" class="btn btn-sm btn-primary" onClick="connectWallet()">Connect To Wallet</button>
@@ -54,16 +57,22 @@ $member['wallet_address']=empty($member['wallet_address'])?'':$member['wallet_ad
                                     </div>
                                     <div class="form-group">
                                         <?php
-                                            echo create_form_input('text','amount','Deposit Amount',true,'',array("id"=>"amount","Placeholder"=>"Deposit Amount","autocomplete"=>"off","min"=>$min));
+                                            echo create_form_input('text','amount','Deposit Amount',true,$min,array("id"=>"amount","Placeholder"=>"Deposit Amount","autocomplete"=>"off","readonly"=>"true","min"=>$min,"max"=>$min));
                                         ?><p class="text-danger"></p>
                                     </div>
                                     <?php
                                         echo create_form_input("hidden","regid","",false,$user['id']); 
                                         echo create_form_input("hidden","tx_hash","",false,'',['id'=>'tx_hash']); 
                                     ?>
-                                    
-                                    <button type="button" class="btn btn-sm btn-success" id="savebtn" name="savedeposit" value="Request">Add Deposit</button>
+                                    <?php
+                                        if($member['booster']==1){
+                                            echo '<h3 class="text-success">Booster Already Active!</h3>';
+                                        }
+                                        else{
+                                    ?>
+                                    <button type="button" class="btn btn-sm btn-success" id="savebtn" name="savebooster" value="Request">Activate Booster</button>
                                 <?php 
+                                        }
                                         echo form_close(); 
                                     }
                                     else{

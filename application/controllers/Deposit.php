@@ -23,6 +23,14 @@ class Deposit extends MY_Controller {
         $this->template->load('members','depositform',$data);
     }
     
+    public function booster() {
+        $data['title']="Activate Booster";
+        $data['user']=getuser();
+        $data['member']=$this->member->getmemberdetails($data['user']['id']);
+        $data['datatable']=true;
+        $this->template->load('members','boosterform',$data);
+    }
+    
     public function depositlist() {
         $data['title']="Deposit List";
         $data['user']=getuser();
@@ -43,6 +51,25 @@ class Deposit extends MY_Controller {
                 $this->session->set_flashdata("msg",$result['message']);
             }
             else{
+                $this->session->set_flashdata("err_msg",$result['message']);
+            }
+		}
+		redirect($_SERVER['HTTP_REFERER']);
+    }
+    
+    public function savebooster() {
+		if($this->input->post('savebooster')!==NULL){
+			$data=$this->input->post();
+            $member=$this->member->getmemberdetails($data['regid']);
+            $user=getuser();
+            $data=array('photo'=>$data['tx_hash'],'booster'=>1,'booster_time'=>date('Y-m-d H:i:s'));
+            //print_pre($data,true);
+            $result=$this->db->update('members',$data,['regid'=>$user['id']]);
+            if($result){
+                $this->session->set_flashdata("msg","Booster Activated Successfully");
+            }
+            else{
+                $result=$this->db->error();
                 $this->session->set_flashdata("err_msg",$result['message']);
             }
 		}

@@ -69,6 +69,7 @@ if($this->session->role=='admin'){
 }
 else{
     $b=false;
+    $text='Booster Timer';
     if($member['status']==1){
         $activation=date('Y-m-d H:i:s',strtotime($member['activation_date'].' '.$member['activation_time']));
         $expiry=date('Y-m-d H:i:s',strtotime($activation.' +7 days 6 hours'));
@@ -76,6 +77,14 @@ else{
         $etime=strtotime($expiry);
         $remTime=$etime-time();
         $b=true;
+        
+        if($member['booster']==1){
+            $remTime=0;
+            $text='Booster';
+        }
+        if($remTime<=0 && $member['booster']==0){
+            $b=false;
+        }
     }
 ?>
 <div class="main-deshboard-section">
@@ -84,18 +93,18 @@ else{
     <!-- start -->
    <div class="booster-timer d-flex justify-content-between align-items-center">
          <div class="booster-label">
-            <h5 class="mb-0 fw-bold">Booster Timer</h5>
+            <h5 class="mb-0 fw-bold"><?= $text; ?></h5>
          </div>
          <div class="booster-status text-end">
             <div class="booster-status text-end">
-               <div class="timer-box d-flex justify-content-end gap-2" id="timer">
+               <div class="timer-box d-flex justify-content-end gap-2 <?= ($member['booster']==1)?'d-none':'' ?>" id="timer">
                  <div class="time-item"><span id="days">07</span><small>Days</small></div>
-                 <div class="time-item"><span id="hours">00</span><small>Hrs</small></div>
+                 <div class="time-item"><span id="hours">06</span><small>Hrs</small></div>
                  <div class="time-item"><span id="minutes">00</span><small>Min</small></div>
                  <div class="time-item"><span id="seconds">00</span><small>Sec</small></div>
-                   <button class="btn btn-active d-none" id="">Activate</button>
+                   <a href="<?= base_url('deposit/booster/'); ?>" class="btn btn-active" id="" style="padding-top: 15px;">Activate</a>
                </div>
-               <button class="btn btn-active d-none" id="activeBtn">Active</button>
+               <button class="btn btn-active <?= ($member['booster']==1)?'':'d-none' ?>" id="activeBtn">Active</button>
             </div>
          </div>
    </div>

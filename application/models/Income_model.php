@@ -4,6 +4,7 @@ class Income_model extends CI_Model{
     private $targetRate=12;
     private $coinRate;
     private $active_ranks=array();
+    private $percents=array();
     
 	function __construct(){
 		parent::__construct(); 
@@ -47,7 +48,8 @@ class Income_model extends CI_Model{
         if ($earnedSoFar + $percent > $targetPercent) {
             $percent = $targetPercent - $earnedSoFar;
         }
-
+        
+        $this->percents[$targetPercent]=$percent;
         // Update cumulative earnings
         $earnedSoFar += $percent;
 
@@ -135,7 +137,13 @@ class Income_model extends CI_Model{
                     if($this->db->get_where('income',$where)->num_rows()==0){
                         $hr-=1;
                     }
-                    $daily=$this->getdailyincome($investment['amount'], $this->targetRate, $earnedPercent,$hr);
+                    if(!empty($this->percents[$this->targetRate])){
+                        $daily['percent']=$this->percents[$this->targetRate];
+                        $daily['amount']=($this->percents[$this->targetRate]*$investment['amount'])/100;
+                    }
+                    else{
+                        $daily=$this->getdailyincome($investment['amount'], $this->targetRate, $earnedPercent,$hr);
+                    }
                     if($daily['amount']>0){
                         $where=array('regid'=>$regid,'date'=>$date,'inv_id'=>$inv_id,'hr'=>$hr,'type'=>'roiincome',
                                      'status'=>1);

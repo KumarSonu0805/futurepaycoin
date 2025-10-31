@@ -1,7 +1,7 @@
 <?php
 class Income_model extends CI_Model{
     
-    private $dailyRate=0.009;
+    private $targetRate=12;
     private $coinRate;
     private $active_ranks=array();
     
@@ -114,6 +114,7 @@ class Income_model extends CI_Model{
         //print_pre($member,true);
         
         if($member['status']==1 && $member['activation_date']!='0000-00-00' && $member['activation_date']<=$date){
+            $booster=$member['booster']==1?TRUE:FALSE;
             $where=['regid'=>$regid,'date<='=>$date,'status'=>1];
             $investments=$this->db->get_where('investments',$where)->result_array();
             $inv_amounts=!empty($investments)?array_column($investments,'amount'):array();
@@ -126,7 +127,7 @@ class Income_model extends CI_Model{
                     $getearned=$this->db->get_where("income",array('regid'=>$regid,'inv_id'=>$inv_id,
                                                                     'type'=>'roiincome','status'=>1));
                     $earned=$getearned->unbuffered_row()->amount;
-                    $total=$investment['amount']*12/100;
+                    $total=$investment['amount']*$this->targetRate/100;
                     $earnedPercent=($earned*100)/$total;
                     $hr=date('d')*2;
                     $where=array('regid'=>$regid,'date'=>$date,'inv_id'=>$inv_id,'type'=>'roiincome',
@@ -134,7 +135,7 @@ class Income_model extends CI_Model{
                     if($this->db->get_where('income',$where)->num_rows()==0){
                         $hr-=1;
                     }
-                    $daily=$this->getdailyincome($investment['amount'], 12, $earnedPercent,$hr);
+                    $daily=$this->getdailyincome($investment['amount'], $this->targetRate, $earnedPercent,$hr);
                     if($daily['amount']>0){
                         $where=array('regid'=>$regid,'date'=>$date,'inv_id'=>$inv_id,'hr'=>$hr,'type'=>'roiincome',
                                      'status'=>1);
@@ -162,7 +163,7 @@ class Income_model extends CI_Model{
                 foreach($levelmembers as $levelmember){
                     $member_id=$levelmember['member_id'];
                     $level=$levelmember['level'];
-                    $rate=$this->getLevelPercentage($level,$direct_business,$selfbusiness);
+                    $rate=$this->getLevelPercentage($level,$direct_business,$selfbusiness,$booster);
                     if($rate>0){
                         $this->db->select_sum('amount');
                         $getroiincome=$this->db->get_where('income',['regid'=>$member_id,'date'=>$date,

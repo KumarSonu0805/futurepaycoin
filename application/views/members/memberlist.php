@@ -66,6 +66,11 @@
                                                     <button type="button" value="<?= md5('regid-'.$single['regid']) ?>" class="btn btn-sm btn-success activate">Activate</button>
                                                     <?php
                                                     }
+                                                    if($single['status']==1 && $single['booster']==0){
+                                                    ?>
+                                                    <button type="button" value="<?= md5('regid-'.$single['regid']) ?>" class="btn btn-sm btn-success activate-booster">Activate Booster</button>
+                                                    <?php
+                                                    }
                                                     ?>
                                                 </td>
                                                 <?php
@@ -155,6 +160,15 @@
                 }
                 else{
                     alert("Enter amount greater than 50!")
+                }
+            });
+            
+            $('body').on('click','.activate-booster',function(){
+                var id=$(this).val();
+                if(confirm("Activate Booster?")){
+                   $.post('<?= base_url('members/adminactivatebooster') ?>',{id:id},function(){
+                       window.location.reload();
+                   });
                 }
             });
 

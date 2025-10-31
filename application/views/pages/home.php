@@ -74,7 +74,7 @@ else{
         $expiry=date('Y-m-d H:i:s',strtotime($activation.' +7 days 6 hours'));
         $atime=strtotime($activation);
         $etime=strtotime($expiry);
-        $rem=$etime-time();
+        $remTime=$etime-time();
         $b=true;
     }
 ?>
@@ -88,11 +88,12 @@ else{
          </div>
          <div class="booster-status text-end">
             <div class="booster-status text-end">
-            <div class="timer-box d-flex justify-content-end gap-2" id="timer">
-         <div class="time-item"><span id="days">07</span><small>Days</small></div>
-         <div class="time-item"><span id="hours">00</span><small>Hrs</small></div>
-         <div class="time-item"><span id="minutes">00</span><small>Min</small></div>
-         <div class="time-item"><span id="seconds">00</span><small>Sec</small></div>
+               <div class="timer-box d-flex justify-content-end gap-2" id="timer">
+                 <div class="time-item"><span id="days">07</span><small>Days</small></div>
+                 <div class="time-item"><span id="hours">00</span><small>Hrs</small></div>
+                 <div class="time-item"><span id="minutes">00</span><small>Min</small></div>
+                 <div class="time-item"><span id="seconds">00</span><small>Sec</small></div>
+                   <button class="btn btn-active d-none" id="">Activate</button>
                </div>
                <button class="btn btn-active d-none" id="activeBtn">Active</button>
             </div>
@@ -351,6 +352,116 @@ else{
             </div>
          </div>
       </div>
+       <style>
+           
+    canvas {
+      display: block;
+      max-width: 100%;
+      max-height: 240px; /* ✅ keeps chart inside the card */
+    }
+
+    .legend-row { display:flex;gap:8px;flex-wrap:wrap;margin-top:12px }
+    .legend-item { display:flex;align-items:center;gap:8px;font-size:13px }
+    .swatch { width:14px;height:14px;border-radius:3px }
+       </style>
+      <div class="row">
+          <div class="col-12">
+              <div class="dash-user-profile">
+                  <div class="row">
+                      <?php
+                        $where=['regid'=>$user['id'],'status'=>1];
+                        $investments=$this->db->get_where('investments',$where)->result_array();
+                        foreach($investments as $investment){
+                            $this->db->select_sum('amount');
+                            $income=$this->db->get_where('income',['regid'=>$user['id'],'type'=>'roiincome',
+                                                                   'inv_id'=>$investment['id']])->unbuffered_row()->amount;
+                            $total=$investment['amount']*($member['booster']==1?4:3);
+                            $rem=$total-$income;
+                            $complete=$income*100/$total;
+                            $complete=round($complete,2);
+                            $rem=100-$complete;
+                      ?>
+                      <div class="col-md-3 pt-3">
+                        <canvas id="statusDoughnut" width="320" height="320"></canvas>
+                        <div class="legend-row" id="legend"></div>
+                      </div>
+                      <?php
+                        }
+                      ?>
+                  </div>
+              </div>
+          </div>
+      </div>
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
+  <script>
+    // labels and data — only Complete and Pending
+    const labels = ['Complete', 'Pending'];
+    const values = [<?= $complete ?>, <?= $rem ?>];
+
+    // colors for the slices
+    const colors = ['#22c55e', '#f59e0b'];
+
+    // Create the doughnut chart
+    const ctx = document.getElementById('statusDoughnut').getContext('2d');
+
+    // plugin to draw total in the center
+    const totalCenterPlugin = {
+      id: 'totalCenter',
+      afterDraw(chart) {
+        const {ctx, chartArea: {top, right, bottom, left}} = chart;
+        ctx.save();
+        const total = '<?= $member['booster']==1?'4X':'3X'; ?>';
+        ctx.font = '600 18px system-ui';
+        ctx.fillStyle = '#abcdef';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        const x = (left + right) / 2;
+        const y = chart.chartArea.top + (chart.chartArea.bottom - chart.chartArea.top) / 2;
+        ctx.fillText(total, x, y - 8);
+        ctx.font = '13px system-ui';
+        ctx.fillStyle = '#6b7280';
+        ctx.fillText('<?= '$'.round($investment['amount'],2) ?>', x, y + 14);
+        ctx.restore();
+      }
+    };
+
+    const myChart = new Chart(ctx, {
+      type: 'doughnut',
+      data: {
+        labels: labels,
+        datasets: [{
+          data: values,
+          backgroundColor: colors,
+          borderWidth: 0
+        }]
+      },
+      options: {
+        maintainAspectRatio: false,
+        cutout: '65%',
+        plugins: {
+          legend: { display: false },
+          tooltip: { padding: 8 },
+          datalabels: {
+            color: '#fff',
+            font: { weight: 'bold', size: 14 },
+            formatter: (value, context) => `${value}%`
+          }
+        }
+      },
+      plugins: [ChartDataLabels, totalCenterPlugin]
+    });
+
+    // Build a custom legend below the chart
+    const legendEl = document.getElementById('legend');
+    labels.forEach((label, i) => {
+      const item = document.createElement('div');
+      item.className = 'legend-item';
+      item.innerHTML = `<span class="swatch" style="background:${colors[i]}"></span><span>${label} — ${values[i]}%</span>`;
+      legendEl.appendChild(item);
+    });
+  </script>
       <div class="row">
          <div class="col-lg-3 col-md-6">
             <div class="wallet-card">
@@ -645,7 +756,7 @@ else{
                 </script>
                 <?php if($b){ ?>
                 <script>
-                  const countdownDuration = Number('<?= $rem; ?>')*1000;
+                  const countdownDuration = Number('<?= $remTime; ?>')*1000;
                   const endTime = Date.now() + countdownDuration;
 
                   const timer = setInterval(() => {

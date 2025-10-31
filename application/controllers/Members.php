@@ -198,4 +198,36 @@ class Members extends MY_Controller {
             }
         }
     }
+    
+    public function adminactivatebooster(){
+        $data=$this->input->post();
+        $encid=$data['id'];
+        $getuser=$this->account->getuser(["md5(concat('regid-',id))"=>$encid]);
+        if($getuser['status']===true){
+            $user=$getuser['user'];
+            $member=$this->member->getmemberdetails($user['id']);
+            if(!empty($member)){
+                if($member['status']==0){
+                    $this->session->set_flashdata('err_msg',"Member Not Active! First Activate Member!");
+                }
+                elseif($member['status']==1 && $member['booster']==1){
+                    $this->session->set_flashdata('err_msg',"Booster Already Active!");
+                }
+                else{
+                    $data=array('photo'=>'manual','booster'=>1);
+                    $result=$this->db->update('members',$data,['regid'=>$user['id']]);
+                    if($result){
+                        $this->session->set_flashdata("msg","Member Booster Activated Successfully");
+                    }
+                    else{
+                        $result=$this->db->error();
+                        $this->session->set_flashdata("err_msg",$result['message']);
+                    }
+                }
+            }
+            else{
+                $this->session->set_flashdata('err_msg',"Please Try Again!");
+            }
+        }
+    }
 }

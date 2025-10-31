@@ -156,6 +156,10 @@ class Home extends MY_Controller {
         echo "Total: ".$total;
     }
     
+    public function chart(){
+        $this->load->view('pages/chart');
+    }
+    
     public function error(){
         $data=['title'=>'Error'];
         $this->template->load('pages','error',$data);

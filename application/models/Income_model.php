@@ -11,12 +11,12 @@ class Income_model extends CI_Model{
 		$this->db->db_debug = false;
 	}
     
-    public function getdailyincome($investment, $targetPercent=12, $earnedSoFar=0.0, $remainingPayouts = 1) {
+    public function getdailyincome($investment, $targetPercent=12, $earnedSoFar=0.0, $currentPayout = 1) {
         $daysInMonth = date('t');
         $totalPayouts = $daysInMonth * 2; // 2 payouts per day
         $minPercent = $targetPercent*0.01; // minimum per payout
         $maxPercent = $targetPercent*0.025; // maximum per payout
-        
+        $remainingPayouts = $totalPayouts - $currentPayout;
         $remainingPercent = $targetPercent - $earnedSoFar;
 
         // If this is the last payout, force it to match exactly

@@ -16,7 +16,7 @@
 		$(document).ready(function(e) {
 
             
-            var url="<?= base_url('income/getincome/?type=level'); ?>";
+            var url="<?= base_url('income/getincome/?type=reward'); ?>";
             var columns=[
                     { 
                         title: "Sl.No.", 
@@ -32,9 +32,7 @@
                             return formattedDate;
                         }
                     },
-                    { title: "Member ID", field: "username" },
-                    { title: "Member Name", field: "member_name" },
-                    { title: "Level", field: "level",formatter(cell){ return 'Level '+cell.getValue(); } },
+                    { title: "Rank", field: "rank" },
                     { title: "Amount", field: "amount" }
                 ];
 

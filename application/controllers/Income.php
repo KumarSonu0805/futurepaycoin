@@ -14,10 +14,10 @@ class Income extends MY_Controller {
         //$this->template->load('pages','home',$data);
     }
     
-	public function directincome(){
-        $data['title']="Direct Income";
+	public function stakingreward(){
+        $data['title']="Staking Reward";
         $data['tabulator']=true;
-        $this->template->load('income','directincome',$data);      
+        $this->template->load('income','stakingreward',$data);      
     }
     
 	public function levelincome(){
@@ -26,46 +26,28 @@ class Income extends MY_Controller {
         $this->template->load('income','levelincome',$data);      
     }
     
-	public function roiincome(){
-        $data['title']="ROI Income";
+	public function matchingincome(){
+        $data['title']="Matching Income";
         $data['tabulator']=true;
-        $this->template->load('wallet','roiincome',$data);      
+        $this->template->load('income','matchingincome',$data);      
     }
     
-	public function rankincome(){
-        $data['title']="Rank Income";
+	public function smartachievement(){
+        $data['title']="Smart Achievement Bonus";
         $data['tabulator']=true;
-        $this->template->load('income','rankincome',$data);      
+        $this->template->load('income','smartachievement',$data);      
     }
     
-	public function royaltyincome(){
-        $data['title']="Royalty Income";
+	public function rewardincome(){
+        $data['title']="Rank &amp; Reward Income";
         $data['tabulator']=true;
-        $this->template->load('income','royaltyincome',$data);      
-    }
-    
-	public function ultraclubincome(){
-        $data['title']="Ultra Club Income";
-        $data['tabulator']=true;
-        $this->template->load('wallet','ultraclubincome',$data);      
+        $this->template->load('income','rewardincome',$data);      
     }
     
 	public function getincome(){
         $type=$this->input->get('type');
         $user=getuser();
         $incomes=$this->income->getincome(['t1.regid'=>$user['id'],'t1.type'=>$type]);
-        $settings=$this->setting->getsettings(['name'=>'coin_rate'],'single');
-        $rate=$settings['value'];
-        if(!empty($incomes)){
-            foreach($incomes as $key=>$income){
-                if($type=='reward' || $type=='royalty'){
-                    $incomes[$key]['amount_usdt']=round($income['amount']*$income['rate'],2);
-                }
-                else{
-                    $incomes[$key]['amount_usdt']=round($income['amount']*$rate,2);
-                }
-            }
-        }
         //$incomes=[];
         echo json_encode($incomes);  
     }

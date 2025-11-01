@@ -16,7 +16,7 @@
 		$(document).ready(function(e) {
 
             
-            var url="<?= base_url('income/getincome/?type=direct'); ?>";
+            var url="<?= base_url('income/getincome/?type=matching'); ?>";
             var columns=[
                     { 
                         title: "Sl.No.", 
@@ -32,10 +32,7 @@
                             return formattedDate;
                         }
                     },
-                    { title: "Member ID", field: "username" },
-                    { title: "Member Name", field: "member_name" },
-                    { title: "Amount (DXC)", field: "amount" },
-                    { title: "Amount (USDT)", field: "amount_usdt" }
+                    { title: "Amount", field: "amount" }
                 ];
 
             var pagination={

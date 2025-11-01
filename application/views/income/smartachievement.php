@@ -16,7 +16,7 @@
 		$(document).ready(function(e) {
 
             
-            var url="<?= base_url('income/getincome/?type=royalty'); ?>";
+            var url="<?= base_url('income/getincome/?type=achievement'); ?>";
             var columns=[
                     { 
                         title: "Sl.No.", 
@@ -32,9 +32,7 @@
                             return formattedDate;
                         }
                     },
-                    { title: "Rank", field: "rank" },
-                    { title: "Amount (DXC)", field: "amount" },
-                    { title: "Amount (USDT)", field: "amount_usdt" }
+                    { title: "Amount", field: "amount" }
                 ];
 
             var pagination={

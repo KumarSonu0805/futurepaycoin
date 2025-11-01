@@ -168,7 +168,9 @@
                  </div>
                  <div class="main-content">
                        <?php $this->load->view('includes/header'); ?>
+                        <div class="main-deshboard-section">
                        <?php !empty($content)?$this->load->view($content):''; ?>
+                        </div>
                        <?php $this->load->view('includes/footer'); ?>
                     
                   </div>

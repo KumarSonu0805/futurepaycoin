@@ -183,7 +183,6 @@ class Wallet extends MY_Controller {
         if($this->input->get('type')===NULL){
             $data['title']="Withdrawal History";
             $data['tabulator']=true;
-            $data['alertify']=true;
             $this->template->load('wallet','withdrawalhistory',$data);          
         }
         else{

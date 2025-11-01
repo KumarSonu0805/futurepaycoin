@@ -1,5 +1,4 @@
 
-                                    <div class="main-deshboard-section">
                                         <div class="card">
                                             <div class="card-header"><?= $title; ?></div>
                                             <div class="card-body">
@@ -46,7 +45,6 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
                                     <script>
                                         $(document).ready(function(){
                                             //$('#table').dataTable();

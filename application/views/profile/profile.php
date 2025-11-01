@@ -50,7 +50,6 @@
     }
 </style>
 
-            <div class="main-deshboard-section">
                 <div class="col-12">
                     <div class="row">
                         <div class="col-lg-4 col-md-4 col-sm-6">
@@ -156,7 +155,6 @@
                         
                     </div>
                 </div>
-            </div>
             <script src="https://cdn.jsdelivr.net/npm/web3@1.10.0/dist/web3.min.js"></script>
             <script src="<?= base_url('includes/custom/switch.js'); ?>"></script>
                 <script>

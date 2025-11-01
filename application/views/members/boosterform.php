@@ -18,7 +18,6 @@ $member['wallet_address']=empty($member['wallet_address'])?'':$member['wallet_ad
         color: #ffffff;
     }
 </style>
-            <div class="main-deshboard-section">
                 <div class="card">
                     <div class="card-header"><?= $title; ?></div>
                     <div class="card-body">
@@ -88,7 +87,6 @@ $member['wallet_address']=empty($member['wallet_address'])?'':$member['wallet_ad
                         </div>
                     </div>
                 </div>
-            </div>
     <style>
         #body-overlay {
             position: fixed;

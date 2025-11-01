@@ -1,5 +1,4 @@
 
-            <div class="main-deshboard-section">
                 <div class="card">
                     <div class="card-header">
                         <h3 class="card-title"><?php echo $title; ?></h3>
@@ -12,14 +11,9 @@
                         </div>
                     </div>
                 </div>
-            </div>
     <script>
 	
 		$(document).ready(function(e) {
-            alertify.defaults.transition = "slide";
-            alertify.defaults.theme.ok = "btn btn-primary";
-            alertify.defaults.theme.cancel = "btn btn-danger";
-            alertify.defaults.theme.input = "form-control";
             
             var url="<?= base_url('wallet/withdrawalhistory/?type=data'); ?>";
             var columns=[

@@ -35,7 +35,7 @@
 $b=false;
 if($this->session->role=='admin'){
 ?>
-            <div class="main-deshboard-section">
+            
                <div class="status-cardsection">
                   <div class="row">
                      <div class="col-lg-3 col-md-6 col-sm-6">
@@ -63,7 +63,6 @@ if($this->session->role=='admin'){
                   </div>
                </div>
                
-            </div>
 
 <?php
 }
@@ -87,7 +86,6 @@ else{
         }
     }
 ?>
-<div class="main-deshboard-section">
    <div class="status-cardsection">
        <?php if($b){ ?> 
     <!-- start -->
@@ -742,7 +740,6 @@ else{
          </div>
       </div>
    </div>
-</div>
 
 <?php
 }

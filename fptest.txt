@@ -3,14 +3,19 @@ pragma solidity 0.8.30;
 
 /**
  * @title MyToken
- * @dev A modern BEP20 token for Binance Smart Chain.
- *      - Fixed supply (no minting)
- *      - Burnable by holders
- *      - Pausable by owner
+ * @dev Secure BEP20 Token with:
+ *      - Fixed supply
+ *      - Burnable
+ *      - Pausable
+ *      - Two-step ownership transfer
  *      - Metadata (IPFS hash)
- *      - Two-step ownership transfer with renounce option
- *      - Safe token recovery
+ *      - Safe token recovery (SafeERC20)
+ *      - Optional ERC165 interface support
  */
+
+import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
+import "@openzeppelin/contracts/utils/introspection/IERC165.sol";
+
 abstract contract Context {
     function _msgSender() internal view virtual returns (address) {
         return msg.sender;
@@ -35,8 +40,10 @@ interface IBEP20Metadata is IBEP20 {
     function decimals() external view returns (uint8);
 }
 
-contract MyToken is Context, IBEP20, IBEP20Metadata {
-    // -------------------- State Variables --------------------
+contract MyToken is Context, IBEP20, IBEP20Metadata, IERC165 {
+    using SafeERC20 for IERC20;
+
+    // -------------------- State --------------------
     mapping(address => uint256) private _balances;
     mapping(address => mapping(address => uint256)) private _allowances;
 
@@ -47,13 +54,13 @@ contract MyToken is Context, IBEP20, IBEP20Metadata {
 
     address private _owner;
     address private _pendingOwner;
+    uint256 private _ownershipTransferTime;
 
-    // Token metadata (stored as IPFS hash)
     string public metadata_ipfs_hash;
 
     // -------------------- Events --------------------
+    event OwnershipTransferStarted(address indexed currentOwner, address indexed pendingOwner);
     event OwnershipTransferred(address indexed previousOwner, address indexed newOwner);
-    event OwnershipTransferStarted(address indexed previousOwner, address indexed newOwner);
     event Paused(address indexed account);
     event Unpaused(address indexed account);
     event TokensBurned(address indexed account, uint256 amount);
@@ -78,13 +85,14 @@ contract MyToken is Context, IBEP20, IBEP20Metadata {
         address owner_,
         string memory metadataHash
     ) {
-        require(owner_ != address(0), "Invalid owner address");
+        require(owner_ != address(0), "Invalid owner");
 
         _name = name_;
         _symbol = symbol_;
         _owner = owner_;
         metadata_ipfs_hash = metadataHash;
 
+        _paused = false;
         _mint(owner_, initialSupply * 10 ** decimals());
         emit OwnershipTransferred(address(0), _owner);
         emit MetadataUpdated(metadataHash);
@@ -100,14 +108,12 @@ contract MyToken is Context, IBEP20, IBEP20Metadata {
         emit MetadataUpdated(newMetadata);
     }
 
-    // -------------------- BEP20 Metadata --------------------
+    // -------------------- BEP20 --------------------
     function name() public view override returns (string memory) { return _name; }
     function symbol() public view override returns (string memory) { return _symbol; }
     function decimals() public pure override returns (uint8) { return 18; }
-
     function totalSupply() public view override returns (uint256) { return _totalSupply; }
     function balanceOf(address account) public view override returns (uint256) { return _balances[account]; }
-    function paused() public view returns (bool) { return _paused; }
 
     // -------------------- Transfers --------------------
     function transfer(address recipient, uint256 amount)
@@ -134,42 +140,38 @@ contract MyToken is Context, IBEP20, IBEP20Metadata {
         _transfer(sender, recipient, amount);
         uint256 currentAllowance = _allowances[sender][_msgSender()];
         require(currentAllowance >= amount, "Transfer exceeds allowance");
-        unchecked {
-            _approve(sender, _msgSender(), currentAllowance - amount);
-        }
+        _approve(sender, _msgSender(), currentAllowance - amount);
         return true;
     }
 
-    // -------------------- Internal Logic --------------------
     function _transfer(address sender, address recipient, uint256 amount) internal {
         require(sender != address(0), "Transfer from zero address");
         require(recipient != address(0), "Transfer to zero address");
         require(amount > 0, "Amount must be greater than zero");
 
-        uint256 senderBalance = _balances[sender];
-        require(senderBalance >= amount, "Balance too low");
-        unchecked {
-            _balances[sender] = senderBalance - amount;
-        }
+        require(_balances[sender] >= amount, "Insufficient balance");
+
+        _balances[sender] -= amount;
         _balances[recipient] += amount;
+
         emit Transfer(sender, recipient, amount);
     }
 
-    function _mint(address account, uint256 amount) internal {
-        require(account != address(0), "Mint to zero address");
+    // -------------------- Mint & Burn --------------------
+    function _mint(address account, uint256 amount) internal notPaused {
+        require(account != address(0), "Mint to zero");
         _totalSupply += amount;
         _balances[account] += amount;
         emit Transfer(address(0), account, amount);
     }
 
     function _burn(address account, uint256 amount) internal {
-        require(account != address(0), "Burn from zero address");
-        uint256 accountBalance = _balances[account];
-        require(accountBalance >= amount, "Burn exceeds balance");
-        unchecked {
-            _balances[account] = accountBalance - amount;
-        }
+        require(account != address(0), "Burn from zero");
+        require(_balances[account] >= amount, "Burn exceeds balance");
+
+        _balances[account] -= amount;
         _totalSupply -= amount;
+
         emit Transfer(account, address(0), amount);
         emit TokensBurned(account, amount);
     }
@@ -191,13 +193,15 @@ contract MyToken is Context, IBEP20, IBEP20Metadata {
 
     // -------------------- Ownership --------------------
     function transferOwnership(address newOwner) public onlyOwner {
-        require(newOwner != address(0), "New owner is zero address");
+        require(newOwner != address(0), "Invalid new owner");
         _pendingOwner = newOwner;
+        _ownershipTransferTime = block.timestamp + 5 minutes; // optional delay
         emit OwnershipTransferStarted(_owner, newOwner);
     }
 
     function acceptOwnership() public {
         require(msg.sender == _pendingOwner, "Not pending owner");
+        require(block.timestamp >= _ownershipTransferTime, "Wait delay before accept");
         emit OwnershipTransferred(_owner, _pendingOwner);
         _owner = _pendingOwner;
         _pendingOwner = address(0);
@@ -215,6 +219,13 @@ contract MyToken is Context, IBEP20, IBEP20Metadata {
     // -------------------- Token Recovery --------------------
     function recoverTokens(address tokenAddress, uint256 amount) external onlyOwner {
         require(tokenAddress != address(this), "Cannot recover own token");
-        IBEP20(tokenAddress).transfer(_owner, amount);
+
+        IERC20(tokenAddress).safeTransfer(_owner, amount);
+    }
+
+    // -------------------- ERC165 --------------------
+    function supportsInterface(bytes4 interfaceId) public pure override returns (bool) {
+        return interfaceId == type(IBEP20Metadata).interfaceId
+            || interfaceId == type(IERC165).interfaceId;
     }
 }

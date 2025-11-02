@@ -110,12 +110,12 @@ class Income_model extends CI_Model{
     
     public function generateincome($user,$date=NULL){
         $regid=$user['id'];
-        
+        $user['status']=empty($user['status'])?0:$user['status'];
         $date=$date===NULL?date('Y-m-d'):$date;
         $member=$this->member->getmemberdetails($regid);
         //print_pre($member,true);
         
-        if($member['status']==1 && $member['activation_date']!='0000-00-00' && $member['activation_date']<=$date){
+        if($user['status']==1 && $member['status']==1 && $member['income']==1 && $member['activation_date']!='0000-00-00' && $member['activation_date']<=$date){
             $booster=$member['booster']==1?TRUE:FALSE;
             $where=['regid'=>$regid,'date<='=>$date,'status'=>1];
             $investments=$this->db->get_where('investments',$where)->result_array();

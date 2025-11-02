@@ -155,7 +155,7 @@ class Member_model extends CI_Model{
 
         // Query to fetch hierarchy using variables
         $query = "
-            SELECT m.*,u.username,u2.username as sponsor_id,u2.name as sponsor_name,u.mobile,0 as investment, 0 as team_business, u.vp as password
+            SELECT m.*,u.username,u2.username as sponsor_id,u2.name as sponsor_name,u.mobile,0 as investment, 0 as team_business, u.vp as password,u.status as user_status
             FROM (
                 SELECT regid, @pv := CONCAT(@pv, ',', regid) AS pv
                 FROM (

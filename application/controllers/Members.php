@@ -230,4 +230,41 @@ class Members extends MY_Controller {
             }
         }
     }
+    
+	public function updateincomestatus(){
+        if($this->input->post('updateincomestatus')!==NULL){
+            $regid=$this->input->post('regid');
+            $status=$this->input->post('status');
+            $data=array('income'=>$status);
+            $result=$this->db->update('members',$data,['regid'=>$regid]);
+            if($result===true){
+                $text="Stopped";
+                if($status==1){
+                    $text="Restarted";
+                }
+                $this->session->set_flashdata("msg","Member Income $text Successfully!");
+            }
+            else{
+                $result=$this->db->error();
+                $this->session->set_flashdata("err_msg",$result['message']);
+            }
+        }
+        if($this->input->post('changememberstatus')!==NULL){
+            $regid=$this->input->post('regid');
+            $status=$this->input->post('status');
+            $data=array('status'=>$status);
+            $result=$this->db->update('users',$data,['id'=>$regid]);
+            if($result){
+                $text="Blocked";
+                if($status==1){
+                    $text="Un-blocked";
+                }
+                $this->session->set_flashdata("msg","Member $text Successfully!");
+            }
+            else{
+                $this->session->set_flashdata("err_msg",$result['message']);
+            }
+        }
+        redirect($_SERVER['HTTP_REFERER']);
+	}
 }

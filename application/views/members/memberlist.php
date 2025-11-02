@@ -76,20 +76,20 @@
                                                         <input type="hidden" name="regid" value="<?= $single['regid']; ?>">
                                                         <?php if($single['user_status']==0){ ?>
                                                         <input type="hidden" name="status" value="1">
-                                                        <button type="submit" class="btn btn-xs btn-success mt-1" name="changememberstatus" value="Un-block">Un-block Member</button>
+                                                        <button type="submit" class="btn btn-sm btn-success mt-1" name="changememberstatus" value="Un-block">Un-block Member</button>
                                                         <?php }elseif($single['user_status']==1){ ?>
                                                         <input type="hidden" name="status" value="0">
-                                                        <button type="submit" class="btn btn-xs btn-danger mt-1" name="changememberstatus" value="Un-block">Block Member</button>
+                                                        <button type="submit" class="btn btn-sm btn-danger mt-1" name="changememberstatus" value="Un-block">Block Member</button>
                                                         <?php } ?>
                                                     </form>
                                                     <form action="<?= base_url('members/updateincomestatus/') ?>" method="post" onSubmit="return validate('<?= $single['income']==0?'Restart':'Stop' ?>')">
                                                         <input type="hidden" name="regid" value="<?= $single['regid']; ?>">
                                                         <?php if($single['income']==0){ ?>
                                                         <input type="hidden" name="status" value="1">
-                                                        <button type="submit" class="btn btn-xs btn-success mt-1" name="updateincomestatus" value="Un-block">Restart Income</button>
+                                                        <button type="submit" class="btn btn-sm btn-success mt-1" name="updateincomestatus" value="Un-block">Restart Income</button>
                                                         <?php }elseif($single['income']==1){ ?>
                                                         <input type="hidden" name="status" value="0">
-                                                        <button type="submit" class="btn btn-xs btn-danger mt-1" name="updateincomestatus" value="Un-block">Stop Income</button>
+                                                        <button type="submit" class="btn btn-sm btn-danger mt-1" name="updateincomestatus" value="Un-block">Stop Income</button>
                                                         <?php } ?>
                                                     </form>
                                                     <?php

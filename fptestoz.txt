@@ -14,7 +14,7 @@ import "@openzeppelin/contracts/utils/Pausable.sol";
 contract FPTest is ERC20, Ownable2Step, Pausable, ReentrancyGuard {
     using SafeERC20 for IERC20;
 
-    string private immutable _metadataHash;
+    string private _metadataHash;
 
     event MetadataHashUpdated(string newHash);
     event TokensRecovered(address token, uint256 amount);

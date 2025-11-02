@@ -4,18 +4,21 @@ pragma solidity ^0.8.30;
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import "@openzeppelin/contracts/access/Ownable2Step.sol";
+import "@openzeppelin/contracts/access/AccessControl.sol";
 import "@openzeppelin/contracts/security/Pausable.sol";
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
-import "@openzeppelin/contracts/utils/introspection/ERC165.sol";
 
-contract MyToken is ERC20, Ownable2Step, Pausable, ReentrancyGuard, ERC165 {
+contract MyToken is ERC20, Ownable2Step, AccessControl, Pausable, ReentrancyGuard {
     using SafeERC20 for IERC20;
 
-    string private _metadataHash;
+    // --- Roles ---
+    bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
 
+    // --- Immutable Metadata ---
+    string private immutable _metadataHash;
+
+    // --- Events ---
     event TokensRecovered(address indexed token, uint256 amount);
-    event TransferBlocked(address indexed from, address indexed to, uint256 amount, string reason);
-    event ApprovalBlocked(address indexed owner, address indexed spender, uint256 amount, string reason);
 
     constructor(
         string memory name_,
@@ -26,10 +29,15 @@ contract MyToken is ERC20, Ownable2Step, Pausable, ReentrancyGuard, ERC165 {
     ) ERC20(name_, symbol_) {
         _metadataHash = metadataHash_;
         _mint(owner_, initialSupply);
+
+        // Assign roles
+        _grantRole(DEFAULT_ADMIN_ROLE, owner_);
+        _grantRole(PAUSER_ROLE, owner_);
+
         _transferOwnership(owner_);
     }
 
-    // --- Core Overrides ---
+    // --- Core Token Logic ---
     function _mint(address account, uint256 amount)
         internal
         override
@@ -47,15 +55,15 @@ contract MyToken is ERC20, Ownable2Step, Pausable, ReentrancyGuard, ERC165 {
     }
 
     // --- Pausable Controls ---
-    function pause() external onlyOwner {
+    function pause() external onlyRole(PAUSER_ROLE) {
         _pause();
     }
 
-    function unpause() external onlyOwner {
+    function unpause() external onlyRole(PAUSER_ROLE) {
         _unpause();
     }
 
-    // --- Recover Mistakenly Sent Tokens ---
+    // --- Token Recovery (Safe) ---
     function recoverTokens(address tokenAddress, uint256 amount)
         external
         onlyOwner
@@ -66,49 +74,18 @@ contract MyToken is ERC20, Ownable2Step, Pausable, ReentrancyGuard, ERC165 {
         emit TokensRecovered(tokenAddress, amount);
     }
 
-    // --- Safe Overrides for Transparency ---
-    function transfer(address to, uint256 amount)
-        public
-        override
-        whenNotPaused
-        returns (bool)
-    {
-        if (paused()) {
-            emit TransferBlocked(_msgSender(), to, amount, "Contract is paused");
-            return false;
-        }
-        return super.transfer(to, amount);
-    }
-
-    function approve(address spender, uint256 amount)
-        public
-        override
-        whenNotPaused
-        returns (bool)
-    {
-        if (paused()) {
-            emit ApprovalBlocked(_msgSender(), spender, amount, "Contract is paused");
-            return false;
-        }
-        return super.approve(spender, amount);
-    }
-
-    // --- Metadata ---
+    // --- Metadata View ---
     function metadataHash() external view returns (string memory) {
         return _metadataHash;
     }
 
-    // --- ERC165 Support ---
+    // --- Interface Support ---
     function supportsInterface(bytes4 interfaceId)
         public
         view
-        virtual
-        override
+        override(AccessControl)
         returns (bool)
     {
-        return
-            interfaceId == type(IERC20).interfaceId ||
-            interfaceId == type(IERC165).interfaceId ||
-            super.supportsInterface(interfaceId);
+        return super.supportsInterface(interfaceId);
     }
 }

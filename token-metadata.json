@@ -1,0 +1,11 @@
+{
+  "name": "FP Test",
+  "symbol": "FPT",
+  "description": "FP Test is a BEP20 utility token built on Binance Smart Chain. It supports pausing, ownership transfer, and immutable metadata.",
+  "image": "ipfs://bafybeiec7s4idtjoaxo4vflxvsyszpxonlbyfzbcc4igrat45r772ow2tu",
+  "website": "",
+  "telegram": "",
+  "twitter": "",
+  "version": "1.0",
+  "deployed_network": "BSC Mainnet"
+}

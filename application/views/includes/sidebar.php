@@ -123,6 +123,18 @@
          else{
       ?>
       <li class="nav-item">
+         <a class="nav-link" data-bs-toggle="collapse" href="#contractMenu" role="button" aria-expanded="false" aria-controls="contractMenu">
+         <i class="fa-solid fa-money-bill-transfer"></i> Contract
+         <i class="fas fa-chevron-down ms-auto"></i>
+         </a>
+         <div class="collapse" id="contractMenu" data-bs-parent="#sidebarAccordion">
+            <ul class="nav flex-column ms-3">
+               <li class="nav-item"><a class="nav-link" href="<?= base_url('contract/'); ?>">User Interface</a></li>
+               <li class="nav-item"><a class="nav-link" href="<?= base_url('contract/admin/'); ?>"> Admin Interface</a></li>
+            </ul>
+         </div>
+      </li>
+      <li class="nav-item">
          <a class="nav-link" data-bs-toggle="collapse" href="#walletMenu" role="button" aria-expanded="false" aria-controls="walletMenu">
          <i class="fa-solid fa-money-bill-transfer"></i> Wallet
          <i class="fas fa-chevron-down ms-auto"></i>

@@ -129,7 +129,7 @@
                              </li>
                              <li class="nav-item">
                                 <a class="nav-link d-flex justify-content-between align-items-center" data-bs-toggle="collapse" href="#mobileWalletMenu">
-                                <span><i class="fa-solid fa-money-bill-transfer"></i> wallet</span>
+                                <span><i class="fa-solid fa-money-bill-transfer"></i> Wallet</span>
                                 <i class="fas fa-chevron-down"></i>
                                 </a>
                                 <div class="collapse" id="mobileWalletMenu" data-bs-parent="#mobileAccordion">
@@ -144,8 +144,20 @@
                                 else{
                             ?>
                              <li class="nav-item">
+                                <a class="nav-link d-flex justify-content-between align-items-center" data-bs-toggle="collapse" href="#mobileContractMenu">
+                                <span><i class="fa-solid fa-money-bill-transfer"></i> Contract</span>
+                                <i class="fas fa-chevron-down"></i>
+                                </a>
+                                <div class="collapse" id="mobileContractMenu" data-bs-parent="#mobileAccordion">
+                                   <ul class="nav flex-column ms-3">
+                                        <li class="nav-item"><a class="nav-link" href="<?= base_url('contract/'); ?>">User Interface</a></li>
+                                        <li class="nav-item"><a class="nav-link" href="<?= base_url('contract/admin/'); ?>">Admin Interface</a></li>
+                                   </ul>
+                                </div>
+                             </li>
+                             <li class="nav-item">
                                 <a class="nav-link d-flex justify-content-between align-items-center" data-bs-toggle="collapse" href="#mobileWalletMenu">
-                                <span><i class="fa-solid fa-money-bill-transfer"></i> wallet</span>
+                                <span><i class="fa-solid fa-money-bill-transfer"></i> Wallet</span>
                                 <i class="fas fa-chevron-down"></i>
                                 </a>
                                 <div class="collapse" id="mobileWalletMenu" data-bs-parent="#mobileAccordion">

@@ -13,13 +13,13 @@ class Contract extends MY_Controller {
     }
     
     public function index(){
-        $data=['title'=>'Contract Details'];
+        $data=['title'=>'User Interface'];
         $user=getuser();
         $this->template->load('contract','user-interface',$data);
     }
     
     public function admin(){
-        $data=['title'=>'Contract Details'];
+        $data=['title'=>'Admin Interface'];
         $user=getuser();
         $this->template->load('contract','admin-interface',$data);
     }

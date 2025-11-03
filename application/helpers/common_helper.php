@@ -38,6 +38,23 @@
 		}  
 	}
 
+	if(!function_exists('getlegbusiness')) {
+  		function getlegbusiness() {
+    		$CI = get_instance();
+            $user=getuser();
+            $legs=$CI->income->get_leg_business($user['id']);
+            // Sort legs by business descending
+            usort($legs, function($a, $b) {
+                return $b['business'] <=> $a['business'];
+            });
+            
+            $top_legs=array();
+            if (count($legs) >= 2) {
+                $top_legs=array_slice($legs,0,2);
+            }
+            return $top_legs;
+        } 
+	}
 	if(!function_exists('getavlbalance')){
         function getavlbalance($user){
             $CI = get_instance();

@@ -329,7 +329,7 @@ else{
                      </div>
                   </div>
                    <?php
-                        $legs=$this->income->get_leg_business($user['id']);
+                        $legs=getlegbusiness();
                         $power=!empty($legs[0]['business'])?$legs[0]['business']:0;
                         $weaker=!empty($legs[1]['business'])?$legs[1]['business']:0;
                     ?>

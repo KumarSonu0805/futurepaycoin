@@ -39,7 +39,7 @@
 	}
 
 	if(!function_exists('getlegbusiness')) {
-  		function getlegbusiness() {
+  		function getlegbusiness($weaker=false) {
     		$CI = get_instance();
             $user=getuser();
             $legs=$CI->income->get_leg_business($user['id']);
@@ -49,8 +49,18 @@
             });
             
             $top_legs=array();
-            if (count($legs) >= 2) {
-                $top_legs=array_slice($legs,0,2);
+            if($weaker){
+                $top_legs[]=isset($legs[0])?$legs[0]:array();
+                if(count($legs)>1){
+                    unset($legs[0]);
+                    $businesses=array_column($legs,'business');
+                    $top_legs[]=array('regid'=>'','business'=>array_sum($businesses));
+                }
+            }
+            else{
+                if (count($legs) >= 2) {
+                    $top_legs=array_slice($legs,0,2);
+                }
             }
             return $top_legs;
         } 

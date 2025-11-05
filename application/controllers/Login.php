@@ -33,7 +33,7 @@ class Login extends MY_Controller {
         loginredirect();
 		$this->session->unset_userdata("username");
         $data['title']="Login";
-        $this->template->load('auth','login',$data,'auth');       
+        $this->template->load('auth','adminlogin',$data,'auth');       
     }
     
     /*public function forgotpassword(){
@@ -65,10 +65,20 @@ class Login extends MY_Controller {
 	
 	public function validatelogin(){
 		$data=$this->input->post();
-		unset($data['login']);
+        $wallet_address=$data['wallet_address']??'';
+		unset($data['login'],$data['wallet_address']);
 		$result=$this->account->login($data);
 		if($result['status']===true){
             $user=$result['user'];
+            if($user['role']=='member'){
+                $where="regid='$user[id]' and 
+                    (wallet_address like '$wallet_address' or LOWER(wallet_address) ='".strtolower($wallet_address)."')";
+                $getregid=$this->db->get_where('members',$where);
+                if($getregid->num_rows()==0){
+                    $this->session->set_flashdata('logerr',"Wrong Wallet Address or Username or Password!");
+                    redirect($_SERVER['HTTP_REFERER']);
+                }
+            }
             $ref=!empty($_SERVER['HTTP_REFERER'])?$_SERVER['HTTP_REFERER']:'';
             $section='member';
             if($ref==''){

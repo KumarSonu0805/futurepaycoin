@@ -1,0 +1,277 @@
+/*
+FFFFFFFFFFFFFFFFFFF  PPPPPPPPPPPPPPPPP     CCCCCCCCCCCCC
+F:::::::::::::::::F  P::::::::::::::::P  CC:::::::::::::::C
+F:::::::::::::::::F  P:::::PPPPP::::::P C:::::CCCCCCCC::::C
+  F:::::::FFFFFFFFF  P::::P     P:::::P C:::::C       CCCCCC
+  F:::::F            P::::P     P:::::P C:::::C
+  F:::::F            P::::P     P:::::P C:::::C
+  F::::::FFFFFFFFFF  P::::PPPPPP:::::P  C:::::C
+  F:::::::::::::::F  P:::::::::::::PP   C:::::C
+  F:::::::::::::::F  P::::PPPPPPPPP     C:::::C
+  F::::::FFFFFFFFFF  P::::P             C:::::C
+  F:::::F            P::::P             C:::::C
+  F:::::F            P::::P             C:::::C
+FF:::::::FF        PP::::::PP           C:::::C       CCCCCC
+F::::::::FF        P::::::::P            C:::::CCCCCCCC::::C
+F::::::::FF        P::::::::P             CC:::::::::::::::C
+FFFFFFFFFFF        PPPPPPPPPP              CCCCCCCCCCCCC
+*/
+
+
+pragma solidity ^0.8.30;
+
+/* ============================= Interfaces ============================= */
+
+interface IERC20 {
+    event Transfer(address indexed from, address indexed to, uint256 value);
+    event Approval(address indexed owner, address indexed spender, uint256 value);
+
+    function totalSupply() external view returns (uint256);
+    function balanceOf(address a) external view returns (uint256);
+    function transfer(address to, uint256 value) external returns (bool);
+    function allowance(address o, address s) external view returns (uint256);
+    function approve(address s, uint256 value) external returns (bool);
+    function transferFrom(address f, address t, uint256 v) external returns (bool);
+}
+
+interface IERC20Metadata is IERC20 {
+    function name() external view returns (string memory);
+    function symbol() external view returns (string memory);
+    function decimals() external view returns (uint8);
+}
+
+/* ============================= Utils ============================= */
+
+abstract contract Context {
+    function _msgSender() internal view virtual returns (address) {
+        return msg.sender;
+    }
+    function _msgData() internal view virtual returns (bytes calldata) {
+        return msg.data;
+    }
+}
+
+/* Minimal SafeERC20 for recover() use */
+library SafeERC20 {
+    function safeTransfer(IERC20 token, address to, uint256 value) internal {
+        bool ok = token.transfer(to, value);
+        require(ok, "SafeERC20: transfer failed");
+    }
+}
+
+/* ReentrancyGuard (minimal) */
+abstract contract ReentrancyGuard {
+    uint256 private constant _NOT_ENTERED = 1;
+    uint256 private constant _ENTERED     = 2;
+    uint256 private _status = _NOT_ENTERED;
+    modifier nonReentrant() {
+        require(_status != _ENTERED, "ReentrancyGuard: reentrant");
+        _status = _ENTERED;
+        _;
+        _status = _NOT_ENTERED;
+    }
+}
+
+/* Pausable (minimal) */
+abstract contract Pausable is Context {
+    event Paused(address account);
+    event Unpaused(address account);
+    bool private _paused;
+    constructor() { _paused = false; }
+    function paused() public view returns (bool) { return _paused; }
+    modifier whenNotPaused() { require(!_paused, "Pausable: paused"); _; }
+    modifier whenPaused() { require(_paused, "Pausable: not paused"); _; }
+    function _pause() internal whenNotPaused { _paused = true; emit Paused(_msgSender()); }
+    function _unpause() internal whenPaused { _paused = false; emit Unpaused(_msgSender()); }
+}
+
+/* Ownable + 2-step */
+abstract contract Ownable2Step is Context {
+    error NotOwner();
+    error ZeroAddress();
+    event OwnershipTransferStarted(address indexed previousOwner, address indexed newOwner);
+    event OwnershipTransferred(address indexed previousOwner, address indexed newOwner);
+
+    address private _owner;
+    address private _pendingOwner;
+
+    constructor(address initialOwner_) {
+        if (initialOwner_ == address(0)) revert ZeroAddress();
+        _owner = initialOwner_;
+        emit OwnershipTransferred(address(0), initialOwner_);
+    }
+
+    modifier onlyOwner() {
+        if (_owner != _msgSender()) revert NotOwner();
+        _;
+    }
+
+    function owner() public view returns (address) { return _owner; }
+    function pendingOwner() public view returns (address) { return _pendingOwner; }
+
+    function transferOwnership(address newOwner) public onlyOwner {
+        if (newOwner == address(0)) revert ZeroAddress();
+        _pendingOwner = newOwner;
+        emit OwnershipTransferStarted(_owner, newOwner);
+    }
+
+    function acceptOwnership() public {
+        address sender = _msgSender();
+        require(sender == _pendingOwner, "Ownable2Step: not pending owner");
+        address old = _owner;
+        _owner = sender;
+        _pendingOwner = address(0);
+        emit OwnershipTransferred(old, sender);
+    }
+}
+
+/* ============================= ERC20 (compact) ============================= */
+
+contract ERC20 is Context, IERC20, IERC20Metadata {
+    mapping(address => uint256) internal _balances;
+    mapping(address => mapping(address => uint256)) private _allowances;
+    uint256 internal _totalSupply;
+
+    string private _name;
+    string private _symbol;
+
+    constructor(string memory n, string memory s) {
+        _name = n;
+        _symbol = s;
+    }
+
+    function name() public view virtual override returns (string memory) { return _name; }
+    function symbol() public view virtual override returns (string memory) { return _symbol; }
+    function decimals() public view virtual override returns (uint8) { return 18; }
+    function totalSupply() public view virtual override returns (uint256) { return _totalSupply; }
+    function balanceOf(address a) public view virtual override returns (uint256) { return _balances[a]; }
+
+    function transfer(address to, uint256 value) public virtual override returns (bool) {
+        _transfer(_msgSender(), to, value);
+        return true;
+    }
+
+    function allowance(address o, address s) public view virtual override returns (uint256) {
+        return _allowances[o][s];
+    }
+
+    function approve(address s, uint256 value) public virtual override returns (bool) {
+        _approve(_msgSender(), s, value);
+        return true;
+    }
+
+    function transferFrom(address f, address t, uint256 v) public virtual override returns (bool) {
+        uint256 currentAllowance = _allowances[f][_msgSender()];
+        require(currentAllowance >= v, "ERC20: insufficient allowance");
+        unchecked { _approve(f, _msgSender(), currentAllowance - v); }
+        _transfer(f, t, v);
+        return true;
+    }
+
+    function _transfer(address f, address t, uint256 v) internal virtual {
+        require(f != address(0) && t != address(0), "ERC20: zero addr");
+        _beforeTokenTransfer(f, t, v);
+        uint256 fb = _balances[f];
+        require(fb >= v, "ERC20: balance");
+        unchecked { _balances[f] = fb - v; }
+        _balances[t] += v;
+        emit Transfer(f, t, v);
+        _afterTokenTransfer(f, t, v);
+    }
+
+    function _mint(address to, uint256 v) internal virtual {
+        require(to != address(0), "ERC20: mint to zero");
+        _beforeTokenTransfer(address(0), to, v);
+        _totalSupply += v;
+        _balances[to] += v;
+        emit Transfer(address(0), to, v);
+        _afterTokenTransfer(address(0), to, v);
+    }
+
+    function _burn(address from, uint256 v) internal virtual {
+        require(from != address(0), "ERC20: burn from zero");
+        _beforeTokenTransfer(from, address(0), v);
+        uint256 fb = _balances[from];
+        require(fb >= v, "ERC20: balance");
+        unchecked { _balances[from] = fb - v; }
+        _totalSupply -= v;
+        emit Transfer(from, address(0), v);
+        _afterTokenTransfer(from, address(0), v);
+    }
+
+    /* Hooks */
+    function _beforeTokenTransfer(address, address, uint256) internal virtual {}
+    function _afterTokenTransfer(address, address, uint256) internal virtual {}
+
+    function _approve(address o, address s, uint256 v) internal virtual {
+        require(o != address(0) && s != address(0), "ERC20: approve zero");
+        _allowances[o][s] = v;
+        emit Approval(o, s, v);
+    }
+}
+
+/* ============================= FPC Token ============================= */
+
+contract FuturePayCoin is ERC20, Ownable2Step, Pausable, ReentrancyGuard {
+    using SafeERC20 for IERC20;
+
+    // Optional off-chain metadata/content hash (e.g., IPFS CID)
+    string private _metadataHash;
+
+    event MetadataHashUpdated(string newHash);
+    event TokensRecovered(address indexed token, uint256 amount, address indexed by);
+
+    constructor(
+        uint256 initialSupply_,        // in whole tokens (will be scaled by 10**decimals())
+        string memory metadataHash_,   // e.g. IPFS CID
+        address owner_
+    )
+        ERC20("Future Pay Coin", "FPC")
+        Ownable2Step(owner_)
+    {
+        require(owner_ != address(0), "Owner cannot be zero");
+        _metadataHash = metadataHash_;
+        _mint(owner_, initialSupply_ * (10 ** uint256(decimals())));
+        emit MetadataHashUpdated(metadataHash_);
+    }
+
+    /* Pause controls */
+    function pause() external onlyOwner { _pause(); }
+    function unpause() external onlyOwner { _unpause(); }
+
+    /* Burn (holder-initiated) */
+    function burn(uint256 amount) external onlyOwner whenNotPaused {
+        _burn(_msgSender(), amount);
+    }
+
+    /* Recover foreign tokens mistakenly sent to this contract (never FPC itself) */
+    function recoverTokens(IERC20 token, uint256 amount)
+        external
+        onlyOwner
+        nonReentrant
+    {
+        require(address(token) != address(this), "Cannot recover FPC");
+        token.safeTransfer(owner(), amount);
+        emit TokensRecovered(address(token), amount, _msgSender());
+    }
+
+    /* Metadata */
+    function metadataHash() external view returns (string memory) {
+        return _metadataHash;
+    }
+
+    function setMetadataHash(string calldata newHash) external onlyOwner {
+        _metadataHash = newHash;
+        emit MetadataHashUpdated(newHash);
+    }
+
+    /* Hook: block transfers while paused */
+    function _beforeTokenTransfer(address from, address to, uint256 value)
+        internal
+        override
+    {
+        // allow mint (from zero) and burn (to zero) only when not paused as well
+        require(!paused(), "FPC: paused");
+        super._beforeTokenTransfer(from, to, value);
+    }
+}

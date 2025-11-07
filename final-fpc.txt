@@ -20,21 +20,23 @@ FFFFFFFFFFF        PPPPPPPPPP              CCCCCCCCCCCCC
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.30;
 
-/* =======================================================================
-   FPC (Future Pay Coin)
-   - Name/Symbol: Future Pay Coin (FPC)
-   - Decimals: 18
-   - Fixed Supply: 100,000,000 FPC (100_000_000 * 1e18) minted once to owner
-   - Burn: ONLY owner can burn (and only when not paused)
-   - Pause/Unpause: Owner can pause/unpause transfers
-   - Recovery: Owner can recover foreign ERC20s (cannot recover FPC itself)
-   - Ownership: 2-step (transferOwnership -> acceptOwnership)
-   ======================================================================= */
+/* ========================================================================
+   Future Pay Coin (FPC)
+   ------------------------------------------------------------------------
+   - Standard ERC20 with:
+       • Fixed total supply: 100,000,000 FPC (18 decimals) minted once
+   - This file is flattened for BscScan verification.
+   ======================================================================== */
 
-/* ============================= Interfaces ============================= */
 
+/* ============================= ERC20 Interfaces ============================= */
+
+/// @notice ERC20 basic interface as per the standard
 interface IERC20 {
+    /// @dev Emitted on successful token transfer
     event Transfer(address indexed from, address indexed to, uint256 value);
+
+    /// @dev Emitted on approval update (owner -> spender allowance)
     event Approval(address indexed owner, address indexed spender, uint256 value);
 
     function totalSupply() external view returns (uint256);
@@ -45,14 +47,17 @@ interface IERC20 {
     function transferFrom(address f, address t, uint256 v) external returns (bool);
 }
 
+/// @notice ERC20 metadata helpers (name, symbol, decimals)
 interface IERC20Metadata is IERC20 {
     function name() external view returns (string memory);
     function symbol() external view returns (string memory);
     function decimals() external view returns (uint8);
 }
 
-/* ============================= Utils ============================= */
 
+/* ================================ Utilities ================================= */
+
+/// @dev Basic context helper for meta-tx ready msg.sender/msg.data usage
 abstract contract Context {
     function _msgSender() internal view virtual returns (address) {
         return msg.sender;
@@ -62,7 +67,7 @@ abstract contract Context {
     }
 }
 
-/* Minimal SafeERC20 for recover() use */
+/// @dev Minimal SafeERC20 subset – checks boolean return
 library SafeERC20 {
     function safeTransfer(IERC20 token, address to, uint256 value) internal {
         bool ok = token.transfer(to, value);
@@ -70,11 +75,12 @@ library SafeERC20 {
     }
 }
 
-/* ReentrancyGuard (minimal) */
+/// @dev Minimal reentrancy guard for external entrypoints
 abstract contract ReentrancyGuard {
     uint256 private constant _NOT_ENTERED = 1;
     uint256 private constant _ENTERED     = 2;
     uint256 private _status = _NOT_ENTERED;
+
     modifier nonReentrant() {
         require(_status != _ENTERED, "ReentrancyGuard: reentrant");
         _status = _ENTERED;
@@ -83,51 +89,69 @@ abstract contract ReentrancyGuard {
     }
 }
 
-/* Pausable (minimal) */
+/// @dev Simple pausability switch controlled by owner
 abstract contract Pausable is Context {
     event Paused(address account);
     event Unpaused(address account);
+
     bool private _paused;
+
     constructor() { _paused = false; }
+
+    /// @notice Returns true when contract is paused
     function paused() public view returns (bool) { return _paused; }
+
+    /// @dev Restrict to functions that must run only while unpaused
     modifier whenNotPaused() { require(!_paused, "Pausable: paused"); _; }
+
+    /// @dev Restrict to functions that must run only while paused
     modifier whenPaused() { require(_paused, "Pausable: not paused"); _; }
+
+    /// @dev Internal pause (emits event)
     function _pause() internal whenNotPaused { _paused = true; emit Paused(_msgSender()); }
+
+    /// @dev Internal unpause (emits event)
     function _unpause() internal whenPaused { _paused = false; emit Unpaused(_msgSender()); }
 }
 
-/* Ownable + 2-step */
+/// @dev Two-step ownership (transfer -> accept)
 abstract contract Ownable2Step is Context {
     error NotOwner();
     error ZeroAddress();
+
     event OwnershipTransferStarted(address indexed previousOwner, address indexed newOwner);
     event OwnershipTransferred(address indexed previousOwner, address indexed newOwner);
 
     address private _owner;
     address private _pendingOwner;
 
+    /// @param initialOwner_ Owner set at deployment
     constructor(address initialOwner_) {
         if (initialOwner_ == address(0)) revert ZeroAddress();
         _owner = initialOwner_;
         emit OwnershipTransferred(address(0), initialOwner_);
     }
 
+    /// @notice Restrict to current owner
     modifier onlyOwner() {
         if (_owner != _msgSender()) revert NotOwner();
         _;
     }
 
+    /// @notice Get current owner
     function owner() public view returns (address) { return _owner; }
+
+    /// @notice Get pending owner (must call acceptOwnership)
     function pendingOwner() public view returns (address) { return _pendingOwner; }
 
-    /** Start 2-step ownership transfer; newOwner must call acceptOwnership() */
+    /// @notice Start ownership transfer; newOwner must later accept
     function transferOwnership(address newOwner) public onlyOwner {
         if (newOwner == address(0)) revert ZeroAddress();
         _pendingOwner = newOwner;
         emit OwnershipTransferStarted(_owner, newOwner);
     }
 
-    /** Complete 2-step ownership transfer by the pending owner */
+    /// @notice Called by pendingOwner to finalize the transfer
     function acceptOwnership() public {
         address sender = _msgSender();
         require(sender == _pendingOwner, "Ownable2Step: not pending owner");
@@ -138,41 +162,52 @@ abstract contract Ownable2Step is Context {
     }
 }
 
-/* ============================= ERC20 (compact) ============================= */
 
+/* =============================== ERC20 Core ================================ */
+
+/// @dev Compact ERC20 implementation with standard hooks
 contract ERC20 is Context, IERC20, IERC20Metadata {
-    mapping(address => uint256) internal _balances;
-    mapping(address => mapping(address => uint256)) private _allowances;
-    uint256 internal _totalSupply;
+    // --- Storage ---
+    mapping(address => uint256) internal _balances;                         // account balances
+    mapping(address => mapping(address => uint256)) private _allowances;    // spender allowances
+    uint256 internal _totalSupply;                                          // total minted - burned
 
-    string private _name;
-    string private _symbol;
+    string private _name;                                                   // token name
+    string private _symbol;                                                 // token symbol
 
+    /// @param n Token name
+    /// @param s Token symbol
     constructor(string memory n, string memory s) {
         _name = n;
         _symbol = s;
     }
 
+    // --- Read API ---
     function name() public view virtual override returns (string memory) { return _name; }
     function symbol() public view virtual override returns (string memory) { return _symbol; }
     function decimals() public view virtual override returns (uint8) { return 18; }
     function totalSupply() public view virtual override returns (uint256) { return _totalSupply; }
     function balanceOf(address a) public view virtual override returns (uint256) { return _balances[a]; }
 
+    // --- Write API ---
+    /// @notice Transfer tokens from caller to `to`
     function transfer(address to, uint256 value) public virtual override returns (bool) {
         _transfer(_msgSender(), to, value);
         return true;
     }
 
+    /// @notice Current allowance for `spender` configured by `owner`
     function allowance(address o, address s) public view virtual override returns (uint256) {
         return _allowances[o][s];
     }
 
+    /// @notice Approve `spender` to use `value` of caller’s tokens
     function approve(address s, uint256 value) public virtual override returns (bool) {
         _approve(_msgSender(), s, value);
         return true;
     }
 
+    /// @notice Move tokens using spender allowance
     function transferFrom(address f, address t, uint256 v) public virtual override returns (bool) {
         uint256 currentAllowance = _allowances[f][_msgSender()];
         require(currentAllowance >= v, "ERC20: insufficient allowance");
@@ -181,6 +216,8 @@ contract ERC20 is Context, IERC20, IERC20Metadata {
         return true;
     }
 
+    // --- Internals ---
+    /// @dev Core transfer with common checks and events
     function _transfer(address f, address t, uint256 v) internal virtual {
         require(f != address(0) && t != address(0), "ERC20: zero addr");
         _beforeTokenTransfer(f, t, v);
@@ -192,6 +229,7 @@ contract ERC20 is Context, IERC20, IERC20Metadata {
         _afterTokenTransfer(f, t, v);
     }
 
+    /// @dev Internal mint (emits Transfer from zero)
     function _mint(address to, uint256 v) internal virtual {
         require(to != address(0), "ERC20: mint to zero");
         _beforeTokenTransfer(address(0), to, v);
@@ -201,6 +239,7 @@ contract ERC20 is Context, IERC20, IERC20Metadata {
         _afterTokenTransfer(address(0), to, v);
     }
 
+    /// @dev Internal burn (emits Transfer to zero)
     function _burn(address from, uint256 v) internal virtual {
         require(from != address(0), "ERC20: burn from zero");
         _beforeTokenTransfer(from, address(0), v);
@@ -212,10 +251,12 @@ contract ERC20 is Context, IERC20, IERC20Metadata {
         _afterTokenTransfer(from, address(0), v);
     }
 
-    /* Hooks */
+    /// @dev Hook before transfer/mint/burn (override in child)
     function _beforeTokenTransfer(address, address, uint256) internal virtual {}
+    /// @dev Hook after transfer/mint/burn (override in child)
     function _afterTokenTransfer(address, address, uint256) internal virtual {}
 
+    /// @dev Internal approve helper
     function _approve(address o, address s, uint256 v) internal virtual {
         require(o != address(0) && s != address(0), "ERC20: approve zero");
         _allowances[o][s] = v;
@@ -223,26 +264,50 @@ contract ERC20 is Context, IERC20, IERC20Metadata {
     }
 }
 
-/* ============================= FPC Token ============================= */
 
+/* ============================== FPC Implementation ============================== */
+
+/// @title Future Pay Coin (FPC)
+/// @notice Fixed-supply ERC20 with owner-only burn, pausability, safe recovery, and 2-step ownership
 contract FuturePayCoin is ERC20, Ownable2Step, Pausable, ReentrancyGuard {
     using SafeERC20 for IERC20;
 
-    /* -----------------------------------------------------------------
-       Fixed supply: 100,000,000 FPC (18 decimals) minted to owner once.
-       No further minting is possible.
-       ----------------------------------------------------------------- */
+    // ---------------------------------------------------------------------
+    // Supply configuration
+    // ---------------------------------------------------------------------
+
+    /// @notice Fixed total supply: 100,000,000 FPC (18 decimals)
+    /// @dev Minted once to the owner in the constructor; no further minting
     uint256 public constant FIXED_SUPPLY = 100_000_000 * 1e18;
 
-    // Optional off-chain metadata/content hash (e.g., IPFS CID/URI)
+    // ---------------------------------------------------------------------
+    // Off-chain metadata reference
+    // ---------------------------------------------------------------------
+
+    /// @notice Optional metadata hash/URI (e.g., IPFS CID or URL)
     string private _metadataHash;
 
+    // ---------------------------------------------------------------------
+    // Events (FPC-specific)
+    // ---------------------------------------------------------------------
+
+    /// @dev Emitted when the metadata reference is updated
     event MetadataHashUpdated(string newHash);
+
+    /// @dev Emitted when owner recovers foreign ERC20 tokens
     event TokensRecovered(address indexed token, uint256 amount, address indexed by);
 
+    // ---------------------------------------------------------------------
+    // Constructor
+    // ---------------------------------------------------------------------
+
     /**
-     * @param metadataHash_ Optional metadata URI/CID (e.g., ipfs://CID)
-     * @param owner_        Initial owner address (receives full fixed supply)
+     * @param metadataHash_ Optional content address (IPFS/HTTP) for off-chain metadata
+     * @param owner_        Owner address (receives entire fixed supply, controls admin)
+     *
+     * Requirements:
+     * - `owner_` must be non-zero
+     * - Mints exactly `FIXED_SUPPLY` to `owner_`
      */
     constructor(
         string memory metadataHash_,
@@ -254,38 +319,40 @@ contract FuturePayCoin is ERC20, Ownable2Step, Pausable, ReentrancyGuard {
         require(owner_ != address(0), "Owner cannot be zero");
         _metadataHash = metadataHash_;
 
-        // Mint fixed supply to owner
+        // Mint the fixed supply once to the owner (no further mint exists)
         _mint(owner_, FIXED_SUPPLY);
 
         emit MetadataHashUpdated(metadataHash_);
     }
 
-    /* ----------------------------- Admin ----------------------------- */
-
-    /// @notice Pause all token transfers, burns, and mints (none exist) until unpaused.
+    /// @notice Pause all token movements; use for emergencies or maintenance
+    /// @dev Blocks transfer/transferFrom and owner burn while active
     function pause() external onlyOwner { _pause(); }
 
-    /// @notice Unpause transfers and owner-burn.
+    /// @notice Resume token movements after a pause
     function unpause() external onlyOwner { _unpause(); }
 
-    /* ----------------------------- Burn ------------------------------ */
 
     /**
-     * @notice Burn tokens from the owner's balance.
-     * @dev ONLY owner can burn, and only when not paused.
-     * @param amount Amount in base units (18 decimals) to burn.
+     * @notice Burn tokens from owner’s balance (reduces total supply)
+     * @param amount Amount (base units, 18 decimals) to burn
+     *
+     * Constraints:
+     * - Only callable by `owner`
+     * - Fails when paused
      */
     function burn(uint256 amount) external onlyOwner whenNotPaused {
         _burn(_msgSender(), amount);
     }
 
-    /* ---------------------------- Recovery --------------------------- */
-
     /**
-     * @notice Recover any ERC20 tokens mistakenly sent to this contract.
-     * @dev Cannot recover FPC itself.
-     * @param token  ERC20 token address to recover.
-     * @param amount Amount to transfer to the owner.
+     * @notice Recover foreign ERC20 tokens accidentally sent to this contract
+     * @param token  Token contract to recover
+     * @param amount Amount to send to `owner()`
+     *
+     * Safety:
+     * - Cannot recover FPC itself (prevents draining own supply back to owner)
+     * - Non-reentrant guard applied
      */
     function recoverTokens(IERC20 token, uint256 amount)
         external
@@ -297,24 +364,31 @@ contract FuturePayCoin is ERC20, Ownable2Step, Pausable, ReentrancyGuard {
         emit TokensRecovered(address(token), amount, _msgSender());
     }
 
-    /* ---------------------------- Metadata --------------------------- */
+    // ---------------------------------------------------------------------
+    // Metadata utilities
+    // ---------------------------------------------------------------------
 
-    /// @notice Return the current metadata hash/URI.
+    /// @notice Read current metadata reference (CID/URL)
     function metadataHash() external view returns (string memory) {
         return _metadataHash;
     }
 
-    /// @notice Update metadata hash/URI. Useful if you rotate IPFS content.
+    /**
+     * @notice Update metadata reference (e.g., rotate IPFS content)
+     * @param newHash New CID/URL
+     */
     function setMetadataHash(string calldata newHash) external onlyOwner {
         _metadataHash = newHash;
         emit MetadataHashUpdated(newHash);
     }
 
-    /* -------------------------- Transfer Hook ------------------------ */
+    // ---------------------------------------------------------------------
+    // Transfer hook: enforce pause globally
+    // ---------------------------------------------------------------------
 
     /**
-     * @dev Blocks all token movements while paused (including owner burn).
-     * Minting is not implemented; burning is gated by whenNotPaused.
+     * @dev Ensures transfers/burn are blocked while paused.
+     * Note: This project has no public mint; owner burn is also gated by whenNotPaused.
      */
     function _beforeTokenTransfer(address from, address to, uint256 value)
         internal

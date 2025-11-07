@@ -182,7 +182,7 @@
   </div>
 <script src="<?= file_url('includes/custom/switch.js'); ?>"></script>
 <script>
-const TOKEN_ADDRESS = "0xB123C666268edA865cC5361BD1785B91536Cbe4F"; // Replace with your contract address
+const TOKEN_ADDRESS = "0x881946b551c767E0dE1EBb69867D9dE061658162"; // Replace with your contract address
 const TOKEN_ABI = [
 	{
 		"inputs": [],

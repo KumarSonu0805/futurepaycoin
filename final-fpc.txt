@@ -125,7 +125,6 @@ abstract contract Ownable2Step is Context {
     address private _owner;
     address private _pendingOwner;
 
-    /// @param initialOwner_ Owner set at deployment
     constructor(address initialOwner_) {
         if (initialOwner_ == address(0)) revert ZeroAddress();
         _owner = initialOwner_;
@@ -138,29 +137,50 @@ abstract contract Ownable2Step is Context {
         _;
     }
 
-    /// @notice Get current owner
+    /// @return Current owner address (or zero after renounce)
     function owner() public view returns (address) { return _owner; }
 
-    /// @notice Get pending owner (must call acceptOwnership)
+    /// @return Pending owner (must call acceptOwnership)
     function pendingOwner() public view returns (address) { return _pendingOwner; }
 
-    /// @notice Start ownership transfer; newOwner must later accept
+    /// @notice Begin the ownership transfer process
+    /// @param newOwner Address that will later call acceptOwnership()
     function transferOwnership(address newOwner) public onlyOwner {
         if (newOwner == address(0)) revert ZeroAddress();
         _pendingOwner = newOwner;
         emit OwnershipTransferStarted(_owner, newOwner);
     }
 
-    /// @notice Called by pendingOwner to finalize the transfer
+    /// @notice Finalize transfer by calling from pendingOwner
     function acceptOwnership() public {
         address sender = _msgSender();
         require(sender == _pendingOwner, "Ownable2Step: not pending owner");
+
         address old = _owner;
         _owner = sender;
         _pendingOwner = address(0);
+
         emit OwnershipTransferred(old, sender);
     }
+
+    // ---------------------------------------------------------------------
+    // Renounce Ownership
+    // ---------------------------------------------------------------------
+    /**
+     * @notice Renounce ownership and leave the contract without an owner.
+     * @dev All owner-only functions will become permanently inaccessible.
+     *      `_pendingOwner` is cleared for safety.
+     */
+    function renounceOwnership() public onlyOwner {
+        address old = _owner;
+
+        _owner = address(0);
+        _pendingOwner = address(0);
+
+        emit OwnershipTransferred(old, address(0));
+    }
 }
+
 
 
 /* =============================== ERC20 Core ================================ */

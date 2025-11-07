@@ -17,8 +17,19 @@ F::::::::FF        P::::::::P             CC:::::::::::::::C
 FFFFFFFFFFF        PPPPPPPPPP              CCCCCCCCCCCCC
 */
 
-
+// SPDX-License-Identifier: MIT
 pragma solidity ^0.8.30;
+
+/* =======================================================================
+   FPC (Future Pay Coin)
+   - Name/Symbol: Future Pay Coin (FPC)
+   - Decimals: 18
+   - Fixed Supply: 100,000,000 FPC (100_000_000 * 1e18) minted once to owner
+   - Burn: ONLY owner can burn (and only when not paused)
+   - Pause/Unpause: Owner can pause/unpause transfers
+   - Recovery: Owner can recover foreign ERC20s (cannot recover FPC itself)
+   - Ownership: 2-step (transferOwnership -> acceptOwnership)
+   ======================================================================= */
 
 /* ============================= Interfaces ============================= */
 
@@ -109,12 +120,14 @@ abstract contract Ownable2Step is Context {
     function owner() public view returns (address) { return _owner; }
     function pendingOwner() public view returns (address) { return _pendingOwner; }
 
+    /** Start 2-step ownership transfer; newOwner must call acceptOwnership() */
     function transferOwnership(address newOwner) public onlyOwner {
         if (newOwner == address(0)) revert ZeroAddress();
         _pendingOwner = newOwner;
         emit OwnershipTransferStarted(_owner, newOwner);
     }
 
+    /** Complete 2-step ownership transfer by the pending owner */
     function acceptOwnership() public {
         address sender = _msgSender();
         require(sender == _pendingOwner, "Ownable2Step: not pending owner");
@@ -215,15 +228,24 @@ contract ERC20 is Context, IERC20, IERC20Metadata {
 contract FuturePayCoin is ERC20, Ownable2Step, Pausable, ReentrancyGuard {
     using SafeERC20 for IERC20;
 
-    // Optional off-chain metadata/content hash (e.g., IPFS CID)
+    /* -----------------------------------------------------------------
+       Fixed supply: 100,000,000 FPC (18 decimals) minted to owner once.
+       No further minting is possible.
+       ----------------------------------------------------------------- */
+    uint256 public constant FIXED_SUPPLY = 100_000_000 * 1e18;
+
+    // Optional off-chain metadata/content hash (e.g., IPFS CID/URI)
     string private _metadataHash;
 
     event MetadataHashUpdated(string newHash);
     event TokensRecovered(address indexed token, uint256 amount, address indexed by);
 
+    /**
+     * @param metadataHash_ Optional metadata URI/CID (e.g., ipfs://CID)
+     * @param owner_        Initial owner address (receives full fixed supply)
+     */
     constructor(
-        uint256 initialSupply_,        // in whole tokens (will be scaled by 10**decimals())
-        string memory metadataHash_,   // e.g. IPFS CID
+        string memory metadataHash_,
         address owner_
     )
         ERC20("Future Pay Coin", "FPC")
@@ -231,20 +253,40 @@ contract FuturePayCoin is ERC20, Ownable2Step, Pausable, ReentrancyGuard {
     {
         require(owner_ != address(0), "Owner cannot be zero");
         _metadataHash = metadataHash_;
-        _mint(owner_, initialSupply_ * (10 ** uint256(decimals())));
+
+        // Mint fixed supply to owner
+        _mint(owner_, FIXED_SUPPLY);
+
         emit MetadataHashUpdated(metadataHash_);
     }
 
-    /* Pause controls */
+    /* ----------------------------- Admin ----------------------------- */
+
+    /// @notice Pause all token transfers, burns, and mints (none exist) until unpaused.
     function pause() external onlyOwner { _pause(); }
+
+    /// @notice Unpause transfers and owner-burn.
     function unpause() external onlyOwner { _unpause(); }
 
-    /* Burn (holder-initiated) */
+    /* ----------------------------- Burn ------------------------------ */
+
+    /**
+     * @notice Burn tokens from the owner's balance.
+     * @dev ONLY owner can burn, and only when not paused.
+     * @param amount Amount in base units (18 decimals) to burn.
+     */
     function burn(uint256 amount) external onlyOwner whenNotPaused {
         _burn(_msgSender(), amount);
     }
 
-    /* Recover foreign tokens mistakenly sent to this contract (never FPC itself) */
+    /* ---------------------------- Recovery --------------------------- */
+
+    /**
+     * @notice Recover any ERC20 tokens mistakenly sent to this contract.
+     * @dev Cannot recover FPC itself.
+     * @param token  ERC20 token address to recover.
+     * @param amount Amount to transfer to the owner.
+     */
     function recoverTokens(IERC20 token, uint256 amount)
         external
         onlyOwner
@@ -255,22 +297,29 @@ contract FuturePayCoin is ERC20, Ownable2Step, Pausable, ReentrancyGuard {
         emit TokensRecovered(address(token), amount, _msgSender());
     }
 
-    /* Metadata */
+    /* ---------------------------- Metadata --------------------------- */
+
+    /// @notice Return the current metadata hash/URI.
     function metadataHash() external view returns (string memory) {
         return _metadataHash;
     }
 
+    /// @notice Update metadata hash/URI. Useful if you rotate IPFS content.
     function setMetadataHash(string calldata newHash) external onlyOwner {
         _metadataHash = newHash;
         emit MetadataHashUpdated(newHash);
     }
 
-    /* Hook: block transfers while paused */
+    /* -------------------------- Transfer Hook ------------------------ */
+
+    /**
+     * @dev Blocks all token movements while paused (including owner burn).
+     * Minting is not implemented; burning is gated by whenNotPaused.
+     */
     function _beforeTokenTransfer(address from, address to, uint256 value)
         internal
         override
     {
-        // allow mint (from zero) and burn (to zero) only when not paused as well
         require(!paused(), "FPC: paused");
         super._beforeTokenTransfer(from, to, value);
     }

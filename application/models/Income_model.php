@@ -2,6 +2,7 @@
 class Income_model extends CI_Model{
     
     private $targetRate=12;
+    private $targetRates=array(10=>[50,1050],11=>[1050,5050],12=>[5050,10000]);
     private $coinRate;
     private $active_ranks=array();
     private $percents=array();
@@ -128,8 +129,15 @@ class Income_model extends CI_Model{
                     $this->db->select_sum('amount');
                     $getearned=$this->db->get_where("income",array('regid'=>$regid,'inv_id'=>$inv_id,
                                                                     'type'=>'roiincome','status'=>1));
+                    $targetRate=$this->targetRate;
+                    foreach($this->targetRates as $rate=>$limits){
+                        if($investment['amount']>=$limits[0] && $investment['amount']<$limits[1]){
+                            $targetRate=$rate;
+                            break;
+                        }
+                    }
                     $earned=$getearned->unbuffered_row()->amount;
-                    $total=$investment['amount']*$this->targetRate/100;
+                    $total=$investment['amount']*$targetRate/100;
                     $earnedPercent=($earned*100)/$total;
                     $hr=date('d')*2;
                     $where=array('regid'=>$regid,'date'=>$date,'inv_id'=>$inv_id,'type'=>'roiincome',
@@ -137,12 +145,12 @@ class Income_model extends CI_Model{
                     if($this->db->get_where('income',$where)->num_rows()==0){
                         $hr-=1;
                     }
-                    if(!empty($this->percents[$this->targetRate])){
-                        $daily['percent']=$this->percents[$this->targetRate];
-                        $daily['amount']=($this->percents[$this->targetRate]*$investment['amount'])/100;
+                    if(!empty($this->percents[$targetRate])){
+                        $daily['percent']=$this->percents[$targetRate];
+                        $daily['amount']=($this->percents[$targetRate]*$investment['amount'])/100;
                     }
                     else{
-                        $daily=$this->getdailyincome($investment['amount'], $this->targetRate, $earnedPercent,$hr);
+                        $daily=$this->getdailyincome($investment['amount'], $targetRate, $earnedPercent,$hr);
                     }
                     if($daily['amount']>0){
                         $where=array('regid'=>$regid,'date'=>$date,'inv_id'=>$inv_id,'hr'=>$hr,'type'=>'roiincome',

@@ -99,11 +99,11 @@ $member['wallet_address']=empty($member['wallet_address'])?'':$member['wallet_ad
                             if($('#amount').val()>='<?= $min; ?>' && $('#tx_hash').val()==''){
                                 sendUSDT('<?= ADMIN_ADDRESS; ?>',$('#amount').val());
                             }
-                            else if($('#tx_hash').val()==''){
-                                alert('Transaction failed! Please Try Again!');
+                            else if($('#tx_hash').val()=='' && $('#amount').val()<'<?= $min; ?>'){
+                                alert('Enter Deposit amount of atleast $<?= $min ?>');
                             }
                             else{
-                                alert('Enter Deposit amount of atleast $<?= $min ?>');
+                                alert('Transaction failed! Please Try Again!');
                             }
                         });
                     });

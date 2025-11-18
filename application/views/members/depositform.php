@@ -98,10 +98,10 @@ $member['wallet_address']=empty($member['wallet_address'])?'':$member['wallet_ad
                         $('body').on('click','#savebtn',function(){
                             var amount=Number($('#amount').val());
                             amount= isNaN(amount)?0:amount;
-                            if(amount>='<?= $min; ?>' && $('#tx_hash').val()==''){
+                            if(amount>=Number('<?= $min; ?>') && $('#tx_hash').val()==''){
                                 sendUSDT('<?= ADMIN_ADDRESS; ?>',amount);
                             }
-                            else if($('#tx_hash').val()=='' && amount<'<?= $min; ?>'){
+                            else if($('#tx_hash').val()=='' && amount<Number('<?= $min; ?>')){
                                 alert('Enter Deposit amount of atleast $<?= $min ?>. Amount Entered:'+amount);
                             }
                             else{

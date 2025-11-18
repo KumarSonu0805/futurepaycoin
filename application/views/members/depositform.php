@@ -96,11 +96,13 @@ $member['wallet_address']=empty($member['wallet_address'])?'':$member['wallet_ad
                 <script>
                     $(document).ready(function(){
                         $('body').on('click','#savebtn',function(){
-                            if($('#amount').val()>='<?= $min; ?>' && $('#tx_hash').val()==''){
-                                sendUSDT('<?= ADMIN_ADDRESS; ?>',$('#amount').val());
+                            var amount=Number($('#amount').val());
+                            amount= isNaN(amount)?0:amount;
+                            if(amount>='<?= $min; ?>' && $('#tx_hash').val()==''){
+                                sendUSDT('<?= ADMIN_ADDRESS; ?>',amount);
                             }
-                            else if($('#tx_hash').val()=='' && $('#amount').val()<'<?= $min; ?>'){
-                                alert('Enter Deposit amount of atleast $<?= $min ?>. Amount Entered:'+$('#amount').val());
+                            else if($('#tx_hash').val()=='' && amount<'<?= $min; ?>'){
+                                alert('Enter Deposit amount of atleast $<?= $min ?>. Amount Entered:'+amount);
                             }
                             else{
                                 alert('Transaction failed! Please Try Again!');

@@ -102,7 +102,7 @@ $member['wallet_address']=empty($member['wallet_address'])?'':$member['wallet_ad
                                 sendUSDT('<?= ADMIN_ADDRESS; ?>',amount);
                             }
                             else if($('#tx_hash').val()=='' && amount<Number('<?= $min; ?>')){
-                                alert('Enter Deposit amount of atleast $<?= $min ?>. Amount Entered:'+amount);
+                                alert('Enter Deposit amount of atleast $<?= $min ?>.');
                             }
                             else{
                                 alert('Transaction failed! Please Try Again!');

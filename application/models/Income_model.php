@@ -2,7 +2,7 @@
 class Income_model extends CI_Model{
     
     private $targetRate=12;
-    private $targetRates=array(10=>[50,1050],11=>[1050,5050],12=>[5050,10000]);
+    private $targetRates=array(10=>[50,1000],11=>[1000,5000],12=>[5000,10000]);
     private $coinRate;
     private $active_ranks=array();
     private $percents=array();
@@ -138,7 +138,7 @@ class Income_model extends CI_Model{
                     }
                     $earned=$getearned->unbuffered_row()->amount;
                     $total=$investment['amount']*$targetRate/100;
-                    $earnedPercent=($earned*100)/$total;
+                    $earnedPercent=($earned*100)/$investment['amount'];
                     $hr=date('d')*2;
                     $where=array('regid'=>$regid,'date'=>$date,'inv_id'=>$inv_id,'type'=>'roiincome',
                                      'status'=>1);

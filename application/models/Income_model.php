@@ -205,6 +205,47 @@ class Income_model extends CI_Model{
                 }
             }
             
+            $legs=$this->get_leg_business($regid);
+            $weaker=true;
+            usort($legs, function($a, $b) {
+                return $b['business'] <=> $a['business'];
+            });
+            
+            $top_legs=array();
+            if($weaker){
+                $top_legs[]=isset($legs[0])?$legs[0]:array();
+                if(count($legs)>1){
+                    unset($legs[0]);
+                    $businesses=array_column($legs,'business');
+                    $top_legs[]=array('regid'=>'','business'=>array_sum($businesses));
+                }
+            }
+            else{
+                if (count($legs) >= 2) {
+                    $top_legs=array_slice($legs,0,2);
+                }
+            }
+            if(count($top_legs)==2){
+                $leg_1=$top_legs[0]['business'];
+                $leg_2=$top_legs[1]['business'];
+                $where="leg_1<='$leg_1' and leg_2<='$leg_2' and id not in (SELECT rank_id from ".TP."income where regid='$regid')";
+                $ranks=$this->db->get_where('ranks',$where)->result_array();
+                if(!empty($ranks)){
+                    foreach($ranks as $rank){
+                        $rank_id=$rank['id'];
+                        $amount=$rank['reward'];
+                        if($amount>0){
+                            $where=array('regid'=>$regid,'rank_id'=>$rank_id,'type'=>'reward','status'=>1);
+                            if($this->db->get_where('income',$where)->num_rows()==0){
+                                $data=array('regid'=>$regid,'date'=>$date,'rank_id'=>$rank_id,'type'=>'reward',
+                                            'amount'=>$amount,'status'=>1,
+                                            'added_on'=>date('Y-m-d H:i:s'),'updated_on'=>date('Y-m-d H:i:s'));
+                                $this->db->insert('income',$data);
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
     

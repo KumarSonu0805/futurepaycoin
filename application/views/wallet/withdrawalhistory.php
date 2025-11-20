@@ -59,7 +59,7 @@
                             let status = cell.getValue();
                             let html='';
                             if(status==0){
-                                html='<span class="text-primary">Request Pending</span>';   
+                                html='<span class="text-primary">Pending</span>';   
                             }
                             else if(status==1){
                                 html='<span class="text-success">Approved</span>';   

@@ -192,7 +192,7 @@ class Home extends MY_Controller {
     }
     
     public function generateincome($date=NULL){
-        $this->income->generateallincome($date);
+        //$this->income->generateallincome($date);
         echo "Executed at ".date('d-m-Y H:i:s');
     }
     

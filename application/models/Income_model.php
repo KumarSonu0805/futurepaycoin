@@ -2,7 +2,7 @@
 class Income_model extends CI_Model{
     
     private $targetRate=12;
-    private $targetRates=array(10=>[50,1000],11=>[1000,5000],12=>[5000,10000]);
+    private $targetRates=array(10=>[50,1000],11=>[1001,5000],12=>[5001,10000]);
     private $coinRate;
     private $active_ranks=array();
     private $percents=array();
@@ -123,7 +123,7 @@ class Income_model extends CI_Model{
             $inv_amounts=!empty($investments)?array_column($investments,'amount'):array();
             $selfbusiness=array_sum($inv_amounts);
             
-            if(!empty($investments)){
+            /*if(!empty($investments)){
                 foreach($investments as $investment){
                     $inv_id=$investment['id'];
                     $this->db->select_sum('amount');
@@ -140,6 +140,7 @@ class Income_model extends CI_Model{
                     $total=$investment['amount']*$targetRate/100;
                     $earnedPercent=($earned*100)/$investment['amount'];
                     $hr=date('d')*2;
+                    echo $targetRate.' :: '.$earned.' :: '.$total.' :: '.$earnedPercent.' :: '.$hr;
                     $where=array('regid'=>$regid,'date'=>$date,'inv_id'=>$inv_id,'type'=>'roiincome',
                                      'status'=>1);
                     if($this->db->get_where('income',$where)->num_rows()==0){
@@ -152,6 +153,7 @@ class Income_model extends CI_Model{
                     else{
                         $daily=$this->getdailyincome($investment['amount'], $targetRate, $earnedPercent,$hr);
                     }
+                    print_pre($daily);
                     if($daily['amount']>0){
                         $where=array('regid'=>$regid,'date'=>$date,'inv_id'=>$inv_id,'hr'=>$hr,'type'=>'roiincome',
                                      'status'=>1);
@@ -163,6 +165,57 @@ class Income_model extends CI_Model{
                         }
                     }
 
+                }
+            }*/
+            
+            if(!empty($investments)){
+                foreach($investments as $investment){
+                    $inv_id=$investment['id'];
+                    $start_date=$investment['date'];
+                    $this->db->select_sum('amount');
+                    
+                    $rate=0;
+                    foreach($this->targetRates as $rate=>$limits){
+                        if($investment['amount']>=$limits[0] && $investment['amount']<=$limits[1]){
+                            break;
+                        }
+                    }
+                    $per_day_rate=$rate/30;
+                    $total=$investment['amount']*$rate/100;
+                    
+                    if($date<date('Y-m-d',strtotime($start_date.' +30 days'))){
+                        $end_date=date('Y-m-d',strtotime($start_date.' +30 days'));
+                    }
+                    else{
+                        $start_date=date('Y-m-d',strtotime($start_date.' +30 days'));
+                        $end_date=date('Y-m-d',strtotime($start_date.' +60 days'));
+                    }
+                    
+                    $getearned=$this->db->get_where("income",array('regid'=>$regid,'inv_id'=>$inv_id,
+                                                                   'date>='=>$start_date,'date<'=>$end_date,
+                                                                    'type'=>'roiincome','status'=>1));
+                    $earned=$getearned->unbuffered_row()->amount;
+                    $earned=!empty($earned)?$earned:0;
+                    $rem=$total-$earned;
+                    $datediff=date_diff(date_create($end_date),date_create($date));
+                    $remdays=$datediff->days;
+                    $pending=$remdays*$investment['amount']*$per_day_rate/100;
+                    if($pending>$rem){
+                        $rem_percent=$rem*100/$total;
+                        $per_day_rate=$rem_percent*$per_day_rate/100;
+                    }
+                    
+                    $amount=$investment['amount']*$per_day_rate/100;
+                    
+                    if($amount>0){
+                        $where=array('regid'=>$regid,'date'=>$date,'inv_id'=>$inv_id,'type'=>'roiincome','status'=>1);
+                        if($this->db->get_where('income',$where)->num_rows()==0){
+                            $data=array('regid'=>$regid,'date'=>$date,'inv_id'=>$inv_id,'type'=>'roiincome',
+                                        'rate'=>$per_day_rate,'amount'=>$amount,'status'=>1,
+                                        'added_on'=>date('Y-m-d H:i:s'),'updated_on'=>date('Y-m-d H:i:s'));
+                            $this->db->insert('income',$data);
+                        }
+                    }
                 }
             }
             

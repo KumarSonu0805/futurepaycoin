@@ -181,6 +181,7 @@ class Income_model extends CI_Model{
                         }
                     }
                     $per_day_rate=$rate/30;
+                    $per_day_rate=round($per_day_rate,4);
                     $total=$investment['amount']*$rate/100;
                     
                     if($date<date('Y-m-d',strtotime($start_date.' +30 days'))){
@@ -206,6 +207,7 @@ class Income_model extends CI_Model{
                         $rem_percent=$rem*100/$total;
                         $amount=($rem_percent/$remdays)*$total/100;
                         $per_day_rate=$amount*100/$investment['amount'];
+                        $per_day_rate=round($per_day_rate,4);
                     }
                     else{
                         $amount=$investment['amount']*$per_day_rate/100;

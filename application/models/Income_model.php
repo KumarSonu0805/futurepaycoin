@@ -196,16 +196,22 @@ class Income_model extends CI_Model{
                                                                     'type'=>'roiincome','status'=>1));
                     $earned=$getearned->unbuffered_row()->amount;
                     $earned=!empty($earned)?$earned:0;
+                    $earned_percent=($earned*100)/$total;
                     $rem=$total-$earned;
                     $datediff=date_diff(date_create($end_date),date_create($date));
                     $remdays=$datediff->days;
                     $pending=$remdays*$investment['amount']*$per_day_rate/100;
-                    if($pending>$rem){
+                    //echo $remdays.' :: '.$earned.' :: '.$pending.' :: ';
+                    if($pending>$rem && $remdays>0){
                         $rem_percent=$rem*100/$total;
-                        $per_day_rate=$rem_percent*$per_day_rate/100;
+                        $amount=($rem_percent/$remdays)*$total/100;
+                        $per_day_rate=$amount*100/$investment['amount'];
+                    }
+                    else{
+                        $amount=$investment['amount']*$per_day_rate/100;
                     }
                     
-                    $amount=$investment['amount']*$per_day_rate/100;
+                    //echo $rem.' :: '.$rem_percent.' :: '.$per_day_rate.' :: '.$amount;
                     
                     if($amount>0){
                         $where=array('regid'=>$regid,'date'=>$date,'inv_id'=>$inv_id,'type'=>'roiincome','status'=>1);

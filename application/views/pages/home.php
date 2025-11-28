@@ -108,6 +108,21 @@ else{
    </div>
     <!-- end -->
        <?php } ?>
+    <!-- start -->
+   <div class="booster-timer d-flex justify-content-between align-items-center">
+         <div class="booster-label">
+              <div id="tokenInfo" class="">
+                <div style="display:flex;align-items:center;gap:10px;">
+                  <img id="tokenLogo" class="token-logo" src="<?= file_url('assets/images/logo.png'); ?>" height="50" alt="Logo">
+                  <div>
+                    <h3>1 FPC = $0.55</h3>
+                  </div>
+                </div>
+              </div>
+
+         </div>
+   </div>
+    <!-- end -->
       <div class="row">
          <div class="col-lg-3 col-md-6 col-sm-6">
             <div class="status-card">

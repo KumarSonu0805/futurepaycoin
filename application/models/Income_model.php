@@ -6,6 +6,7 @@ class Income_model extends CI_Model{
     private $coinRate;
     private $active_ranks=array();
     private $percents=array();
+    private $limit=1;
     
 	function __construct(){
 		parent::__construct(); 
@@ -182,7 +183,9 @@ class Income_model extends CI_Model{
                     }
                     $per_day_rate=$rate/30;
                     $per_day_rate=round($per_day_rate,4);
-                    $total=$investment['amount']*$rate/100;
+                    $amount=$investment['amount']*$per_day_rate/100;
+                    
+                    /*$total=$investment['amount']*$rate/100;
                     
                     if($date<date('Y-m-d',strtotime($start_date.' +30 days'))){
                         $end_date=date('Y-m-d',strtotime($start_date.' +30 days'));
@@ -211,12 +214,13 @@ class Income_model extends CI_Model{
                     }
                     else{
                         $amount=$investment['amount']*$per_day_rate/100;
-                    }
+                    }*/
                     
                     //echo $rem.' :: '.$rem_percent.' :: '.$per_day_rate.' :: '.$amount;
                     
                     if($amount>0){
                         $where=array('regid'=>$regid,'date'=>$date,'inv_id'=>$inv_id,'type'=>'roiincome','status'=>1);
+                        echo $this->db->get_where('income',$where)->num_rows();
                         if($this->db->get_where('income',$where)->num_rows()==0){
                             $data=array('regid'=>$regid,'date'=>$date,'inv_id'=>$inv_id,'type'=>'roiincome',
                                         'rate'=>$per_day_rate,'amount'=>$amount,'status'=>1,

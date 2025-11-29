@@ -109,8 +109,27 @@ else{
     <!-- end -->
        <?php } ?>
     <!-- start -->
+
    <div class="booster-timer d-flex justify-content-between align-items-center">
-         <div class="booster-label">
+         <div class="booster-label"><div id="marquee">🚀 Welcome to my website</div>
+
+<script>
+let pos = 300;
+const el = document.getElementById("marquee");
+
+setInterval(() => {
+  pos--;
+  el.style.transform = `translateX(${pos}px)`;
+  if (pos < -el.offsetWidth) pos = window.innerWidth;
+}, 20);
+</script>
+
+<style>
+#marquee {
+  position: absolute;
+  white-space: nowrap;
+}
+</style>
               <div id="tokenInfo" class="">
                 <div style="display:flex;align-items:center;gap:10px;">
                   <img id="tokenLogo" class="token-logo" src="<?= file_url('assets/images/logo.png'); ?>" height="50" alt="Logo">

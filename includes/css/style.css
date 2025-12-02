@@ -488,6 +488,13 @@ background: linear-gradient(135deg, #004e92, #000428);
   border-radius: 4px;
 }
 /* status card */
+      .status-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    gap:8px;
+    justify-content: space-between;
+    margin-top: 20px;
+}
 .status-card {
   background: var(--bg-color);
   border: 1px solid var(--accent-color);
@@ -496,6 +503,7 @@ background: linear-gradient(135deg, #004e92, #000428);
   padding: 20px 25px;
   box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
   transition: all 0.3s ease;
+   flex: 1 1 calc(16.66% - 12px);
 }
 
 .status-card:hover {
@@ -542,6 +550,34 @@ background: linear-gradient(135deg, #004e92, #000428);
 }
 .icon-blue path {
   stroke: var(--blue-color);
+}
+.booster-marquee {
+width: 100%;
+background: var(--card-bg);
+border: 1px solid var(--accent-color);
+border-radius: 10px;
+padding: 20px;
+box-shadow: 0 4px 10px var(--shadow-color);
+color: var(--text-color);
+margin-bottom: 20px;
+position: relative;
+overflow: hidden;
+display: flex;
+align-items: center;  
+height: 40px;
+}
+#marquee {
+position: absolute;
+white-space: nowrap;
+font-weight: 600;
+left: 100%;
+transition: none;
+}
+.booster-marquee:hover #marquee {
+animation-play-state: paused; 
+}
+.booster-status{
+margin-bottom: 20px;
 }
 /* wallet section start */
 .wallet-card {
@@ -631,78 +667,83 @@ footer a:hover {
   text-decoration: underline;
 }
 /* staking start */
+/* Flex Wrapper */
+.staking-flex {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px; /* very small gap */
+}
+
+/* Staking Card */
 .staking-card {
-  background: var(--bg-color);
-  color:var(--white);
-  border-radius: 12px;
-  padding:18px; 
-  width: 100%;
-  text-align: center;
-  position: relative; 
-  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  margin-top: 60px;
-  border: 1px solid var(--accent-color);
-
+    flex: 1 1 calc(33.33% - 8px);
+    background: var(--bg-color);
+    color: var(--white);
+    border-radius: 12px;
+    padding: 18px;
+    width: 100%;
+    text-align: center;
+    position: relative;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    border: 1px solid var(--accent-color);
+    transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.8s;
+    margin-top: 32px;   /* icon ke niche perfect gap */
 }
 
+/* Hover */
 .staking-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 20px rgba(0,0,0,0.12);
-   background: var(--bg-color);
-  color: var(--white);
-   transition: .8s;
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+    background: var(--bg-color);
+    color: var(--white);
 }
-.staking-card:hover h5{
-  color: var(--white);
+
+.staking-card:hover h5 {
+    color: var(--white);
 }
+
 .staking-card .stakingicon {
-  width: 50px;
-  height: 50px;
-  margin: 0 auto; 
-  position: absolute;
-  top: -30px; 
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: rgba(0, 0, 0, 0.1);
-  border-radius: 50%;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    width: 50px;
+    height: 50px;
+    margin: 0 auto;
+    position: absolute;
+    top: -30px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255,255,255,0.15);
+    border-radius: 50%;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
 }
 
 .staking-card .stakingicon img {
-  width: 24px;
-  height: 24px;
+    width: 24px;
+    height: 24px;
 }
-
 .staking-card h5 {
-  margin: 18px 0 5px;
-  font-size: .89rem;
-  font-weight: 600;
-  color: var(--white);
- 
+    margin: 18px 0 5px;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--white);
 }
-
-.staking-card span {
-  display: block;
-  font-size: 0.85rem;
-  color: #666;
-  margin-bottom: 10px;
-}
-
-.staking-card h3 {
-  font-size: 1.2rem;
-  color: var(--primary);
-  margin: 5px 0;
-}
-
 .staking-card h2 {
-  font-size: 1.4rem;
-  font-weight: 700;
-  color: var(--accent-color);
-  margin: 5px 0 0;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--accent-color);
+    margin: 5px 0 0;
+}
+.staking-card span {
+    display: block;
+    font-size: 0.85rem;
+    color: #ccc;
+    margin-bottom: 10px;
+}
+.staking-card h3 {
+    font-size: 1.2rem;
+    color: var(--primary);
+    margin: 5px 0;
 }
 
 /* profile section */
@@ -891,7 +932,7 @@ background: var(--card-bg);
     linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), 
     url('../images/golden-background.jpg') center/cover no-repeat;
   background-size: cover;
-  padding: 0 20px 30px 20px;
+  padding:45px 20px;
   border-radius: 10px;
 width: 100%;
   color: var(--white);
@@ -1024,9 +1065,13 @@ margin-bottom: 20px;
 }
 .dash-user-profile .textActive{
 color: var(--light-green);
-font-size: 1rem;
+font-size: .89rem;
+margin-bottom: 0;
 }
-
+.text-danger{
+  font-size: .89rem;
+  margin-bottom: 0;
+}
 /* dashboard profile end */
 
 /* Style checkboxes and radio like input fields */
@@ -1255,19 +1300,24 @@ font-size: 1rem;
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
-.btn-active {
-    display: inline-block;
-       padding: 8px 20px;
-    font-size: .89rem;
+
+ .btn-active {
+    display: flex;              
+    align-items: center;          
+    justify-content: center;     
+    padding: 8px 20px;
+    font-size: .8rem;
     font-weight: 600;
     text-transform: uppercase;
     text-decoration: none;
-    color: var(--Black-Rock)#0B0527;
+    color: var(--white);
     background: linear-gradient(90deg, #fab12f, #ffcc00);
     border-radius: 50px;
     box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
     transition: all 0.3s ease;
+    height: 40px;               
 }
+
 .btn-active:hover {
   background-color: var(--light-green);
   color: var(--Black-Rock);
@@ -1314,6 +1364,9 @@ font-size: 1rem;
     .staking-card {
     padding: 20px;
     }
+     .status-card {
+        flex: 1 1 calc(25% - 12px);
+    }
 }
 @media(max-width:1100px){
   .status-card ul {
@@ -1347,14 +1400,12 @@ font-size: 1rem;
       .wallet-card h2 {
         font-size: 1rem;
     }
-    .status-card p {
-    font-size: 0.7rem;
-}
+
 }
 @media(max-width:992px){
       .status-card
  {
-        margin: 8px 0;
+        margin:0;
 
     }
     .status-card {
@@ -1393,6 +1444,15 @@ div.table-responsive>div.dataTables_wrapper>div.row {
 .datatable-card{
   margin-bottom: 20px;
 }
+    .staking-card {
+        flex: 1 1 calc(50% - 8px);
+    }
+     .status-card {
+        flex: 1 1 calc(33.33% - 12px);
+    }
+    .dash-user-profile{
+      margin: 0;
+    }
 }
 
 @media(max-width: 768px) {
@@ -1500,6 +1560,14 @@ margin-bottom: 30px;
 .Congratulations-card{
   margin-bottom: 20px;
 }
+ .status-card {
+        flex: 1 1 calc(50% - 12px);
+    }
+}
+@media(max-width: 576px) {
+    /* .staking-card {
+        flex: 1 1 100%;
+    } */
 }
 @media(max-width:575px){
   .login-card {
@@ -1513,7 +1581,7 @@ margin-bottom: 30px;
     height: 80px;
   }
   .staking-card{
-    margin-top: 35px;
+    margin-top: 24px;
   }
   .topmenubar {
     padding: 12px;
@@ -1526,6 +1594,32 @@ margin-bottom: 30px;
 }
 .booster-timer{
   padding: 8px;
+}
+   .Congratulations-section {
+    margin: 0;
+}
+.staking-card h5 {
+        font-size: 0.78rem;
+    }
+.dash-user-profile {
+    margin: 14px 0;
+}
+    .staking-card {
+        padding: 12px;
+    }
+    .staking-card h2 {
+        font-size: .89rem;
+    }
+    .staking-card .stakingicon
+ {
+    width: 45px;
+    height: 45px;
+ }
+ .main-deshboard-section {
+    margin: 12px;
+}
+.status-card p {
+    font-size: 0.76rem;
 }
 }
 @media(max-width:545px){
@@ -1550,5 +1644,9 @@ margin-bottom: 30px;
  .booster-label{
   margin-bottom: 8px;
  }
-
+          .status-card {
+        padding: 12px;
+    }
 }
+
+

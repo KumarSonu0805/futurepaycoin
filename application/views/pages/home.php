@@ -89,151 +89,234 @@ else{
    <div class="status-cardsection">
        <?php if($b){ ?> 
     <!-- start -->
-   <div class="booster-timer d-flex justify-content-between align-items-center">
-         <div class="booster-label">
-            <h5 class="mb-0 fw-bold"><?= $text; ?></h5>
-         </div>
-         <div class="booster-status text-end">
-            <div class="booster-status text-end">
-               <div class="timer-box d-flex justify-content-end gap-2 <?= ($member['booster']==1)?'d-none':'' ?>" id="timer">
-                 <div class="time-item"><span id="days">07</span><small>Days</small></div>
-                 <div class="time-item"><span id="hours">06</span><small>Hrs</small></div>
-                 <div class="time-item"><span id="minutes">00</span><small>Min</small></div>
-                 <div class="time-item"><span id="seconds">00</span><small>Sec</small></div>
-                   <a href="<?= base_url('deposit/booster/'); ?>" class="btn btn-active" id="" style="padding-top: 15px;">Activate</a>
-               </div>
-               <button class="btn btn-active <?= ($member['booster']==1)?'':'d-none' ?>" id="activeBtn">Active</button>
-            </div>
-         </div>
+  <!-- <div class="booster-timer d-flex justify-content-between align-items-center">
+   <div class="booster-label">
+      <h5 class="mb-0 fw-bold"><?= $text; ?></h5>
    </div>
+   <div class="booster-status text-end">
+      <div class="booster-status text-end">
+         <div class="timer-box d-flex justify-content-end gap-2 <?= ($member['booster']==1)?'d-none':'' ?>" id="timer">
+            <div class="time-item"><span id="days">07</span><small>Days</small></div>
+            <div class="time-item"><span id="hours">06</span><small>Hrs</small></div>
+            <div class="time-item"><span id="minutes">00</span><small>Min</small></div>
+            <div class="time-item"><span id="seconds">00</span><small>Sec</small></div>
+            <a href="<?= base_url('deposit/booster/'); ?>" class="btn btn-active" id="" style="padding-top: 15px;">Activate</a>
+         </div>
+         <button class="btn btn-active <?= ($member['booster']==1)?'':'d-none' ?>" id="activeBtn">Active</button>
+      </div>
+   </div>
+</div> -->
     <!-- end -->
        <?php } ?>
     <!-- start -->
-
-   <div class="booster-timer d-flex justify-content-between align-items-center">
-         <div class="booster-label"><div id="marquee">🚀 Welcome to my website</div>
-
-<script>
-let pos = 300;
-const el = document.getElementById("marquee");
-
-setInterval(() => {
-  pos--;
-  el.style.transform = `translateX(${pos}px)`;
-  if (pos < -el.offsetWidth) pos = window.innerWidth;
-}, 20);
-</script>
-
-<style>
-#marquee {
-  position: absolute;
-  white-space: nowrap;
-}
-</style>
-              <div id="tokenInfo" class="">
-                <div style="display:flex;align-items:center;gap:10px;">
-                  <img id="tokenLogo" class="token-logo" src="<?= file_url('assets/images/logo.png'); ?>" height="50" alt="Logo">
-                  <div>
-                    <h3>1 FPC = $0.55</h3>
-                  </div>
-                </div>
-              </div>
-
-         </div>
-   </div>
-    <!-- end -->
-      <div class="row">
-         <div class="col-lg-3 col-md-6 col-sm-6">
-            <div class="status-card">
-               <ul>
-                  <li>
-                     <div class="status-icon">
-                        <svg width="46" height="46" viewBox="0 0 46 46" fill="none" xmlns="http://www.w3.org/2000/svg">
-                           <path fill-rule="evenodd" clip-rule="evenodd" d="M22.9715 29.3168C15.7197 29.3168 9.52686 30.4132 9.52686 34.8043C9.52686 39.1953 15.6804 40.331 22.9715 40.331C30.2233 40.331 36.4144 39.2328 36.4144 34.8435C36.4144 30.4543 30.2626 29.3168 22.9715 29.3168Z" stroke="#3AC977" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
-                           <path fill-rule="evenodd" clip-rule="evenodd" d="M22.9714 23.0537C27.7304 23.0537 31.5875 19.1948 31.5875 14.4359C31.5875 9.67694 27.7304 5.81979 22.9714 5.81979C18.2125 5.81979 14.3536 9.67694 14.3536 14.4359C14.3375 19.1787 18.1696 23.0377 22.9107 23.0537H22.9714Z" stroke="#3AC977" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
-                        </svg>
-                     </div>
-                  </li>
-                  <li>
-                     <h4><?= countdirects(); ?></h4>
-                     <p>My Referrals</p>
-                  </li>
-               </ul>
-            </div>
-         </div>
-         <div class="col-lg-3 col-md-6 col-sm-6">
-            <div class="status-card">
-               <ul>
-                  <li>
-                     <div class="status-icon">
-                        <svg width="46" height="46" viewBox="0 0 46 46" fill="none" xmlns="http://www.w3.org/2000/svg">
-                           <path d="M34.0396 20.974C36.6552 20.6065 38.6689 18.364 38.6746 15.6471C38.6746 12.9696 36.7227 10.7496 34.1633 10.3296" stroke="#FF5E5E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
-                           <path d="M37.4912 27.262C40.0243 27.6407 41.7925 28.5276 41.7925 30.3557C41.7925 31.6139 40.96 32.4314 39.6137 32.9451" stroke="#FF5E5E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
-                           <path fill-rule="evenodd" clip-rule="evenodd" d="M22.7879 28.0373C16.7616 28.0373 11.6147 28.9504 11.6147 32.5973C11.6147 36.2423 16.7297 37.1817 22.7879 37.1817C28.8141 37.1817 33.9591 36.2779 33.9591 32.6292C33.9591 28.9804 28.846 28.0373 22.7879 28.0373Z" stroke="#FF5E5E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
-                           <path fill-rule="evenodd" clip-rule="evenodd" d="M22.7876 22.8325C26.742 22.8325 29.9483 19.6281 29.9483 15.6719C29.9483 11.7175 26.742 8.51123 22.7876 8.51123C18.8333 8.51123 15.627 11.7175 15.627 15.6719C15.612 19.6131 18.7939 22.8194 22.7351 22.8325H22.7876Z" stroke="#FF5E5E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
-                           <path d="M11.5344 20.974C8.91691 20.6065 6.90504 18.364 6.89941 15.6471C6.89941 12.9696 8.85129 10.7496 11.4107 10.3296" stroke="#FF5E5E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
-                           <path d="M8.0825 27.262C5.54937 27.6407 3.78125 28.5276 3.78125 30.3557C3.78125 31.6139 4.61375 32.4314 5.96 32.9451" stroke="#FF5E5E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
-                        </svg>
-                     </div>
-                  </li>
-                  <li>
-                     <h4><?= countteam(); ?></h4>
-                     <p>Total Team</p>
-                  </li>
-               </ul>
-            </div>
-         </div>
-         <div class="col-lg-3 col-md-6 col-sm-6">
-            <div class="status-card">
-               <ul>
-                  <li>
-                     <div class="status-icon currentstatus">
-                        <svg width="46" height="46" viewBox="0 0 46 46" fill="none" xmlns="http://www.w3.org/2000/svg">
-                           <path fill-rule="evenodd" clip-rule="evenodd"
-                              d="M22.9717 41.0539C22.9717 41.0539 37.3567 36.6983 37.3567 24.6908C37.3567 12.6814 37.878 11.7439 36.723 10.5889C35.5699 9.43391 24.858 5.69891 22.9717 5.69891C21.0855 5.69891 10.3736 9.43391 9.21863 10.5889C8.0655 11.7439 8.58675 12.6814 8.58675 24.6908C8.58675 36.6983 22.9717 41.0539 22.9717 41.0539Z"
-                              stroke="#2196f3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                           <path d="M26.4945 26.4642L19.4482 19.4179"
-                              stroke="#2196f3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                           <path d="M19.4487 26.4642L26.495 19.4179"
-                              stroke="#2196f3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                        </svg>
-                     </div>
-                  </li>
-                  <li>
-                     <h4><?= $member['status']==1?'Active':'In-Active' ?></h4>
-                     <p>Current Status</p>
-                  </li>
-               </ul>
-            </div>
-         </div>
-         <div class="col-lg-3 col-md-6 col-sm-6">
-            <div class="status-card">
-               <ul>
-                  <li>
-                     <div class="status-icon basic">
-                        <svg width="46" height="46" viewBox="0 0 46 46" fill="none" xmlns="http://www.w3.org/2000/svg">
-                           <path fill-rule="evenodd" clip-rule="evenodd" d="M32.8961 26.5849C34.1612 26.5849 35.223 27.629 35.0296 28.8783C33.8947 36.2283 27.6026 41.6855 20.0138 41.6855C11.6178 41.6855 4.8125 34.8803 4.8125 26.4862C4.8125 19.5704 10.0664 13.1283 15.9816 11.6717C17.2526 11.3579 18.5553 12.252 18.5553 13.5605C18.5553 22.4263 18.8533 24.7197 20.5368 25.9671C22.2204 27.2145 24.2 26.5849 32.8961 26.5849Z" stroke="var(--accent-color)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
-                           <path fill-rule="evenodd" clip-rule="evenodd" d="M41.1733 19.2019C41.2739 13.5059 34.2772 4.32428 25.7509 4.48217C25.0877 4.49402 24.5568 5.04665 24.5272 5.70783C24.3121 10.3914 24.6022 16.4605 24.764 19.2118C24.8134 20.0684 25.4864 20.7414 26.341 20.7907C29.1693 20.9526 35.4594 21.1736 40.0759 20.4749C40.7035 20.3802 41.1634 19.8355 41.1733 19.2019Z" stroke="var(--accent-color)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
-                        </svg>
-                     </div>
-                  </li>
-                  <li>
-                     <h4>--</h4>
-                     <p>Current Rank</p>
-                  </li>
-               </ul>
+<!-- 
+  <div class="booster-timer d-flex justify-content-between align-items-center">
+   <div class="booster-label">
+      <div id="marquee">🚀 Welcome to my website</div>
+      <script>
+         let pos = 300;
+         const el = document.getElementById("marquee");
+         
+         setInterval(() => {
+         pos--;
+         el.style.transform = `translateX(${pos}px)`;
+         if (pos < -el.offsetWidth) pos = window.innerWidth;
+         }, 20);
+      </script>
+      <style>
+         #marquee {
+         position: absolute;
+         white-space: nowrap;
+         }
+      </style>
+      <div id="tokenInfo" class="">
+         <div style="display:flex;align-items:center;gap:10px;">
+            <img id="tokenLogo" class="token-logo" src="<?= file_url('assets/images/logo.png'); ?>" height="50" alt="Logo">
+            <div>
+               <h3>1 FPC = $0.55</h3>
             </div>
          </div>
       </div>
+   </div>
+</div> -->
+    <!-- end -->
+ <div class="status-wrapper">
+    <div class="status-card">
+        <ul>
+            <li>
+                <div class="status-icon">
+                    <svg width="46" height="46" viewBox="0 0 46 46" fill="none">
+                        <path d="M9 15C9 12.2386 11.2386 10 14 10H32C34.7614 10 37 12.2386 37 15V31C37 33.7614 34.7614 36 32 36H14C11.2386 36 9 33.7614 9 31V15Z"
+                            stroke="#3AC977" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M9 18H37" stroke="#3AC977" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M32 23C33.6569 23 35 21.6569 35 20C35 18.3431 33.6569 17 32 17C30.3431 17 29 18.3431 29 20C29 21.6569 30.3431 23 32 23Z"
+                            stroke="#3AC977" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </div>
+            </li>
+            <li>
+                <h4><?= countdirects(); ?></h4>
+                <p>Wallet Balance</p>
+            </li>
+        </ul>
+    </div>
+    <div class="status-card">
+        <ul>
+            <li>
+                <div class="status-icon">
+                    <svg width="46" height="46" viewBox="0 0 46 46" fill="none">
+                        <path d="M23 40C31.2843 40 38 33.2843 38 25C38 16.7157 31.2843 10 23 10C14.7157 10 8 16.7157 8 25C8 33.2843 14.7157 40 23 40Z"
+                            stroke="#2196F3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M23 30V20" stroke="#2196F3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M19 23L23 19L27 23" stroke="#2196F3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </div>
+            </li>
+            <li>
+                <h4><?= countteam(); ?></h4>
+                <p>Total Income</p>
+            </li>
+        </ul>
+    </div>
+    <div class="status-card">
+        <ul>
+            <li>
+                <div class="status-icon">
+                    <svg width="46" height="46" viewBox="0 0 46 46" fill="none">
+                        <path d="M23 28C28.5228 28 33 23.5228 33 18C33 12.4772 28.5228 8 23 8C17.4772 8 13 12.4772 13 18C13 23.5228 17.4772 28 23 28Z"
+                            stroke="#FF9800" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M23 13L24.8 16.8L29 17.3L26 20.1L26.8 24L23 22L19.2 24L20 20.1L17 17.3L21.2 16.8L23 13Z"
+                            stroke="#FF9800" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M17 28L15 36L21 32" stroke="#FF9800" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M29 28L31 36L25 32" stroke="#FF9800" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </div>
+            </li>
+            <li>
+                <h4><?= countdirects(); ?></h4>
+                <p>Rank Status</p>
+            </li>
+        </ul>
+    </div>
+    <div class="status-card">
+        <ul>
+            <li>
+                <div class="status-icon">
+                    <svg width="46" height="46" viewBox="0 0 46 46" fill="none">
+                        <path d="M23 40C31.2843 40 38 33.2843 38 25C38 16.7157 31.2843 10 23 10C14.7157 10 8 16.7157 8 25C8 33.2843 14.7157 40 23 40Z"
+                            stroke="#F44336" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M23 20V30" stroke="#F44336" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M19 27L23 31L27 27" stroke="#F44336" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </div>
+            </li>
+            <li>
+                <h4><?= countteam(); ?></h4>
+                <p>Total Withdrawal</p>
+            </li>
+        </ul>
+    </div>
+    <div class="status-card">
+        <ul>
+            <li>
+                <div class="status-icon">
+                    <svg width="46" height="46" viewBox="0 0 46 46" fill="none">
+                        <path d="M23 22C26.3137 22 29 19.3137 29 16C29 12.6863 26.3137 10 23 10C19.6863 10 17 12.6863 17 16C17 19.3137 19.6863 22 23 22Z"
+                            stroke="#9C27B0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M14 32C14 27.5817 17.5817 24 22 24H24C28.4183 24 32 27.5817 32 32"
+                            stroke="#9C27B0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M31 20C33.2091 20 35 18.2091 35 16C35 13.7909 33.2091 12 31 12"
+                            stroke="#9C27B0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M34 28C34 25.2386 31.7614 23 29 23"
+                            stroke="#9C27B0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </div>
+            </li>
+            <li>
+                <h4><?= countdirects(); ?></h4>
+                <p>Active Members</p>
+            </li>
+        </ul>
+    </div>
+    <div class="status-card">
+        <ul>
+            <li>
+                <div class="status-icon">
+                    <svg width="46" height="46" viewBox="0 0 46 46" fill="none">
+                        <path d="M23 20C25.7614 20 28 17.7614 28 15C28 12.2386 25.7614 10 23 10C20.2386 10 18 12.2386 18 15C18 17.7614 20.2386 20 23 20Z"
+                            stroke="#009688" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M16 30C16 25.5817 19.5817 22 24 22H22C26.4183 22 30 25.5817 30 30"
+                            stroke="#009688" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M15 21C17.2091 21 19 19.2091 19 17C19 14.7909 17.2091 13 15 13C12.7909 13 11 14.7909 11 17C11 19.2091 12.7909 21 15 21Z"
+                            stroke="#009688" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M10 28C10 25.2386 12.2386 23 15 23"
+                            stroke="#009688" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M31 21C33.2091 21 35 19.2091 35 17C35 14.7909 33.2091 13 31 13C28.7909 13 27 14.7909 27 17C27 19.2091 28.7909 21 31 21Z"
+                            stroke="#009688" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M36 28C36 25.2386 33.7614 23 31 23"
+                            stroke="#009688" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </div>
+            </li>
+            <li>
+                <h4><?= countteam(); ?></h4>
+                <p>Total Team</p>
+            </li>
+        </ul>
+    </div>
+</div>
+
+
    </div>
    <div class="Congratulations-section">
       <div class="row">
          <div class="col-lg-6 col-md-12 col-sm-12">
             <div class="dash-user-profile">
                <div class="dash-profile-bg">
-                  <img src="<?php echo ($user['photo']); ?>" alt="<?php echo ($user['photo']); ?>">
-                  <h2><?php echo ($user['username']); ?></h2>
-                  <?= $member['status']==1?'<p class="textActive">Active</p>':'<p class="text-danger">In-Active</p>' ?>
+                  <!-- marquee tag -->
+                  <div class="booster-marquee">
+                     <div id="marquee">🚀 Welcome to Future Pay Coin — Live Rate: 0.55%</div>
+                  </div>
+                  <script>
+                     const el = document.getElementById("marquee");
+                     const parent = el.parentElement;
+                     
+                     let pos = parent.offsetWidth;
+                     let speed = .89;
+                     let pause = false;
+                     parent.addEventListener("mouseenter", () => pause = true);
+                     parent.addEventListener("mouseleave", () => pause = false);
+                     
+                     function animate() {
+                        if (!pause) {
+                           pos -= speed;
+                           el.style.left = pos + "px";
+                     
+                           if (pos < -el.offsetWidth) {
+                                 pos = parent.offsetWidth; 
+                           }
+                        }
+                        requestAnimationFrame(animate);
+                     }
+                     
+                     animate();
+                  </script>
+                   <!-- marquee tag end -->
+                    <!-- time booster start -->
+                     <div class="booster-status">
+                        <div class="timer-box d-flex justify-content-center align-items-center gap-2 <?= ($member['booster']==1)?'d-none':'' ?>" id="timer">
+                        <div class="time-item"><span id="days">07</span><small>Days</small></div>
+                        <div class="time-item"><span id="hours">06</span><small>Hrs</small></div>
+                        <div class="time-item"><span id="minutes">00</span><small>Min</small></div>
+                        <div class="time-item"><span id="seconds">00</span><small>Sec</small></div>
+                           <!-- <a href="<?= base_url('deposit/booster/'); ?>" class="btn btn-active" id="">Activate</a> -->
+                        </div>
+                     </div>
+                 
+                     <!-- time booster end -->
+                  <!-- <img src="<?php echo ($user['photo']); ?>" alt="<?php echo ($user['photo']); ?>"> -->
+                  <!-- <h2><?php echo ($user['username']); ?></h2> -->
+                  <!-- <?= $member['status']==1?'<p class="textActive">Active</p>':'<p class="text-danger">In-Active</p>' ?> -->
                   <div class="row">
                      <div class="col-md-12">
                         <h5>Referral Link</h5>
@@ -269,6 +352,10 @@ setInterval(() => {
                            <td>Activation</td>
                            <td class="left-record"><?= !empty($member['activation_date'])?date('d-m-Y',strtotime($member['activation_date'])):'--' ?></td>
                         </tr>
+                          <tr>
+                           <td>Status</td>
+                           <td class="left-record"><?= $member['status']==1?'<p class="textActive">Active</p>':'<p class="text-danger">In-Active</p>' ?></td>
+                        </tr>
                         <?php /*?><tr>
                            <td>Direct Team</td>
                            <td class="left-record">Alt 0 <span>Active: </span> 0</td>
@@ -294,14 +381,14 @@ setInterval(() => {
             $incomes=getincome();
           ?>
          <div class="col-lg-6 col-md-12 col-sm-12">
-            <div class="staking-section">
+            <!-- <div class="staking-section">
                <div class="row">
                   <div class="col-lg-4 col-md-6 col-sm-6">
                      <div class="staking-card">
                         <div class="stakingicon">
                            <img src="<?= file_url('assets/images/future-coin.png'); ?>" alt="future-coin" width="24px">
                         </div>
-                        <h5>Staking Reward</h5>
+                        <h5>My Investment</h5>
                         <h2>
                            $ <?= $this->amount->toDecimal($incomes['roiincome'],true,5); ?>
                         </h2>
@@ -312,7 +399,7 @@ setInterval(() => {
                         <div class="stakingicon">
                            <img src="<?= file_url('assets/images/future-coin.png'); ?>" alt="future-coin" width="24px">
                         </div>
-                        <h5>Level Income</h5>
+                        <h5>Direct Business</h5>
                         <h2>
                            $ <?= $this->amount->toDecimal($incomes['level'],true,5); ?>
                         </h2>
@@ -323,7 +410,7 @@ setInterval(() => {
                         <div class="stakingicon">
                            <img src="<?= file_url('assets/images/future-coin.png'); ?>" alt="future-coin" width="24px">
                         </div>
-                        <h5>Monthly Income Bonus</h5>
+                        <h5>Total Team Business</h5>
                         <h2>
                            $ <?= $this->amount->toDecimal($incomes['matching'],true,5); ?>
                         </h2>
@@ -335,7 +422,7 @@ setInterval(() => {
                         <div class="stakingicon">
                            <img src="<?= file_url('assets/images/future-coin.png'); ?>" alt="future-coin" width="24px">
                         </div>
-                        <h5>Wheel Bonus</h5>
+                        <h5>Power Leg</h5>
                         <h2>
                            $ <?= $this->amount->toDecimal($incomes['wheel'],true,5); ?>
                         </h2>
@@ -346,7 +433,7 @@ setInterval(() => {
                         <div class="stakingicon">
                            <img src="<?= file_url('assets/images/future-coin.png'); ?>" alt="future-coin" width="24px">
                         </div>
-                        <h5>Rank & Rewards</h5>
+                        <h5>Weaker Leg</h5>
                         <h2>
                            $ <?= $this->amount->toDecimal($incomes['reward'],true,5); ?>
                         </h2>
@@ -364,7 +451,7 @@ setInterval(() => {
                         <div class="stakingicon">
                            <img src="<?= file_url('assets/images/future-coin.png'); ?>" alt="future-coin" width="24px">
                         </div>
-                        <h5>Total Business</h5>
+                        <h5>Staking Reward</h5>
                         <h2>
                            $ <?= $this->amount->toDecimal($power+$weaker,true,5); ?>
                         </h2>
@@ -375,7 +462,7 @@ setInterval(() => {
                         <div class="stakingicon">
                            <img src="<?= file_url('assets/images/future-coin.png'); ?>" alt="future-coin" width="24px">
                         </div>
-                        <h5>Power Leg</h5>
+                        <h5>Level Income</h5>
                         <h2>
                            $ <?= $this->amount->toDecimal($power,true,5); ?>
                         </h2>
@@ -386,14 +473,130 @@ setInterval(() => {
                         <div class="stakingicon">
                            <img src="<?= file_url('assets/images/future-coin.png'); ?>" alt="future-coin" width="24px">
                         </div>
-                        <h5>Weaker Leg</h5>
+                        <h5>Surprise Wheel (Lucky Bonus)</h5>
+                        <h2>
+                           $ <?= $this->amount->toDecimal($weaker,true,5); ?>
+                        </h2>
+                     </div>
+                  </div>
+                  <div class="col-lg-4 col-md-6 col-sm-6">
+                     <div class="staking-card">
+                        <div class="stakingicon">
+                           <img src="<?= file_url('assets/images/future-coin.png'); ?>" alt="future-coin" width="24px">
+                        </div>
+                        <h5>Monthly Income Bonus</h5>
+                        <h2>
+                           $ <?= $this->amount->toDecimal($weaker,true,5); ?>
+                        </h2>
+                     </div>
+                  </div>
+                   <div class="col-lg-4 col-md-6 col-sm-6">
+                     <div class="staking-card">
+                        <div class="stakingicon">
+                           <img src="<?= file_url('assets/images/future-coin.png'); ?>" alt="future-coin" width="24px">
+                        </div>
+                        <h5>Rank & Rewards</h5>
                         <h2>
                            $ <?= $this->amount->toDecimal($weaker,true,5); ?>
                         </h2>
                      </div>
                   </div>
                </div>
+            </div> -->
+            <div class="staking-section">
+
+    <div class="staking-flex">
+        <div class="staking-card">
+            <div class="stakingicon">
+                <img src="<?= file_url('assets/images/future-coin.png'); ?>" width="24">
             </div>
+            <h5>My Investment</h5>
+            <h2>$ <?= $this->amount->toDecimal($incomes['roiincome'],true,5); ?></h2>
+        </div>
+
+        <div class="staking-card">
+            <div class="stakingicon">
+                <img src="<?= file_url('assets/images/future-coin.png'); ?>" width="24">
+            </div>
+            <h5>Direct Business</h5>
+            <h2>$ <?= $this->amount->toDecimal($incomes['level'],true,5); ?></h2>
+        </div>
+
+        <div class="staking-card">
+            <div class="stakingicon">
+                <img src="<?= file_url('assets/images/future-coin.png'); ?>" width="24">
+            </div>
+            <h5>Total Team Business</h5>
+            <h2>$ <?= $this->amount->toDecimal($incomes['matching'],true,5); ?></h2>
+        </div>
+
+        <div class="staking-card">
+            <div class="stakingicon">
+                <img src="<?= file_url('assets/images/future-coin.png'); ?>" width="24">
+            </div>
+            <h5>Power Leg</h5>
+            <h2>$ <?= $this->amount->toDecimal($incomes['wheel'],true,5); ?></h2>
+        </div>
+
+        <div class="staking-card">
+            <div class="stakingicon">
+                <img src="<?= file_url('assets/images/future-coin.png'); ?>" width="24">
+            </div>
+            <h5>Weaker Leg</h5>
+            <h2>$ <?= $this->amount->toDecimal($incomes['reward'],true,5); ?></h2>
+        </div>
+
+        <!-- PHP Section -->
+        <?php
+           $legs = getlegbusiness(true);
+           $power = !empty($legs[0]['business']) ? $legs[0]['business'] : 0;
+           $weaker = !empty($legs[1]['business']) ? $legs[1]['business'] : 0;
+        ?>
+
+        <div class="staking-card">
+            <div class="stakingicon">
+                <img src="<?= file_url('assets/images/future-coin.png'); ?>" width="24">
+            </div>
+            <h5>Staking Reward</h5>
+            <h2>$ <?= $this->amount->toDecimal($power + $weaker,true,5); ?></h2>
+        </div>
+
+        <div class="staking-card">
+            <div class="stakingicon">
+                <img src="<?= file_url('assets/images/future-coin.png'); ?>" width="24">
+            </div>
+            <h5>Level Income</h5>
+            <h2>$ <?= $this->amount->toDecimal($power,true,5); ?></h2>
+        </div>
+
+        <div class="staking-card">
+            <div class="stakingicon">
+                <img src="<?= file_url('assets/images/future-coin.png'); ?>" width="24">
+            </div>
+            <h5>Surprise Wheel (Lucky Bonus)</h5>
+            <h2>$ <?= $this->amount->toDecimal($weaker,true,5); ?></h2>
+        </div>
+
+        <div class="staking-card">
+            <div class="stakingicon">
+                <img src="<?= file_url('assets/images/future-coin.png'); ?>" width="24">
+            </div>
+            <h5>Monthly Income Bonus</h5>
+            <h2>$ <?= $this->amount->toDecimal($weaker,true,5); ?></h2>
+        </div>
+
+        <div class="staking-card">
+            <div class="stakingicon">
+                <img src="<?= file_url('assets/images/future-coin.png'); ?>" width="24">
+            </div>
+            <h5>Rank & Rewards</h5>
+            <h2>$ <?= $this->amount->toDecimal($weaker,true,5); ?></h2>
+        </div>
+
+    </div>
+
+</div>
+
          </div>
       </div>
        <style>
@@ -401,7 +604,7 @@ setInterval(() => {
     canvas {
       display: block;
       max-width: 100%;
-      max-height: 240px; /* ✅ keeps chart inside the card */
+      max-height: 240px; 
     }
 
     .legend-row { display:flex;gap:8px;flex-wrap:wrap;margin-top:12px }
@@ -506,7 +709,7 @@ setInterval(() => {
       legendEl.appendChild(item);
     });
   </script>
-      <div class="row">
+      <!-- <div class="row">
          <div class="col-lg-3 col-md-6">
             <div class="wallet-card">
                <ul>
@@ -567,7 +770,7 @@ setInterval(() => {
                </ul>
             </div>
          </div>
-      </div>
+      </div> -->
    </div>
    <div class="dashboard-datatable d-none">
       <div class="row">

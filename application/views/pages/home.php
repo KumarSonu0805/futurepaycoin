@@ -319,7 +319,7 @@ else{
                   <!-- <?= $member['status']==1?'<p class="textActive">Active</p>':'<p class="text-danger">In-Active</p>' ?> -->
               <!-- marquee tag -->
                   <div class="booster-marquee">
-                     <div id="marquee"><img src="<?= file_url('assets/images/logo.png'); ?>" alt="logo" class="marquee-logo"> welcome to future pay coin live rate : 055$</div>
+                     <div id="marquee"><img src="<?= file_url('assets/images/logo.png'); ?>" alt="logo" class="marquee-logo"> welcome to future pay coin live rate : 0.55$</div>
                   </div>
                   <script>
                      const el = document.getElementById("marquee");

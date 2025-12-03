@@ -558,7 +558,7 @@ border: 1px solid var(--accent-color);
 border-radius: 6px;
 padding: 20px;
 box-shadow: 0 4px 10px var(--shadow-color);
-color: var(--text-color);
+color: var(--accent-color);
 margin-bottom: 20px;
 position: relative;
 overflow: hidden;
@@ -572,14 +572,14 @@ white-space: nowrap;
 font-weight: 600;
 left: 100%;
 transition: none;
-font-size: 14px;
+font-size: 18px;
 }
 .booster-marquee:hover #marquee {
 animation-play-state: paused; 
 }
 .marquee-logo {
-    width: 18px;     
-    height: 18px;    
+    width: 24px;     
+    height: 24px;    
     margin-right: 5px;
     vertical-align: middle;
 }

@@ -1637,6 +1637,9 @@ margin-bottom: 30px;
     .Congratulations-section {
     margin: 20px 0;
 }
+.dash-profile-bg h2 {
+    font-size: 1.1rem;
+}
 }
 @media(max-width: 576px) {
     /* .staking-card {

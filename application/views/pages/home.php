@@ -275,11 +275,11 @@ else{
             </li>
             <li>
                <h4>$0.00</h4>
-               <p>Total Income</p>
-            </li>
-            <li>
-               <h4>$0.00</h4>
                <p>Rank Status</p>
+            </li>
+             <li>
+               <h4>$0.00</h4>
+               <p>Active Members</p>
             </li>
          </ul>
       </div>
@@ -292,11 +292,11 @@ else{
          <ul>
             <li>
                <h4>$0.00</h4>
-               <p>Total Withdrawal</p>
+               <p>Total Income</p>
             </li>
             <li>
                <h4>$0.00</h4>
-               <p>Active Members</p>
+               <p>Total Withdrawal</p>
             </li>
             <li>
                <h4>$0.00</h4>

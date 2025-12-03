@@ -577,8 +577,66 @@ transition: none;
 animation-play-state: paused; 
 }
 .booster-status{
-margin-bottom: 20px;
+margin-bottom: 10px;
 }
+/* mobile section start */
+ .mobilestatus-wrapper {
+      display: flex;
+      justify-content:space-between;
+    background: var(--bg-color);
+    border: 1px solid var(--accent-color);
+    color: var(--white);
+    border-radius: 12px;
+    padding: 20px 25px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+
+}
+.mobilewrapper-logo{
+  display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+}
+.mobilestatus-card {
+    padding: 10px 0;
+}
+
+.mobilestatus-card ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.mobilestatus-card ul li {
+    margin-bottom: 15px;
+}
+.mobilestatus-card ul li:last-child{
+   margin-bottom: 0;
+}
+.mobilestatus-card h4 {
+    color: #fff;
+    font-size: 22px;
+    font-weight: 400;
+    margin: 0;
+}
+
+.mobilestatus-card p {
+    color: #aaa;
+    font-size: 14px;
+    margin: 3px 0 0;
+}
+
+/* CENTER GOLD COIN */
+.center-card {
+    margin: 15px 0;
+}
+
+.mobilewrapper-logo img {
+    width: 140px;
+    height: auto;
+}
+/* mobile sectio end */
 /* wallet section start */
 .wallet-card {
   background: var(--bg-color);
@@ -932,28 +990,28 @@ background: var(--card-bg);
     linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), 
     url('../images/golden-background.jpg') center/cover no-repeat;
   background-size: cover;
-  padding:45px 20px;
+  padding:45px 20px 20px 20px;
   border-radius: 10px;
 width: 100%;
   color: var(--white);
-  margin: 40px 0;
+  margin: 20px 0;
 }
 
 .dash-profile-bg img {
-  margin-top: -40px;
-  width: 120px;
-  height: 120px;
+  margin-top: -100px;
+  width: 100px;
+  height: 100px;
   border-radius: 50%;
   border: 3px solid #fff;
-  margin-bottom: 10px;
+  margin-bottom: 0;
  
 }
 .dash-profile-bg p{
   color: var(--accent-color);
 }
 .dash-profile-bg h2 {
-  font-size: 1.5rem;
-  margin: 5px 0;
+  font-size: 1.3rem;
+  margin:0 0 8px 0;
 }
 .dash-profile-bg .referral-link button{
   border: none;
@@ -994,7 +1052,10 @@ width: 100%;
   border-radius: 0!important;
 background:var(--white) ;
 }
-
+.referral-link button.addonBtn:hover{
+  background: var(--bg-color);
+  color: var(--white);
+}
 .referral-link button.btn i {
   font-size: 14px;
 }
@@ -1059,6 +1120,9 @@ text-decoration: none;
 .dashbord-table .left-record{
 color: var(--accent-color);
 
+}
+.dashbord-table .table.table-striped-columns{
+margin-bottom: 0;
 }
 .dash-user-profile .futureBtn{
 margin-bottom: 20px;
@@ -1456,6 +1520,10 @@ div.table-responsive>div.dataTables_wrapper>div.row {
     .dash-user-profile{
       padding: 20px;
     }
+    .dash-profile-bg img {
+    margin-top: 0;
+    margin-bottom: 6px;
+    }
 }
 
 @media(max-width: 768px) {
@@ -1566,6 +1634,9 @@ margin-bottom: 30px;
  .status-card {
         flex: 1 1 calc(50% - 12px);
     }
+    .Congratulations-section {
+    margin: 20px 0;
+}
 }
 @media(max-width: 576px) {
     /* .staking-card {
@@ -1624,6 +1695,12 @@ margin-bottom: 30px;
 .status-card p {
     font-size: 0.76rem;
 }
+.mobilewrapper-logo img {
+    width: 120px;
+}
+.mobilestatus-card h4 {
+    font-size: 18px;
+}
 }
 @media(max-width:545px){
   .search-bar {
@@ -1649,6 +1726,26 @@ margin-bottom: 30px;
  }
           .status-card {
         padding: 12px;
+    }
+        .mobilewrapper-logo img {
+        width: 100px;
+    }
+    .mobilestatus-card p {
+    font-size: 12px;
+}
+    .mobilestatus-card h4 {
+        font-size: 14px;
+    }
+    .mobilestatus-wrapper{
+      padding: 14px;
+    }
+}
+@media(max-width:375px){
+      .mobilewrapper-logo img {
+        width: 85px;
+    }
+        .mobilestatus-card p {
+        font-size: 10px;
     }
 }
 

@@ -555,7 +555,7 @@ background: linear-gradient(135deg, #004e92, #000428);
 width: 100%;
 background: var(--card-bg);
 border: 1px solid var(--accent-color);
-border-radius: 10px;
+border-radius: 6px;
 padding: 20px;
 box-shadow: 0 4px 10px var(--shadow-color);
 color: var(--text-color);
@@ -572,13 +572,18 @@ white-space: nowrap;
 font-weight: 600;
 left: 100%;
 transition: none;
+font-size: 14px;
 }
 .booster-marquee:hover #marquee {
 animation-play-state: paused; 
 }
-.booster-status{
-margin-bottom: 10px;
+.marquee-logo {
+    width: 18px;     
+    height: 18px;    
+    margin-right: 5px;
+    vertical-align: middle;
 }
+
 /* mobile section start */
  .mobilestatus-wrapper {
       display: flex;
@@ -990,14 +995,14 @@ background: var(--card-bg);
     linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), 
     url('../images/golden-background.jpg') center/cover no-repeat;
   background-size: cover;
-  padding:45px 20px 40px 20px;
+  padding:45px 20px 20px 20px;
   border-radius: 10px;
 width: 100%;
   color: var(--white);
   margin: 20px 0;
 }
 
-.dash-profile-bg img {
+.dash-profile-bg .deshpro {
   margin-top: -100px;
   width: 100px;
   height: 100px;
@@ -1326,7 +1331,7 @@ margin-bottom: 0;
   justify-content: space-between;
   align-items: center;
   color: var(--text-color);
-  margin-bottom: 40px;
+  margin-bottom: 20px;
 }
 
 .booster-label h5 {
@@ -1337,6 +1342,7 @@ margin-bottom: 0;
 
 .timer-box {
   display: flex;
+  flex-wrap: wrap;
   gap: 10px;
 }
 
@@ -1520,7 +1526,7 @@ div.table-responsive>div.dataTables_wrapper>div.row {
     .dash-user-profile{
       padding: 20px;
     }
-    .dash-profile-bg img {
+    .dash-profile-bg .deshpro {
     margin-top: 0;
     margin-bottom: 6px;
     }
@@ -1653,7 +1659,7 @@ margin-bottom: 30px;
   .loginsection {
     padding: 20px 0
   }
-  .dash-profile-bg img {
+  .dash-profile-bg .deshpro {
     width: 80px;
     height: 80px;
   }
@@ -1742,6 +1748,9 @@ margin-bottom: 30px;
     .mobilestatus-wrapper{
       padding: 14px;
     }
+    .booster-label h5 {
+        font-size: 1rem;
+    }
 }
 @media(max-width:375px){
       .mobilewrapper-logo img {
@@ -1750,6 +1759,9 @@ margin-bottom: 30px;
         .mobilestatus-card p {
         font-size: 10px;
     }
+    .time-item {
+    width: 50px;
+  }
 }
 
 

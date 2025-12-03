@@ -10,7 +10,8 @@
 			if(!function_exists('upload')){
 				$CI->load->helper('upload');
 			} 
-			$from="hello@studionineconstructions.com";
+            
+			$from="";
 			if(isset($_SERVER['HTTP_HOST']) && $_SERVER['HTTP_HOST']=='localhost'){
 				ini_set('smtp','localhost');
 				ini_set('smtp_port',25);
@@ -23,20 +24,15 @@
 				$config['smtp_pass']='';
 				$from=$config['smtp_user'];
 			}
-            elseif($CI->input->get('test')=='test'){
-                $config['mailpath']= "/usr/bin/sendmail";
-                $config['protocol'] = 'smtp';
-                $config['smtp_host'] = 'smtp.gmail.com';
-                $config['_smtp_auth'] = TRUE;
-                $config['smtp_port'] = '587';
-                $config['smtp_crypto'] = 'tls';
-                $config['smtp_user'] = 'hello@studionineconstructions.com';
-                $config['smtp_pass'] = 'Hello$1234';
-                $config['charset'] = 'iso-8859-1';
-                $config['smtp_timeout'] = 15;
-				$from=$config['smtp_user'];
+            else{
+                /*$config['mailpath']= "/usr/bin/sendmail";
+                $config['protocol']='smtp';
+                $config['smtp_host']='smtp.hostinger.com';
+                $config['smtp_port']='587';
+                $config['smtp_timeout']='30';
+                $config['smtp_user']='';
+                $config['smtp_pass']='';*/
 			}
-			
 			$config['newline']="\r\n";
 			$config['wordwrap'] = TRUE;
 			//$config['charset'] = 'iso-8859-1';
@@ -53,7 +49,7 @@
             //$CI->email->set_mailtype('html'); // Set mailtype to HTML
 			//print_pre($config,true);
 			$CI->email->initialize($config);
-			$CI->email->from($from,SITE_SALT);
+			$CI->email->from($from,PROJECT_NAME);
             $CI->email->set_newline("\r\n");
             $CI->email->set_header('Return-Path', $from);
 			$CI->email->to($email);
@@ -61,7 +57,7 @@
 			$CI->email->message($message);
             
             // Add the List-Unsubscribe header
-            $CI->email->set_header('List-Unsubscribe', '<mailto:hello@studionineconstructions.com?subject=Unsubscribe>, <https://crm.studionineconstructions.com/unsubscribe>');
+            $CI->email->set_header('List-Unsubscribe', '<mailto:aearninga@gmail.com?subject=Unsubscribe>, <'.base_url('/unsubscribe').'>');
 
 			
 			if($fieldname!==false && $upload_path!==false && $allowed_types!==false){
@@ -97,15 +93,13 @@
 				}
 			}
 			if($CI->email->send()){
-                if($CI->input->get('test')=='test' || $CI->input->get('test')=='tests'){
-                    echo "<br><br><br>Mail sent to $email!<br><br><br>";
+                if($CI->input->get('test')=='test'){
                     print_pre($CI->email);
                 }
 				return true;
 			}
 			else{
-                if($CI->input->get('test')=='test' || $CI->input->get('test')=='tests'){
-                    echo "<br><br><br>Mail Not sent!<br><br><br>";
+                if($CI->input->get('test')=='test'){
                     print_pre($CI->email);
                 }
 				return false;
@@ -113,15 +107,15 @@
 		}  
 	}
 
-    if(!function_exists('agentmail')) {
-  		function agentmail($agentname,$agentemail,$name,$mobile,$service){
-            $subject="Action Required: New Lead Assignment - $name";
+    if(!function_exists('passwordotp')) {
+  		function passwordotp($email,$otp){
+            $subject="OTP to Update Password";
             $message='<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Short HTML Email</title>
+    <title>OTP to Update Password</title>
 </head>
 <body><table id="v1container" cellspacing="0" cellpadding="0" border="0">
     <tbody>
@@ -131,8 +125,8 @@
                     <tbody>
                         <tr>
                             <td id="v1header-logo-cell" colspan="4">
-                                <a href="https://crm.studionineconstructions.com/" target="_blank" rel="noreferrer">
-                                    <img src="https://crm.studionineconstructions.com/assets/images/studio-nine.png" alt="StudioNine Logo">
+                                <a href="'.base_url().'" target="_blank" rel="noreferrer">
+                                    <img src="'.base_url('assets/images/logo.png').'" alt="'.PROJECT_NAME.' Logo">
                                 </a>
                             </td>
                         </tr>
@@ -144,82 +138,13 @@
                 <table cellspacing="0" cellpadding="15" border="0">
                     <tbody>
                         <td>
-                            <h5>Dear '.$agentname.',</h5>
-                             <p>I hope this email finds you well. I am pleased to inform you that we have a new lead in our pipeline who shows great potential for our service. We believe that this lead aligns with our target audience and objectives, and we\'re excited to have the opportunity to work with them.</p>
+                             <p>We have received a request to update the Address. To verify your identity and proceed with the update, please use the OTP provided below:</p>
 
-                            <p><strong>Lead details:</strong></p>
+                            <p><strong>OTP:</strong> '.$otp.'</p>
 
-                            <p><strong>Name:</strong> '.$name.'</p>
-                            <p><strong>Mobile No:</strong> '.$mobile.'</p>
-                            <p><strong>Service Type:</strong> '.$service.'</p>
-
-                            <p>Please take the necessary actions and update the same in CRM.</p>
-
-                            <p>Regards, </p>
-                            <p><strong>Studio Nine Reality Pvt Ltd</strong></p>
-                            <p>--------------------</p>
-                            <p>Note: This notification is auto-generated for new leads. For any concerns or clarifications, please contact the CRM admin or the designated representative.</p>
-                        </td>
-                    </tbody>
-                </table>
-            </td>
-        </tr>
-    </tbody>
-</table>
-</body>
-</html>';
-            
-            sendemail($agentemail,$subject,$message);
-		}  
-	}
-    if(!function_exists('adminmail')) {
-  		function adminmail($adminname,$adminemail,$name,$mobile,$service,$source){
-            $subject="Your New Lead: $name - Take the Next Step";
-            $message='<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Short HTML Email</title>
-</head>
-<body><table id="v1container" cellspacing="0" cellpadding="0" border="0">
-    <tbody>
-        <tr>
-            <td id="v1container-cell" align="center" style="border: 1px solid">
-                <table id="v1header-container" cellspacing="0" cellpadding="15" border="0" width="100%">
-                    <tbody>
-                        <tr>
-                            <td id="v1header-logo-cell" colspan="4">
-                                <a href="https://crm.studionineconstructions.com/" target="_blank" rel="noreferrer">
-                                    <img src="https://crm.studionineconstructions.com/assets/images/studio-nine.png" alt="StudioNine Logo">
-                                </a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td height="8" colspan="4" style="font-size: 1px; line-height: 1px">&nbsp;</td>
-                        </tr>
-                    </tbody>
-                </table>
-                <table cellspacing="0" cellpadding="15" border="0">
-                    <tbody>
-                        <td>
-                            <h5>Dear '.$adminname.',</h5>
-                             <p>I hope this message finds you well. We\'re excited to inform you that an automatic lead generation has resulted in a new lead being assigned to you within our CRM system. We value your swift attention and engagement with this lead.</p>
-
-                            <p><strong>Lead details:</strong></p>
-
-                            <p><strong>Source:</strong> '.$source.'</p>
-                            <p><strong>Name:</strong> '.$name.'</p>
-                            <p><strong>Mobile No:</strong> '.$mobile.'</p>
-                            <p><strong>Service Type:</strong> '.$service.'</p>
-
-                            <p>We kindly request you to take the appropriate actions and ensure updates are recorded in the CRM.</p>
+                            <p>This OTP is a one-time code and will expire shortly. Please do not share this code with anyone. It is intended solely for your use in updating your Address.</p>
                             
-                            <p>Your prompt attention to this lead is greatly appreciated, as it represents an exciting opportunity for our organization. Thank you for your commitment to our continued growth and success.</p>
-                            <p>Warm Regards,</p>
-                            <p><strong>Studio Nine Reality Pvt Ltd</strong></p>
-                            <p>--------------------</p>
-                            <p>Note: This notification is auto-generated for new leads. For any concerns or clarifications, please contact the CRM admin or the designated representative.</p>
+                            <p>If you did not initiate this request or suspect any unauthorized activity, please contact our support team immediately.</p>
                         </td>
                     </tbody>
                 </table>
@@ -230,7 +155,7 @@
 </body>
 </html>';
             
-            sendemail($adminemail,$subject,$message);
+            sendemail($email,$subject,$message);
 		}  
 	}
-?>
+

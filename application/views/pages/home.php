@@ -313,8 +313,8 @@ else{
          <div class="col-lg-6 col-md-12 col-sm-12">
             <div class="dash-user-profile">
                <div class="dash-profile-bg">
-                  <img src="<?php echo ($user['photo']); ?>" alt="<?php echo ($user['photo']); ?>">
-                   <!-- <img src="<?= file_url('assets/images/avatar.jpg'); ?>" alt="<?php echo ($user['photo']); ?>" class="deshpro"> -->
+                  <!-- <img src="<?php echo ($user['photo']); ?>" alt="<?php echo ($user['photo']); ?>"> -->
+                   <img src="<?= file_url('assets/images/avatar.jpg'); ?>" alt="<?php echo ($user['photo']); ?>" class="deshpro">
                   <h2><?php echo ($user['username']); ?></h2>
                   <!-- <?= $member['status']==1?'<p class="textActive">Active</p>':'<p class="text-danger">In-Active</p>' ?> -->
               <!-- marquee tag -->

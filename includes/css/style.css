@@ -1453,6 +1453,9 @@ div.table-responsive>div.dataTables_wrapper>div.row {
     .dash-user-profile{
       margin: 0;
     }
+    .dash-user-profile{
+      padding: 20px;
+    }
 }
 
 @media(max-width: 768px) {

@@ -63,7 +63,7 @@
                                                     if($single['status']==0){
                                                     ?>
                                                     <button type="button" value="<?= md5('regid-'.$single['regid']) ?>" class="btn btn-sm btn-success activate">Activate</button>
-                                                    <button type="button" value="<?= md5('regid-'.$single['regid']) ?>" class="btn btn-sm btn-success activate top-up">Top-Up ID</button>
+                                                    <button type="button" value="<?= md5('regid-'.$single['regid']) ?>" class="btn btn-sm btn-success activate top-up mt-1">Top-Up ID</button>
                                                     <?php
                                                     }
                                                     if($single['status']==1 && $single['booster']==0){

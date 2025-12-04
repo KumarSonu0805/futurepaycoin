@@ -192,7 +192,7 @@ else{
                      </div>
                   </li>
                   <li>
-                     <h4><?= '--'; ?></h4>
+                     <h4><?= $rank=getrank(); ?></h4>
                      <p>Rank Status</p>
                   </li>
             </ul>
@@ -314,7 +314,15 @@ else{
          <div class="col-lg-6 col-md-12 col-sm-12">
             <div class="dash-user-profile">
                <div class="dash-profile-bg">
-                  <img src="<?php echo ($user['photo']); ?>" alt="<?php echo ($user['photo']); ?>" class="deshpro">
+                   <?php
+                        $photo=$user['photo'];
+                        if($rank!='--'){
+                            if(file_exists('./assets/images/avatar/'.strtolower($rank).'.webp')){
+                                $photo=file_url('assets/images/avatar/'.strtolower($rank).'.webp');
+                            }
+                        }
+                    ?>
+                  <img src="<?php echo $photo; ?>" alt="<?php echo $photo; ?>" class="deshpro">
                    <!-- <img src="<?= file_url('assets/images/avatar.jpg'); ?>" alt="<?php echo ($user['photo']); ?>" class="deshpro"> -->
                   <h2><?php echo ($user['username']); ?></h2>
                   <!-- <?= $member['status']==1?'<p class="textActive">Active</p>':'<p class="text-danger">In-Active</p>' ?> -->

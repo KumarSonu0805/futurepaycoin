@@ -122,17 +122,17 @@
             $user=getuser();
             $regid=$user['id'];
             $where="t1.regid='$regid'";
-            $CI->db->select('t1.id,t1.rank');
+            $CI->db->select('t1.id,t2.rank');
             $CI->db->from('member_ranks t1');
             $CI->db->join('ranks t2','t1.rank_id=t2.id');
             $CI->db->where($where);
             $CI->db->order_by('rank_id desc');
             $CI->db->limit(1);
             $query=$CI->db->get();
-            $rank='';
+            $rank='--';
             if($query->num_rows()==1){
                 $rank=$query->unbuffered_row()->rank;
-                $rank=' ('.$rank.')';
+                //$rank=' ('.$rank.')';
             }
             return $rank;
 		}  

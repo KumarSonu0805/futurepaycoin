@@ -63,6 +63,7 @@
                                                     if($single['status']==0){
                                                     ?>
                                                     <button type="button" value="<?= md5('regid-'.$single['regid']) ?>" class="btn btn-sm btn-success activate">Activate</button>
+                                                    <button type="button" value="<?= md5('regid-'.$single['regid']) ?>" class="btn btn-sm btn-success activate top-up">Top-Up ID</button>
                                                     <?php
                                                     }
                                                     if($single['status']==1 && $single['booster']==0){
@@ -176,7 +177,8 @@
                 amount=Number(amount);
                 amount=isNaN(amount)?0:amount;
                 if(amount>=50){
-                   $.post('<?= base_url('members/adminactivate') ?>',{id:id,amount:amount},function(){
+                   var topup=$(this).hasClass('top-up')?1:0;
+                   $.post('<?= base_url('members/adminactivate') ?>',{id:id,amount:amount,topup:topup},function(){
                        window.location.reload();
                    });
                 }

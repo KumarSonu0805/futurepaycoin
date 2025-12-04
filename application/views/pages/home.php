@@ -528,13 +528,23 @@ else{
               <div class="dash-user-profile">
                   <div class="row">
                       <?php
+                        $direct=countdirect();
                         $where=['regid'=>$user['id'],'status'=>1];
                         $investments=$this->db->get_where('investments',$where)->result_array();
                         foreach($investments as $investment){
                             $this->db->select_sum('amount');
                             $income=$this->db->get_where('income',['regid'=>$user['id'],'type'=>'roiincome',
                                                                    'inv_id'=>$investment['id']])->unbuffered_row()->amount;
-                            $total=$investment['amount']*($member['booster']==1?4:3);
+                            $times=1;
+                            if($investment['auto']==0){
+                                if($member['booster']==0){
+                                    $times=$direct==0?2:3;
+                                }
+                                else{
+                                    $times=4;
+                                }
+                            }
+                            $total=$investment['amount']*$times;
                             $rem=$total-$income;
                             $complete=$income*100/$total;
                             $complete=round($complete,2);
@@ -571,7 +581,7 @@ else{
       afterDraw(chart) {
         const {ctx, chartArea: {top, right, bottom, left}} = chart;
         ctx.save();
-        const total = '<?= $member['booster']==1?'4X':'3X'; ?>';
+        const total = '<?= $times.'X'; ?>';
         ctx.font = '600 18px system-ui';
         ctx.fillStyle = '#abcdef';
         ctx.textAlign = 'center';

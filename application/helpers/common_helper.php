@@ -30,9 +30,13 @@
 	}
 
 	if(!function_exists('countteam')) {
-  		function countteam() {
+  		function countteam($status=false) {
     		$CI = get_instance();
             $user=getuser();
+            if($status===true){
+                $where="member_id in (SELECT regid from ".TP."members where status='1')";
+                $CI->db->where($where);
+            }
             $members=$CI->db->get_where('level_members',['regid'=>$user['id']])->num_rows();
             return $members;
 		}  
@@ -65,6 +69,32 @@
             return $top_legs;
         } 
 	}
+
+	if(!function_exists('get_direct_business')) {
+        function get_direct_business(){
+    		$CI = get_instance();
+            $user=getuser();
+            $regid=$user['id'];
+            
+            
+            $referrals = $CI->db->where('refid', $regid)->get('members')->result_array();
+            $downline_ids=empty($referrals)?array():array_column($referrals,'regid');
+            if(!empty($downline_ids)){
+                $CI->db->select('sum(amount) as amount');
+
+                $CI->db->group_start();
+                $regid_chunks = array_chunk($downline_ids,25);
+                foreach($regid_chunks as $regid_chunk){
+                    $CI->db->or_where_in('regid', $regid_chunk);
+                }
+                $CI->db->group_end();
+                $CI->db->where(['status'=>1,'auto'=>0]);
+                $business = $CI->db->get('investments')->unbuffered_row()->amount;
+            }
+            return $business??0;
+        }
+	}
+
 	if(!function_exists('getavlbalance')){
         function getavlbalance($user){
             $CI = get_instance();

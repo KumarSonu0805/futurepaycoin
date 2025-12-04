@@ -98,7 +98,7 @@ class Income_model extends CI_Model{
 					$this->db->or_where_in('regid', $regid_chunk);
 				}
 				$this->db->group_end();
-				$this->db->where(['status'=>1]);
+				$this->db->where(['status'=>1,'auto'=>0]);
                 $investments = $this->db->get('investments')->unbuffered_row('array');
                 $legs[] = [
                     'regid' => $ref['regid'],

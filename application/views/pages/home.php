@@ -82,6 +82,7 @@ else{
             $b=false;
         }
     }
+    $incomes=getincome();
 ?>
    <div class="status-cardsection">
        <?php if($b){ ?> 
@@ -153,7 +154,7 @@ else{
                      </div>
                   </li>
                   <li>
-                     <h4><?= countdirects(); ?></h4>
+                     <h4><?= $this->amount->toDecimal($incomes['wallet_balance'],true,5); ?></h4>
                      <p>Wallet Balance</p>
                   </li>
             </ul>
@@ -171,7 +172,7 @@ else{
                      </div>
                   </li>
                   <li>
-                     <h4><?= countteam(); ?></h4>
+                     <h4><?= $this->amount->toDecimal($incomes['total'],true,5); ?></h4>
                      <p>Total Income</p>
                   </li>
             </ul>
@@ -191,7 +192,7 @@ else{
                      </div>
                   </li>
                   <li>
-                     <h4><?= countdirects(); ?></h4>
+                     <h4><?= '--'; ?></h4>
                      <p>Rank Status</p>
                   </li>
             </ul>
@@ -209,7 +210,7 @@ else{
                      </div>
                   </li>
                   <li>
-                     <h4><?= countteam(); ?></h4>
+                     <h4><?= $this->amount->toDecimal($incomes['withdrawal'],true,5); ?></h4>
                      <p>Total Withdrawal</p>
                   </li>
             </ul>
@@ -231,7 +232,7 @@ else{
                      </div>
                   </li>
                   <li>
-                     <h4><?= countdirects(); ?></h4>
+                     <h4><?= countteam(true); ?></h4>
                      <p>Active Members</p>
                   </li>
             </ul>
@@ -319,7 +320,7 @@ else{
                   <!-- <?= $member['status']==1?'<p class="textActive">Active</p>':'<p class="text-danger">In-Active</p>' ?> -->
               <!-- marquee tag -->
                   <div class="booster-marquee">
-                     <div id="marquee"><img src="<?= file_url('assets/images/logo.png'); ?>" alt="logo" class="marquee-logo"> Welcome to Future Pay Coin — Live Rate: 0.55$</div>
+                     <div id="marquee"><img src="<?= file_url('assets/images/logo.png'); ?>" alt="logo" class="marquee-logo"> Welcome to Future Pay Coin — Live Rate: $0.55</div>
                   </div>
                   <script>
                      const el = document.getElementById("marquee");
@@ -346,10 +347,14 @@ else{
                      animate();
                   </script>
                    <!-- marquee tag end -->
+                   
+                
+                   <?php if($b){ ?> 
                     <!-- time booster start -->
+                   
                      <div class="booster-timer d-flex justify-content-between align-items-center">
                      <div class="booster-label">
-                        <h5 class="mb-0 fw-bold">Booster status</h5>
+                        <h5 class="mb-0 fw-bold"><?= $text ?></h5>
                      </div>
                      <div class="booster-status">
                         <div class="timer-box d-flex justify-content-center align-items-center gap-2 <?= ($member['booster']==1)?'d-none':'' ?>" id="timer">
@@ -357,11 +362,13 @@ else{
                         <div class="time-item"><span id="hours">06</span><small>Hrs</small></div>
                         <div class="time-item"><span id="minutes">00</span><small>Min</small></div>
                         <div class="time-item"><span id="seconds">00</span><small>Sec</small></div>
-                           <!-- <a href="<?= base_url('deposit/booster/'); ?>" class="btn btn-active" id="">Activate</a> -->
+                            <a href="<?= base_url('deposit/booster/'); ?>" class="btn btn-active" id="" style="padding-top: 15px;">Activate</a>
                         </div>
+                         <button class="btn btn-active <?= ($member['booster']==1)?'':'d-none' ?>" id="activeBtn">Active</button>
                      </div>
                      </div>
                      <!-- time booster end -->
+                   <?php } ?>
                   <div class="row">
                      <div class="col-md-12">
                         <h5>Referral Link</h5>
@@ -422,132 +429,12 @@ else{
                </div>
             </div>
          </div>
-          <?php
-            $incomes=getincome();
-          ?>
          <div class="col-lg-6 col-md-12 col-sm-12">
-            <!-- <div class="staking-section">
-               <div class="row">
-                  <div class="col-lg-4 col-md-6 col-sm-6">
-                     <div class="staking-card">
-                        <div class="stakingicon">
-                           <img src="<?= file_url('assets/images/future-coin.png'); ?>" alt="future-coin" width="24px">
-                        </div>
-                        <h5>My Investment</h5>
-                        <h2>
-                           $ <?= $this->amount->toDecimal($incomes['roiincome'],true,5); ?>
-                        </h2>
-                     </div>
-                  </div>
-                  <div class="col-lg-4 col-md-6 col-sm-6">
-                     <div class="staking-card">
-                        <div class="stakingicon">
-                           <img src="<?= file_url('assets/images/future-coin.png'); ?>" alt="future-coin" width="24px">
-                        </div>
-                        <h5>Direct Business</h5>
-                        <h2>
-                           $ <?= $this->amount->toDecimal($incomes['level'],true,5); ?>
-                        </h2>
-                     </div>
-                  </div>
-                  <div class="col-lg-4 col-md-6 col-sm-6">
-                     <div class="staking-card">
-                        <div class="stakingicon">
-                           <img src="<?= file_url('assets/images/future-coin.png'); ?>" alt="future-coin" width="24px">
-                        </div>
-                        <h5>Total Team Business</h5>
-                        <h2>
-                           $ <?= $this->amount->toDecimal($incomes['matching'],true,5); ?>
-                        </h2>
-                     </div>
-                  </div>
-                  <div class="col-lg-2"></div>
-                  <div class="col-lg-4 col-md-6 col-sm-6">
-                     <div class="staking-card">
-                        <div class="stakingicon">
-                           <img src="<?= file_url('assets/images/future-coin.png'); ?>" alt="future-coin" width="24px">
-                        </div>
-                        <h5>Power Leg</h5>
-                        <h2>
-                           $ <?= $this->amount->toDecimal($incomes['wheel'],true,5); ?>
-                        </h2>
-                     </div>
-                  </div>
-                  <div class="col-lg-4 col-md-6 col-sm-6">
-                     <div class="staking-card">
-                        <div class="stakingicon">
-                           <img src="<?= file_url('assets/images/future-coin.png'); ?>" alt="future-coin" width="24px">
-                        </div>
-                        <h5>Weaker Leg</h5>
-                        <h2>
-                           $ <?= $this->amount->toDecimal($incomes['reward'],true,5); ?>
-                        </h2>
-                     </div>
-                  </div>
-                </div>
-                <div class="row">
-                   <?php
-                        $legs=getlegbusiness(true);
-                        $power=!empty($legs[0]['business'])?$legs[0]['business']:0;
-                        $weaker=!empty($legs[1]['business'])?$legs[1]['business']:0;
-                    ?>
-                  <div class="col-lg-4 col-md-6 col-sm-6">
-                     <div class="staking-card">
-                        <div class="stakingicon">
-                           <img src="<?= file_url('assets/images/future-coin.png'); ?>" alt="future-coin" width="24px">
-                        </div>
-                        <h5>Staking Reward</h5>
-                        <h2>
-                           $ <?= $this->amount->toDecimal($power+$weaker,true,5); ?>
-                        </h2>
-                     </div>
-                  </div>
-                  <div class="col-lg-4 col-md-6 col-sm-6">
-                     <div class="staking-card">
-                        <div class="stakingicon">
-                           <img src="<?= file_url('assets/images/future-coin.png'); ?>" alt="future-coin" width="24px">
-                        </div>
-                        <h5>Level Income</h5>
-                        <h2>
-                           $ <?= $this->amount->toDecimal($power,true,5); ?>
-                        </h2>
-                     </div>
-                  </div>
-                  <div class="col-lg-4 col-md-6 col-sm-6">
-                     <div class="staking-card">
-                        <div class="stakingicon">
-                           <img src="<?= file_url('assets/images/future-coin.png'); ?>" alt="future-coin" width="24px">
-                        </div>
-                        <h5>Surprise Wheel (Lucky Bonus)</h5>
-                        <h2>
-                           $ <?= $this->amount->toDecimal($weaker,true,5); ?>
-                        </h2>
-                     </div>
-                  </div>
-                  <div class="col-lg-4 col-md-6 col-sm-6">
-                     <div class="staking-card">
-                        <div class="stakingicon">
-                           <img src="<?= file_url('assets/images/future-coin.png'); ?>" alt="future-coin" width="24px">
-                        </div>
-                        <h5>Monthly Income Bonus</h5>
-                        <h2>
-                           $ <?= $this->amount->toDecimal($weaker,true,5); ?>
-                        </h2>
-                     </div>
-                  </div>
-                   <div class="col-lg-4 col-md-6 col-sm-6">
-                     <div class="staking-card">
-                        <div class="stakingicon">
-                           <img src="<?= file_url('assets/images/future-coin.png'); ?>" alt="future-coin" width="24px">
-                        </div>
-                        <h5>Rank & Rewards</h5>
-                        <h2>
-                           $ <?= $this->amount->toDecimal($weaker,true,5); ?>
-                        </h2>
-                     </div>
-                  </div>
-               </div>
-            </div> -->
+               <?php
+                    $legs=getlegbusiness(true);
+                    $power=!empty($legs[0]['business'])?$legs[0]['business']:0;
+                    $weaker=!empty($legs[1]['business'])?$legs[1]['business']:0;
+                ?>
             <div class="staking-section">
             <div class="staking-flex">
             <div class="staking-card">
@@ -555,76 +442,71 @@ else{
                      <img src="<?= file_url('assets/images/future-coin.png'); ?>" width="24">
                   </div>
                   <h5>My Investment</h5>
-                  <h2> <?= $this->amount->toDecimal($incomes['roiincome'],true,5); ?></h2>
+                  <h2> <?= $this->amount->toDecimal(getdeposits(),true,5); ?></h2>
             </div>
             <div class="staking-card">
                   <div class="stakingicon">
                      <img src="<?= file_url('assets/images/future-coin.png'); ?>" width="24">
                   </div>
                   <h5>Direct Business</h5>
-                  <h2> <?= $this->amount->toDecimal($incomes['level'],true,5); ?></h2>
+                  <h2> <?= $this->amount->toDecimal(get_direct_business(),true,5); ?></h2>
             </div>
             <div class="staking-card">
                   <div class="stakingicon">
                      <img src="<?= file_url('assets/images/future-coin.png'); ?>" width="24">
                   </div>
                   <h5>Total Team Business</h5>
-                  <h2> <?= $this->amount->toDecimal($incomes['matching'],true,5); ?></h2>
+                  <h2> <?= $this->amount->toDecimal($power+$weaker,true,5); ?></h2>
             </div>
             <div class="staking-card">
                   <div class="stakingicon">
                      <img src="<?= file_url('assets/images/future-coin.png'); ?>" width="24">
                   </div>
                   <h5>Power Leg</h5>
-                  <h2> <?= $this->amount->toDecimal($incomes['wheel'],true,5); ?></h2>
-            </div>
-            <div class="staking-card">
-                  <div class="stakingicon">
-                     <img src="<?= file_url('assets/images/future-coin.png'); ?>" width="24">
-                  </div>
-                  <h5>Weaker Leg</h5>
-                  <h2> <?= $this->amount->toDecimal($incomes['reward'],true,5); ?></h2>
-            </div>
-            <!-- PHP Section -->
-            <?php
-               $legs = getlegbusiness(true);
-               $power = !empty($legs[0]['business']) ? $legs[0]['business'] : 0;
-               $weaker = !empty($legs[1]['business']) ? $legs[1]['business'] : 0;
-            ?>
-            <div class="staking-card">
-                  <div class="stakingicon">
-                     <img src="<?= file_url('assets/images/future-coin.png'); ?>" width="24">
-                  </div>
-                  <h5>Staking Reward</h5>
-                  <h2> <?= $this->amount->toDecimal($power + $weaker,true,5); ?></h2>
-            </div>
-            <div class="staking-card">
-                  <div class="stakingicon">
-                     <img src="<?= file_url('assets/images/future-coin.png'); ?>" width="24">
-                  </div>
-                  <h5>Level Income</h5>
                   <h2> <?= $this->amount->toDecimal($power,true,5); ?></h2>
             </div>
             <div class="staking-card">
                   <div class="stakingicon">
                      <img src="<?= file_url('assets/images/future-coin.png'); ?>" width="24">
                   </div>
-                  <h5>Surprise Wheel (Lucky Bonus)</h5>
+                  <h5>Weaker Leg</h5>
                   <h2> <?= $this->amount->toDecimal($weaker,true,5); ?></h2>
+            </div>
+            <!-- PHP Section -->
+            <div class="staking-card">
+                  <div class="stakingicon">
+                     <img src="<?= file_url('assets/images/future-coin.png'); ?>" width="24">
+                  </div>
+                  <h5>Staking Reward</h5>
+                  <h2> <?= $this->amount->toDecimal($incomes['roiincome'],true,5); ?></h2>
+            </div>
+            <div class="staking-card">
+                  <div class="stakingicon">
+                     <img src="<?= file_url('assets/images/future-coin.png'); ?>" width="24">
+                  </div>
+                  <h5>Level Income</h5>
+                  <h2> <?= $this->amount->toDecimal($incomes['level'],true,5); ?></h2>
+            </div>
+            <div class="staking-card">
+                  <div class="stakingicon">
+                     <img src="<?= file_url('assets/images/future-coin.png'); ?>" width="24">
+                  </div>
+                  <h5>Surprise Wheel (Lucky Bonus)</h5>
+                  <h2> <?= $this->amount->toDecimal($incomes['wheel'],true,5); ?></h2>
             </div>
             <div class="staking-card">
                   <div class="stakingicon">
                      <img src="<?= file_url('assets/images/future-coin.png'); ?>" width="24">
                   </div>
                   <h5>Monthly Income Bonus</h5>
-                  <h2> <?= $this->amount->toDecimal($weaker,true,5); ?></h2>
+                  <h2> <?= $this->amount->toDecimal($incomes['monthly'],true,5); ?></h2>
             </div>
             <div class="staking-card">
                   <div class="stakingicon">
                      <img src="<?= file_url('assets/images/future-coin.png'); ?>" width="24">
                   </div>
                   <h5>Rank & Rewards</h5>
-                  <h2> <?= $this->amount->toDecimal($weaker,true,5); ?></h2>
+                  <h2> <?= $this->amount->toDecimal($incomes['reward'],true,5); ?></h2>
             </div>
             </div>
          </div>

@@ -138,7 +138,7 @@ else{
    </div>
 </div> -->
     <!-- end -->
-     <div class="d-lg-block d-md-block d-none">
+     <div class="d-lg-block d-md-block">
       <div class="status-wrapper">
          <div class="status-card">
             <ul>
@@ -266,7 +266,7 @@ else{
       </div>
      </div>
    <!-- mobile device start -->
-<div class="d-lg-none d-md-none d-block">
+<div class="d-none d-lg-none d-md-none d-block">
    <div class="mobilestatus-wrapper">
       <div class="mobilestatus-card">
          <ul>

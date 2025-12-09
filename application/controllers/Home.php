@@ -8,6 +8,17 @@ class Home extends MY_Controller {
         checklogin();
         $data=['title'=>'Home'];
         if($this->session->role=='admin' && $this->session->user==md5(1)){
+            /*
+            Total Deposit 
+Total Withdrawal 
+Top up Activation ID
+Rank Achiever Mannual
+Rank Reward Mannual 
+Spin bonus Select Mannual and Reward 
+Monthly Loyalty income Mannual 
+Maintenance Mode on/off
+Google Authentication (only Admin)
+            */
         }
         else{
             $data['user']=getuser();

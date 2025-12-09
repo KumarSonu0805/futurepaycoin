@@ -68,3 +68,35 @@
             return $incomes;
 		}  
 	}
+
+	if(!function_exists('getadmindata')) {
+  		function getadmindata() {
+    		$CI = get_instance();
+            /*
+            Total Deposit 
+            Total Withdrawal 
+            Top up Activation ID
+            Rank Achiever Mannual
+            Rank Reward Mannual 
+            Spin bonus Select Mannual and Reward 
+            Monthly Loyalty income Mannual 
+            Maintenance Mode on/off
+            Google Authentication (only Admin)
+            */
+            
+            $result=array('deposits'=>0,'withdrawals'=>0,'topup'=>0,'rank_achiever'=>0,'rank_reward'=>0,'spin'=>0,
+                          'monthly'=>0);
+            
+            $CI->db->select_sum('amount');
+            $deposits=$CI->db->get_where('investments',['auto'=>0])->unbuffered_row()->amount;
+            $result['deposits']=$deposits??0;
+            
+            $CI->db->select_sum('amount');
+            $withdrawals=$CI->db->get_where('withdrawals',['status'=>1])->unbuffered_row()->amount;
+            $result['withdrawals']=$withdrawals??0;
+            
+            return $result;
+		}  
+	}
+
+

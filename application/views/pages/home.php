@@ -34,32 +34,166 @@
 <?php
 $b=false;
 if($this->session->role=='admin'){
+    $data=getadmindata();
 ?>        
-<div class="status-cardsection">
-   <div class="row">
-      <div class="col-lg-3 col-md-6 col-sm-6">
+<div class="d-lg-block d-md-block">
+    <div class="status-wrapper">
          <div class="status-card">
             <ul>
-               <li>
-                  <div class="status-icon">
-                     <svg width="46" height="46" viewBox="0 0 46 46" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M34.0396 20.974C36.6552 20.6065 38.6689 18.364 38.6746 15.6471C38.6746 12.9696 36.7227 10.7496 34.1633 10.3296" stroke="#FF5E5E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
-                        <path d="M37.4912 27.262C40.0243 27.6407 41.7925 28.5276 41.7925 30.3557C41.7925 31.6139 40.96 32.4314 39.6137 32.9451" stroke="#FF5E5E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
-                        <path fill-rule="evenodd" clip-rule="evenodd" d="M22.7879 28.0373C16.7616 28.0373 11.6147 28.9504 11.6147 32.5973C11.6147 36.2423 16.7297 37.1817 22.7879 37.1817C28.8141 37.1817 33.9591 36.2779 33.9591 32.6292C33.9591 28.9804 28.846 28.0373 22.7879 28.0373Z" stroke="#FF5E5E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
-                        <path fill-rule="evenodd" clip-rule="evenodd" d="M22.7876 22.8325C26.742 22.8325 29.9483 19.6281 29.9483 15.6719C29.9483 11.7175 26.742 8.51123 22.7876 8.51123C18.8333 8.51123 15.627 11.7175 15.627 15.6719C15.612 19.6131 18.7939 22.8194 22.7351 22.8325H22.7876Z" stroke="#FF5E5E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
-                        <path d="M11.5344 20.974C8.91691 20.6065 6.90504 18.364 6.89941 15.6471C6.89941 12.9696 8.85129 10.7496 11.4107 10.3296" stroke="#FF5E5E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
-                        <path d="M8.0825 27.262C5.54937 27.6407 3.78125 28.5276 3.78125 30.3557C3.78125 31.6139 4.61375 32.4314 5.96 32.9451" stroke="#FF5E5E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
-                     </svg>
-                  </div>
-               </li>
-               <li>
-                  <h4><?= countdownline(); ?></h4>
-                  <p>Total Team</p>
-               </li>
+                  <li>
+                     <div class="status-icon">
+                         <svg width="46" height="46" viewBox="0 0 46 46" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M34.0396 20.974C36.6552 20.6065 38.6689 18.364 38.6746 15.6471C38.6746 12.9696 36.7227 10.7496 34.1633 10.3296" stroke="#FF5E5E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                            <path d="M37.4912 27.262C40.0243 27.6407 41.7925 28.5276 41.7925 30.3557C41.7925 31.6139 40.96 32.4314 39.6137 32.9451" stroke="#FF5E5E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                            <path fill-rule="evenodd" clip-rule="evenodd" d="M22.7879 28.0373C16.7616 28.0373 11.6147 28.9504 11.6147 32.5973C11.6147 36.2423 16.7297 37.1817 22.7879 37.1817C28.8141 37.1817 33.9591 36.2779 33.9591 32.6292C33.9591 28.9804 28.846 28.0373 22.7879 28.0373Z" stroke="#FF5E5E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                            <path fill-rule="evenodd" clip-rule="evenodd" d="M22.7876 22.8325C26.742 22.8325 29.9483 19.6281 29.9483 15.6719C29.9483 11.7175 26.742 8.51123 22.7876 8.51123C18.8333 8.51123 15.627 11.7175 15.627 15.6719C15.612 19.6131 18.7939 22.8194 22.7351 22.8325H22.7876Z" stroke="#FF5E5E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                            <path d="M11.5344 20.974C8.91691 20.6065 6.90504 18.364 6.89941 15.6471C6.89941 12.9696 8.85129 10.7496 11.4107 10.3296" stroke="#FF5E5E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                            <path d="M8.0825 27.262C5.54937 27.6407 3.78125 28.5276 3.78125 30.3557C3.78125 31.6139 4.61375 32.4314 5.96 32.9451" stroke="#FF5E5E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                        </svg>
+                     </div>
+                  </li>
+                  <li>
+                      <h4><?= countdownline(); ?></h4>
+                      <p>Total Team</p>
+                  </li>
             </ul>
          </div>
-      </div>
-   </div>
+         <div class="status-card">
+            <ul>
+                  <li>
+                     <div class="status-icon">
+                        <svg width="46" height="46" viewBox="0 0 46 46" fill="none">
+                              <path d="M9 15C9 12.2386 11.2386 10 14 10H32C34.7614 10 37 12.2386 37 15V31C37 33.7614 34.7614 36 32 36H14C11.2386 36 9 33.7614 9 31V15Z"
+                                 stroke="#3AC977" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                              <path d="M9 18H37" stroke="#3AC977" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                              <path d="M32 23C33.6569 23 35 21.6569 35 20C35 18.3431 33.6569 17 32 17C30.3431 17 29 18.3431 29 20C29 21.6569 30.3431 23 32 23Z"
+                                 stroke="#3AC977" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                     </div>
+                  </li>
+                  <li>
+                     <h4><?= $this->amount->toDecimal($data['deposits'],true,5); ?></h4>
+                     <p>Total Deposits</p>
+                  </li>
+            </ul>
+         </div>
+         <div class="status-card">
+            <ul>
+                  <li>
+                     <div class="status-icon">
+                        <svg width="46" height="46" viewBox="0 0 46 46" fill="none">
+                              <path d="M9 15C9 12.2386 11.2386 10 14 10H32C34.7614 10 37 12.2386 37 15V31C37 33.7614 34.7614 36 32 36H14C11.2386 36 9 33.7614 9 31V15Z"
+                                 stroke="#3AC977" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                              <path d="M9 18H37" stroke="#3AC977" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                              <path d="M32 23C33.6569 23 35 21.6569 35 20C35 18.3431 33.6569 17 32 17C30.3431 17 29 18.3431 29 20C29 21.6569 30.3431 23 32 23Z"
+                                 stroke="#3AC977" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                     </div>
+                  </li>
+                  <li>
+                     <h4><?= $this->amount->toDecimal($data['withdrawals'],true,5); ?></h4>
+                     <p>Total Withdrawals</p>
+                  </li>
+            </ul>
+         </div>
+         <div class="status-card">
+            <ul>
+                  <li>
+                     <div class="status-icon">
+                        <svg width="46" height="46" viewBox="0 0 46 46" fill="none">
+                              <path d="M9 15C9 12.2386 11.2386 10 14 10H32C34.7614 10 37 12.2386 37 15V31C37 33.7614 34.7614 36 32 36H14C11.2386 36 9 33.7614 9 31V15Z"
+                                 stroke="#3AC977" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                              <path d="M9 18H37" stroke="#3AC977" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                              <path d="M32 23C33.6569 23 35 21.6569 35 20C35 18.3431 33.6569 17 32 17C30.3431 17 29 18.3431 29 20C29 21.6569 30.3431 23 32 23Z"
+                                 stroke="#3AC977" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                     </div>
+                  </li>
+                  <li>
+                     <h4><?= $this->amount->toDecimal($data['topup'],false); ?></h4>
+                     <p>Top up Activation ID</p>
+                  </li>
+            </ul>
+         </div>
+    </div>
+    <div class="status-wrapper">
+         <div class="status-card">
+            <ul>
+                  <li>
+                     <div class="status-icon">
+                        <svg width="46" height="46" viewBox="0 0 46 46" fill="none">
+                              <path d="M9 15C9 12.2386 11.2386 10 14 10H32C34.7614 10 37 12.2386 37 15V31C37 33.7614 34.7614 36 32 36H14C11.2386 36 9 33.7614 9 31V15Z"
+                                 stroke="#3AC977" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                              <path d="M9 18H37" stroke="#3AC977" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                              <path d="M32 23C33.6569 23 35 21.6569 35 20C35 18.3431 33.6569 17 32 17C30.3431 17 29 18.3431 29 20C29 21.6569 30.3431 23 32 23Z"
+                                 stroke="#3AC977" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                     </div>
+                  </li>
+                  <li>
+                     <h4><?= $this->amount->toDecimal($data['rank_achiever'],false); ?></h4>
+                     <p>Rank Achievers</p>
+                  </li>
+            </ul>
+         </div>
+         <div class="status-card">
+            <ul>
+                  <li>
+                     <div class="status-icon">
+                        <svg width="46" height="46" viewBox="0 0 46 46" fill="none">
+                              <path d="M9 15C9 12.2386 11.2386 10 14 10H32C34.7614 10 37 12.2386 37 15V31C37 33.7614 34.7614 36 32 36H14C11.2386 36 9 33.7614 9 31V15Z"
+                                 stroke="#3AC977" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                              <path d="M9 18H37" stroke="#3AC977" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                              <path d="M32 23C33.6569 23 35 21.6569 35 20C35 18.3431 33.6569 17 32 17C30.3431 17 29 18.3431 29 20C29 21.6569 30.3431 23 32 23Z"
+                                 stroke="#3AC977" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                     </div>
+                  </li>
+                  <li>
+                     <h4><?= $this->amount->toDecimal($data['rank_reward'],true,5); ?></h4>
+                     <p>Rank Reward</p>
+                  </li>
+            </ul>
+         </div>
+         <div class="status-card">
+            <ul>
+                  <li>
+                     <div class="status-icon">
+                        <svg width="46" height="46" viewBox="0 0 46 46" fill="none">
+                              <path d="M9 15C9 12.2386 11.2386 10 14 10H32C34.7614 10 37 12.2386 37 15V31C37 33.7614 34.7614 36 32 36H14C11.2386 36 9 33.7614 9 31V15Z"
+                                 stroke="#3AC977" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                              <path d="M9 18H37" stroke="#3AC977" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                              <path d="M32 23C33.6569 23 35 21.6569 35 20C35 18.3431 33.6569 17 32 17C30.3431 17 29 18.3431 29 20C29 21.6569 30.3431 23 32 23Z"
+                                 stroke="#3AC977" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                     </div>
+                  </li>
+                  <li>
+                     <h4><?= $this->amount->toDecimal($data['spin'],true,5); ?></h4>
+                     <p>Spin Bonus</p>
+                  </li>
+            </ul>
+         </div>
+         <div class="status-card">
+            <ul>
+                  <li>
+                     <div class="status-icon">
+                        <svg width="46" height="46" viewBox="0 0 46 46" fill="none">
+                              <path d="M9 15C9 12.2386 11.2386 10 14 10H32C34.7614 10 37 12.2386 37 15V31C37 33.7614 34.7614 36 32 36H14C11.2386 36 9 33.7614 9 31V15Z"
+                                 stroke="#3AC977" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                              <path d="M9 18H37" stroke="#3AC977" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                              <path d="M32 23C33.6569 23 35 21.6569 35 20C35 18.3431 33.6569 17 32 17C30.3431 17 29 18.3431 29 20C29 21.6569 30.3431 23 32 23Z"
+                                 stroke="#3AC977" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                     </div>
+                  </li>
+                  <li>
+                     <h4><?= $this->amount->toDecimal($data['monthly'],true,5); ?></h4>
+                     <p>Monthly Loyalty Income</p>
+                  </li>
+            </ul>
+         </div>
+    </div>
 </div>
 <?php
 }

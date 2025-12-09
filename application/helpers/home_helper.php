@@ -95,6 +95,17 @@
             $withdrawals=$CI->db->get_where('withdrawals',['status'=>1])->unbuffered_row()->amount;
             $result['withdrawals']=$withdrawals??0;
             
+            //$CI->db->select_sum('amount');
+            $topup=$CI->db->get_where('investments',['auto'=>1])->num_rows();//unbuffered_row()->amount;
+            $result['topup']=$topup??0;
+            
+            $rank_achiever=$CI->db->get_where('member_ranks',[])->num_rows();//unbuffered_row()->amount;
+            $result['rank_achiever']=$rank_achiever??0;
+            
+            $CI->db->select_sum('amount');
+            $rank_reward=$CI->db->get_where('income',['type'=>'reward','status'=>1])->unbuffered_row()->amount;
+            $result['rank_reward']=$rank_reward??0;
+            
             return $result;
 		}  
 	}

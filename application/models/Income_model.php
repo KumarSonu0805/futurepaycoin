@@ -231,7 +231,7 @@ class Income_model extends CI_Model{
                 }
             }
             
-            $where="date<='$date' and status='1' and regid in (Select regid from ".TP."members where refid='$regid')";
+            $where="date<='$date' and status='1' and auto='0' and regid in (Select regid from ".TP."members where refid='$regid')";
             $direct_investments=$this->db->get_where('investments',$where)->result_array();
             $direct_inv_amounts=!empty($direct_investments)?array_column($direct_investments,'amount'):array();
             $direct_business=array_sum($direct_inv_amounts);

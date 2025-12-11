@@ -47,7 +47,7 @@ class Income extends MY_Controller {
 	public function getincome(){
         $type=$this->input->get('type');
         $user=getuser();
-        $incomes=$this->income->getincome(['t1.regid'=>$user['id'],'t1.type'=>$type]);
+        $incomes=$this->income->getincome(['t1.regid'=>$user['id'],'t1.type'=>$type],'t1.date desc, t1.id desc');
         //$incomes=[];
         echo json_encode($incomes);  
     }

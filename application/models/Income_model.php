@@ -338,7 +338,7 @@ class Income_model extends CI_Model{
         return $income;
     }
     
-    public function getincome($where){
+    public function getincome($where,$order_by="t1.id"){
         $this->db->select("t1.*,t2.username,t2.name as member_name,ifnull(t5.rank,t3.rank) as rank");
         $this->db->from("income t1");
         $this->db->join("users t2",'t1.member_id=t2.id','left');

@@ -220,7 +220,7 @@ class Income_model extends CI_Model{
                     
                     if($amount>0){
                         $where=array('regid'=>$regid,'date'=>$date,'inv_id'=>$inv_id,'type'=>'roiincome','status'=>1);
-                        echo $this->db->get_where('income',$where)->num_rows();
+                        //echo $this->db->get_where('income',$where)->num_rows();
                         if($this->db->get_where('income',$where)->num_rows()==0){
                             $data=array('regid'=>$regid,'date'=>$date,'inv_id'=>$inv_id,'type'=>'roiincome',
                                         'rate'=>$per_day_rate,'amount'=>$amount,'status'=>1,

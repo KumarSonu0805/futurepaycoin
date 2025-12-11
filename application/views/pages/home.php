@@ -462,7 +462,7 @@ else{
                   <!-- <?= $member['status']==1?'<p class="textActive">Active</p>':'<p class="text-danger">In-Active</p>' ?> -->
               <!-- marquee tag -->
                   <div class="booster-marquee">
-                     <div id="marquee"><img src="<?= file_url('assets/images/logo.png'); ?>" alt="logo" class="marquee-logo"> Welcome to Future Pay Coin — Live Rate: $0.55</div>
+                     <div id="marquee"><img src="<?= file_url('assets/images/logo.png'); ?>" alt="logo" class="marquee-logo"> Welcome to Future Pay Coin — Live Rate: <span id="price"></span></div>
                   </div>
                   <script>
                      const el = document.getElementById("marquee");
@@ -1044,7 +1044,38 @@ else{
          </div>
       </div>
    </div>
+    <script src="https://cdn.jsdelivr.net/npm/web3@1.10.0/dist/web3.min.js"></script>
+    <script src="<?= file_url('assets/js/abi.js') ?>"></script>
+    <script>
+    const RPC_URL = "https://bsc-dataseed.binance.org/"; // BSC Mainnet
+    const web3 = new Web3(new Web3.providers.HttpProvider(RPC_URL));
+       const ROUTER_ADDRESS = "0x10ED43C718714eb63d5aA57B78B54704E256024E";
+       const router = new web3.eth.Contract(ROUTER_ABI, ROUTER_ADDRESS);
 
+        // Replace with your RWC + USDT
+        const TOKEN = "0x881946b551c767E0dE1EBb69867D9dE061658162";  // Your BEP20 token address
+        const USDT  = "0x55d398326f99059fF775485246999027B3197955"; // BSC USDT
+        async function getPrice() {
+          try {
+            const amountIn = web3.utils.toWei("1", "ether"); // 1 RWC
+            const path = [TOKEN, USDT];
+
+            const amounts = await router.methods.getAmountsOut(amountIn, path).call();
+            var price = web3.utils.fromWei(amounts[1], "ether");
+            price=Number(price);
+            price=isNaN(price)?0:price;
+            
+              
+            document.getElementById("price").innerText = `$${price.toFixed(5)}`;
+          } catch (err) {
+            console.error(err);
+            document.getElementById("price").innerText = "Error fetching price";
+          }
+        }
+
+        getPrice();
+        setInterval(getPrice, 10000); // Refresh every 10 sec
+   </script>
 <?php
 }
 ?>

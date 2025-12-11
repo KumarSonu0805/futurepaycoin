@@ -247,6 +247,7 @@ class Income_model extends CI_Model{
                     $rate=$this->getLevelPercentage($level,$direct_business,$selfbusiness,$booster);
                     if($rate>0){
                         $this->db->select_sum('amount');
+                        $this->db->where("inv_id not in (SELECT id from ".TP."investments where auto='1')");
                         $getroiincome=$this->db->get_where('income',['regid'=>$member_id,'date'=>$date,
                                                                      'type'=>'roiincome']);
                         $roiincome=$getroiincome->unbuffered_row()->amount;

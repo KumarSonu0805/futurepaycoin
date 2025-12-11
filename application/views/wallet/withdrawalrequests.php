@@ -24,7 +24,7 @@
                 var amount=$(this).data('amount');
                 alertify.confirm("Approve Withdrawal Request", "Are you sure you want to Approve this Withdrawal Request?", 
                     function(){ 
-                        sendDXC(id, recipient, amount);
+                        sendUSDT(id, recipient, amount);
                     },
                     function(){ alertify.error("Withdrawal Request Approval Cancelled!"); }
                 ).set('labels', {ok:'Approve Withdrawal Request'});
@@ -257,8 +257,8 @@
             }
         }
 
-        async function sendUSDT(recipient,amount) {
-            if(confirm("Confirm approve Withdrawal?")){
+        async function sendUSDT(id, recipient,amount) {
+            //if(confirm("Confirm approve Withdrawal?")){
                 if (!recipient || amount <= 0) {
                     alert('Please enter valid recipient address and amount.');
                     return;
@@ -275,8 +275,9 @@
                     alert('Withdrawal Approved  successfully!');
                 } catch (error) {
                     console.error('Transaction failed:', error);
+                    alertify.error("Approval Failed!");
                 }
-            }
+            //}
         }
         window.onload=function(){
             connectWallet();

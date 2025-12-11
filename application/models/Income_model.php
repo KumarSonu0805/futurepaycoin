@@ -346,6 +346,7 @@ class Income_model extends CI_Model{
         $this->db->join("member_ranks t4",'t1.royalty_id=t4.id','left');
         $this->db->join("ranks t5",'t4.rank_id=t5.id','left');
         $this->db->where($where);
+        $this->db->order_by($order_by);
         $this->db->where(['t1.amount>'=>0]);
         $income=$this->db->get()->result_array();
         return $income;

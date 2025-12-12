@@ -116,13 +116,19 @@ class Income_model extends CI_Model{
         $date=$date===NULL?date('Y-m-d'):$date;
         $member=$this->member->getmemberdetails($regid);
         //print_pre($member,true);
-        
         if($user['status']==1 && $member['status']==1 && $member['income']==1 && $member['activation_date']!='0000-00-00' && $member['activation_date']<=$date){
             $booster=$member['booster']==1?TRUE:FALSE;
             $where=['regid'=>$regid,'date<='=>$date,'status'=>1];
             $investments=$this->db->get_where('investments',$where)->result_array();
+            //print_pre($investments);
             $inv_amounts=!empty($investments)?array_column($investments,'amount'):array();
             $selfbusiness=array_sum($inv_amounts);
+            $this->db->select_sum('amount');
+            $where=['regid'=>$regid,'date<='=>$date,'status'=>1,'auto'=>1];
+            $topup=$this->db->get_where('investments',$where)->unbuffered_row()->amount;
+            $topup=$topup??0;
+            
+            $selfbusiness-=$topup;
             
             /*if(!empty($investments)){
                 foreach($investments as $investment){
@@ -220,7 +226,7 @@ class Income_model extends CI_Model{
                     
                     if($amount>0){
                         $where=array('regid'=>$regid,'date'=>$date,'inv_id'=>$inv_id,'type'=>'roiincome','status'=>1);
-                        //echo $this->db->get_where('income',$where)->num_rows();
+                        echo $this->db->get_where('income',$where)->num_rows();
                         if($this->db->get_where('income',$where)->num_rows()==0){
                             $data=array('regid'=>$regid,'date'=>$date,'inv_id'=>$inv_id,'type'=>'roiincome',
                                         'rate'=>$per_day_rate,'amount'=>$amount,'status'=>1,

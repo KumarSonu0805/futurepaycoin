@@ -246,7 +246,7 @@ class Income_model extends CI_Model{
             //$level_ids=!empty($levelinvestments)?array_column($levelinvestments,'level'):array();
             $levelmembers=$this->member->levelwisemembers($regid,$date,1);
             //print_pre($levelmembers);
-            if(!empty($levelmembers)){
+            if(!empty($levelmembers) && $selfbusiness>0){
                 foreach($levelmembers as $levelmember){
                     $member_id=$levelmember['member_id'];
                     $level=$levelmember['level'];

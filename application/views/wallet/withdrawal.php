@@ -13,6 +13,16 @@ $member['wallet_address']=empty($member['wallet_address'])?'':$member['wallet_ad
         text-align: center;
         color: #ffffff;
     }
+    .price{
+        width: 100%;
+        background: var(--card-bg);
+        border: 1px solid var(--accent-color);
+        border-radius: 6px;
+        padding: 10px;
+        box-shadow: 0 2px 10px var(--shadow-color);
+        color: #b28f04;
+        font-weight: 600;
+    }
 </style>
             <div class="col-12">
                 <div class="card">
@@ -52,8 +62,8 @@ $member['wallet_address']=empty($member['wallet_address'])?'':$member['wallet_ad
                                             echo create_form_input("text","","Wallet Balance ($)",false,$avl_balance,array("id"=>"usdt_balance","readonly"=>"true")); 
                                         ?>
                                     </div>
-                                    <div class="form-group my-2 " >
-                                        $1 = <span id="price"></span> FPC
+                                    <div class="form-group my-2 price" >
+                                        $1 = <span id="price">0</span> FPC
                                     </div>
                                     <div class="form-group my-2">
                                         <?php

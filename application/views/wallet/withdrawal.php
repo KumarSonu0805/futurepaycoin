@@ -129,6 +129,7 @@ $member['wallet_address']=empty($member['wallet_address'])?'':$member['wallet_ad
                     $('#min_withdraw').text(min_withdraw);
                     $('#amount').attr('min',min_withdraw);
                     $('#rate').val(price);
+                    $('#amount').trigger('keyup');
                   } catch (err) {
                     console.error(err);
                     document.getElementById("price").innerText = "Error fetching price";

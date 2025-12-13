@@ -5,15 +5,7 @@
             </div>
             <div class="row contact-info">
               
-               <div class="col-lg-6 col-md-6">
-                  <div class="info-box">
-                     <div class="icon"><i class="fa-solid fa-phone"></i></div>
-                     <div>
-                        <p>+91-9876543210<br>+91-9876543210</p>
-                     </div>
-                  </div>
-               </div>
-               <div class="col-lg-6 col-md-6">
+               <div class="col-12">
                   <div class="info-box">
                      <div class="icon"><i class="fa-solid fa-envelope"></i></div>
                      <div>

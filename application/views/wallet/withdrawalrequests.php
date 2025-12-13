@@ -78,7 +78,7 @@
                     },
                     { title: "MID", field: "username" },
                     { title: "Name", field: "name" },
-                    { title: "Address", field: "wallet_address", width:400 },
+                    { title: "Address", field: "wallet_address", width:500 },
                     { title: "Amount", field: "amount" ,
                         formatter: function(cell){
                             let amount = Number(cell.getValue());
@@ -197,10 +197,12 @@
 		}
 	</script>
     <script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js/dist/web3.min.js"></script>
+    <script src="<?= file_url('assets/js/abi.js') ?>"></script>
     <script>
         const BSC_CHAIN_ID = '0x38'; // 56 in decimal for Binance Smart Chain Mainnet
+        const TOKEN = "0x881946b551c767E0dE1EBb69867D9dE061658162";  // Your BEP20 token address
         const USDT_CONTRACT_ADDRESS = '0x55d398326f99059fF775485246999027B3197955'; // USDT BEP20 Address
-        const USDT_ABI = [ // Minimal ABI for token interactions
+        const USDT_ABI2 = [ // Minimal ABI for token interactions
             {
                 "constant": false,
                 "inputs": [
@@ -264,9 +266,31 @@
                     return;
                 }
 
-                const usdtContract = new web3.eth.Contract(USDT_ABI, USDT_CONTRACT_ADDRESS);
+                const usdtContract = new web3.eth.Contract(USDT_ABI2, USDT_CONTRACT_ADDRESS);
                 try {
                     const tx = await usdtContract.methods
+                        .transfer(recipient, web3.utils.toWei(amount.toString(), 'ether'))
+                        .send({ from: userAddress });
+
+                    console.log('Transaction successful:', tx);
+                    approveWithdrawal(id,tx.transactionHash)
+                    alert('Withdrawal Approved  successfully!');
+                } catch (error) {
+                    console.error('Transaction failed:', error);
+                    alertify.error("Approval Failed!");
+                }
+            //}
+        }
+        async function sendFPC(id, recipient,amount) {
+            //if(confirm("Confirm approve Withdrawal?")){
+                if (!recipient || amount <= 0) {
+                    alert('Please enter valid recipient address and amount.');
+                    return;
+                }
+
+                const fpcContract = new web3.eth.Contract(TOKEN_ABI, TOKEN);
+                try {
+                    const tx = await fpcContract.methods
                         .transfer(recipient, web3.utils.toWei(amount.toString(), 'ether'))
                         .send({ from: userAddress });
 

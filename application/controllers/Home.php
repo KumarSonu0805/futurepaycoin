@@ -291,7 +291,7 @@ Google Authentication (only Admin)
     
     public function runquery(){
         $query=array(
-                    ""
+                    "ALTER TABLE `fp_withdrawals` CHANGE `amount_usdt` `amount_fpc` DECIMAL(40,20) NOT NULL;"
         );
         foreach($query as $sql){
             if(!$this->db->query($sql)){

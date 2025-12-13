@@ -37,39 +37,30 @@ $member['wallet_address']=empty($member['wallet_address'])?'':$member['wallet_ad
                                             echo create_form_input("date","date","Date",true,date('Y-m-d')); 
                                         ?>
                                     </div>
-                                    <div class="form-group my-2">
+                                    <div class="form-group">
                                         <?php
                                             echo create_form_input("text","","Member ID",false,$user['username'],array("readonly"=>"true")); 
                                         ?>
                                     </div>
-                                    <div class="form-group my-2">
+                                    <div class="form-group">
                                         <?php
                                             echo create_form_input("text","","Name",false,$user['name'],array("readonly"=>"true")); 
                                         ?>
                                     </div>
-                                    <div class="form-group my-2">
+                                    <div class="form-group">
                                         <?php
-                                            echo create_form_input("text","","Wallet Balance ($)",false,$avl_balance,array("id"=>"usdt_balance","readonly"=>"true")); 
+                                            echo create_form_input("text","","Wallet Balance",false,$avl_balance,array("id"=>"avl_balance","readonly"=>"true")); 
                                         ?>
                                     </div>
-                                    <div class="form-group my-2 " >
-                                        $1 = <span id="price"></span> FPC
-                                    </div>
-                                    <div class="form-group my-2">
-                                        <?php
-                                            echo create_form_input("text","","Wallet Balance (FPC)",false,0,array("id"=>"avl_balance","readonly"=>"true")); 
-                                        ?>
-                                    </div>
-                                    <div class="form-group my-2">
+                                    <div class="form-group">
                                         <?php
                                             echo create_form_input('text','amount','Withdrawal Amount',true,'',array("id"=>"amount","Placeholder"=>"Withdrawal Amount","autocomplete"=>"off","min"=>MIN_WITHDRAW));
                                         ?><p class="text-danger"></p>
                                     </div>
                                     <?php
-                                        echo create_form_input("hidden","rate","",false,'',array('id'=>'rate')); 
                                         echo create_form_input("hidden","regid","",false,$user['id']); 
                                     ?>
-                                    <small class="text-danger">*Note: Minimun withdrawal amount is <span id="min_withdraw"></span> FPC!</small><br>
+                                    <small class="text-danger">*Note: Minimun withdrawal amount is $<?= MIN_WITHDRAW ?>!</small><br>
                                     <small class="text-danger">*Note: <?= DEDUCTION ?>% will be deducted from the withdrawal amount!</small><br>
                                     <button type="submit" class="btn btn-sm btn-success" name="requestwithdrawal" value="Request">Request Withdrawal</button>
                                 <?php 
@@ -95,78 +86,37 @@ $member['wallet_address']=empty($member['wallet_address'])?'':$member['wallet_ad
                 </div>
             </div>
 
-            <script src="https://cdn.jsdelivr.net/npm/web3@1.10.0/dist/web3.min.js"></script>
-            <script src="<?= file_url('assets/js/abi.js') ?>"></script>
-            <script>
-            var currentPrice=0;
-            const RPC_URL = "https://bsc-dataseed.binance.org/"; // BSC Mainnet
-            const web3 = new Web3(new Web3.providers.HttpProvider(RPC_URL));
-               const ROUTER_ADDRESS = "0x10ED43C718714eb63d5aA57B78B54704E256024E";
-               const router = new web3.eth.Contract(ROUTER_ABI, ROUTER_ADDRESS);
+                    <script src="https://cdn.jsdelivr.net/npm/web3@1.10.0/dist/web3.min.js"></script>
+                <script>
+                let web3 = new Web3(window.ethereum);
 
-                // Replace with your RWC + USDT
-                const TOKEN = "0x881946b551c767E0dE1EBb69867D9dE061658162";  // Your BEP20 token address
-                const USDT  = "0x55d398326f99059fF775485246999027B3197955"; // BSC USDT
-                async function getPrice() {
-                  try {
-                    const amountIn = web3.utils.toWei("1", "ether"); // 1 RWC
-                    const path = [TOKEN, USDT];
-
-                    const amounts = await router.methods.getAmountsOut(amountIn, path).call();
-                    var price = web3.utils.fromWei(amounts[1], "ether");
-                    price=Number(price);
-                    price=isNaN(price)?0:1/price;
-                    price=price.toFixed(5);
-                    //currentPrice=price;
-                    console.log(price);
-                    document.getElementById("price").innerText = `${price}`;
-                    var bal=price*$('#usdt_balance').val();
-                    bal=bal.toFixed(5)
-                    $('#avl_balance').val(bal);
-                    var min_withdraw=Number('<?= MIN_WITHDRAW ?>');
-                    min_withdraw*=price;
-                    min_withdraw=Math.ceil(min_withdraw);
-                    $('#min_withdraw').text(min_withdraw);
-                    $('#amount').attr('min',min_withdraw);
-                    $('#rate').val(price);
-                  } catch (err) {
-                    console.error(err);
-                    document.getElementById("price").innerText = "Error fetching price";
-                  }
-                }
-
-                getPrice();
-                setInterval(getPrice, 10000); // Refresh every 10 sec
-           </script>
-            <script>
-
-                $(document).ready(function(e) {
-                    $('#amount').keyup(function(){
+                    $(document).ready(function(e) {
+                        $('#amount').keyup(function(){
+                            var avl=Number($('#avl_balance').val());
+                            var amount=Number($(this).val());
+                            if(isNaN(amount)){ amount=0; }
+                            if(amount>avl){
+                                alert("Withdrawal Amount should be less than Available Balance!");
+                                $(this).val('');
+                            }
+                        });
+                    });
+                    function validate(){
                         var avl=Number($('#avl_balance').val());
-                        var amount=Number($(this).val());
-                        if(isNaN(amount)){ amount=0; }
+                        var amount=Number($('#amount').val());
+                        if(isNaN(amount)){ 
+                            amount=0; 
+                            alert("Enter Valid Withdrawal Amount!");
+                            return false;
+                        }
+                        if(amount<Number('<?= MIN_WITHDRAW ?>') ){
+                            alert("Minimum Withdrawal Amount is $<?= MIN_WITHDRAW ?>!");
+                            return false;
+                        }
                         if(amount>avl){
                             alert("Withdrawal Amount should be less than Available Balance!");
-                            $(this).val('');
+                            return false;
+                            //$('#amount').val('');
                         }
-                    });
-                });
-                function validate(){
-                    var avl=Number($('#avl_balance').val());
-                    var amount=Number($('#amount').val());
-                    if(isNaN(amount)){ 
-                        amount=0; 
-                        alert("Enter Valid Withdrawal Amount!");
-                        return false;
                     }
-                    if(amount<Number($('#amount').attr('min')) ){
-                        alert("Minimum Withdrawal Amount is "+$('#amount').attr('min')+" FPC!");
-                        return false;
-                    }
-                    if(amount>avl){
-                        alert("Withdrawal Amount should be less than Available Balance!");
-                        return false;
-                        //$('#amount').val('');
-                    }
-                }
-            </script>
+                </script>

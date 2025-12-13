@@ -24,7 +24,7 @@
                 var amount=$(this).data('amount');
                 alertify.confirm("Approve Withdrawal Request", "Are you sure you want to Approve this Withdrawal Request?", 
                     function(){ 
-                        sendUSDT(id, recipient, amount);
+                        sendFPC(id, recipient, amount);
                     },
                     function(){ alertify.error("Withdrawal Request Approval Cancelled!"); }
                 ).set('labels', {ok:'Approve Withdrawal Request'});
@@ -69,35 +69,60 @@
                     },
                     { 
                         title: "Date", 
-                        field: "date",
+                        field: "date",width:140,
                         formatter: function(cell){
                             let dateStr = cell.getValue(); // Y-m-d format
                             let formattedDate = dateStr.split("-").reverse().join("-");
                             return formattedDate;
                         }
                     },
-                    { title: "MID", field: "username" },
-                    { title: "Name", field: "name" },
-                    { title: "Address", field: "wallet_address", width:500 },
-                    { title: "Amount", field: "amount" ,
+                    { title: "MID", field: "username", width:100 },
+                    { title: "Name", field: "name", width:180 },
+                    { title: "Address", field: "wallet_address", width:450 },
+                    { title: "Amount", field: "amount", width:250 ,
+                        formatter: function(cell){
+                            let rowData = cell.getRow().getData();
+                            let rate = rowData.rate;
+                            let amount = Number(cell.getValue());
+                            amount=amount==Math.round(amount)?Math.round(amount):amount.toFixed(8);
+                            if(rate>0){
+                                let amt = Number(amount*rate);
+                                amt = amt.toFixed(4)==Math.round(amt)?Math.round(amt):amt.toFixed(4);
+                                return '$'+amount +' ('+amt+' FPC)'
+                            }
+                            else{
+                                return '$'+amount;
+                            }
+                        }
+                    },
+                    { title: "Deduction", field: "deduction_amount", width:250 ,
+                        formatter: function(cell){
+                            let rowData = cell.getRow().getData();
+                            let rate = rowData.rate;
+                            let amount = Number(cell.getValue());
+                            amount=amount==Math.round(amount)?Math.round(amount):amount.toFixed(8);
+                            if(rate>0){
+                                let amt = Number(amount*rate);
+                                amt = amt.toFixed(4)==Math.round(amt)?Math.round(amt):amt.toFixed(4);
+                                return '$'+amount +' ('+amt+' FPC)'
+                            }
+                            else{
+                                return '$'+amount;
+                            }
+                        }
+                    },
+                    { title: "Payable($)", field: "payable_amount" , width:180 ,
                         formatter: function(cell){
                             let amount = Number(cell.getValue());
                             amount=amount==Math.round(amount)?Math.round(amount):amount.toFixed(8);
                             return '$'+amount
                         }
                     },
-                    { title: "Deduction", field: "deduction_amount" ,
+                    { title: "Payable(FPC)", field: "amount_fpc" , width:180 ,
                         formatter: function(cell){
-                            let amount = Number(cell.getValue());
-                            amount=amount==Math.round(amount)?Math.round(amount):amount.toFixed(8);
-                            return '$'+amount
-                        }
-                    },
-                    { title: "Payable Amount", field: "payable_amount" ,
-                        formatter: function(cell){
-                            let amount = Number(cell.getValue());
-                            amount=amount==Math.round(amount)?Math.round(amount):amount.toFixed(8);
-                            return '$'+amount
+                            let amount_fpc = Number(cell.getValue());
+                            amount_fpc=amount_fpc==Math.round(amount_fpc)?Math.round(amount_fpc):amount_fpc.toFixed(8);
+                            return amount_fpc+' FPC';
                         }
                     },
                     { 
@@ -107,10 +132,12 @@
                        formatter: function(cell) {
                            let rowData = cell.getRow().getData();
                            let id = rowData.id; // Get full row data
+                           let amount_fpc = Number(rowData.amount_fpc); // Get full row data
                            let amount = Number(rowData.payable_amount); // Get full row data
                            let address = rowData.wallet_address; // Get full row data
                            amount=amount==Math.round(amount)?Math.round(amount):amount.toFixed(8);
-                           let button=`<button type="button" class="btn btn-sm btn-success approve-transfer mb-1" value="${id}" data-amount="${amount}" data-address="${address}">Approve Withdrawal</button><br>`;
+                           amount_fpc=amount_fpc==Math.round(amount_fpc)?Math.round(amount_fpc):amount_fpc.toFixed(8);
+                           let button=`<button type="button" class="btn btn-sm btn-success approve-transfer mb-1" value="${id}" data-amount="${amount_fpc}" data-address="${address}">Approve Withdrawal</button><br>`;
                            //button+=`<button type="button" class="btn btn-sm btn-success approve-staking mb-1" value="${id}">Transfer to Staking</button><br>`;
                            button+=`<button type="button" class="btn btn-sm btn-danger reject" value="${id}">Reject</button>`;
                            return button;

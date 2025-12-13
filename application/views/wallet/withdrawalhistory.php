@@ -33,23 +33,48 @@
                     },
                     { title: "Amount", field: "amount" ,
                         formatter: function(cell){
+                            let rowData = cell.getRow().getData();
+                            let rate = rowData.rate;
                             let amount = Number(cell.getValue());
                             amount=amount==Math.round(amount)?Math.round(amount):amount.toFixed(8);
-                            return '$'+amount
+                            if(rate>0){
+                                let amt = Number(amount*rate);
+                                amt = amt.toFixed(4)==Math.round(amt)?Math.round(amt):amt.toFixed(4);
+                                return '$'+amount +' ('+amt+' FPC)'
+                            }
+                            else{
+                                return '$'+amount;
+                            }
                         }
                     },
                     { title: "Deduction", field: "deduction_amount" ,
                         formatter: function(cell){
+                            let rowData = cell.getRow().getData();
+                            let rate = rowData.rate;
+                            let amount = Number(cell.getValue());
+                            amount=amount==Math.round(amount)?Math.round(amount):amount.toFixed(8);
+                            if(rate>0){
+                                let amt = Number(amount*rate);
+                                amt = amt.toFixed(4)==Math.round(amt)?Math.round(amt):amt.toFixed(4);
+                                return '$'+amount +' ('+amt+' FPC)'
+                            }
+                            else{
+                                return '$'+amount;
+                            }
+                        }
+                    },
+                    { title: "Payable($)", field: "payable_amount" ,
+                        formatter: function(cell){
                             let amount = Number(cell.getValue());
                             amount=amount==Math.round(amount)?Math.round(amount):amount.toFixed(8);
                             return '$'+amount
                         }
                     },
-                    { title: "Payable Amount", field: "payable_amount" ,
+                    { title: "Payable(FPC)", field: "amount_fpc" ,
                         formatter: function(cell){
-                            let amount = Number(cell.getValue());
-                            amount=amount==Math.round(amount)?Math.round(amount):amount.toFixed(8);
-                            return '$'+amount
+                            let amount_fpc = Number(cell.getValue());
+                            amount_fpc=amount_fpc==Math.round(amount_fpc)?Math.round(amount_fpc):amount_fpc.toFixed(8);
+                            return amount_fpc+' FPC';
                         }
                     },
                     { 

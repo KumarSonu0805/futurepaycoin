@@ -201,6 +201,44 @@ class Wallet extends MY_Controller {
 	public function requestwithdrawal(){
 		if($this->input->post('requestwithdrawal')!==NULL){
 			$data=$this->input->post();
+            $rate=$data['rate'];
+            //print_pre($data,true);
+            $member=$this->member->getmemberdetails($data['regid']);
+            $user=getuser();
+            $avl_balance=getavlbalance($user);
+            $avl_balance*=$rate;
+            $min_withdraw=MIN_WITHDRAW*$rate;
+            if($data['amount']<$min_withdraw){
+				$this->session->set_flashdata("err_msg","Invalid Request Amount!");
+            }
+            elseif($avl_balance>=$data['amount']){
+                $amount=$data['amount'];
+                $data['amount']/=$data['rate'];
+                $data['deduction']=DEDUCTION;
+                $data['deduction_amount']=($data['amount']*DEDUCTION)/100;
+                $data['payable_amount']=$data['amount']-$data['deduction_amount'];
+                $data['amount_fpc']=$data['payable_amount']*$data['rate'];
+                unset($data['requestwithdrawal']);
+                $data['updated_on']=$data['added_on']=date('Y-m-d H:i:s');
+                //print_pre($data,true);
+                $result=$this->member->requestwithdrawal($data);
+                if($result['status']===true){
+                    $this->session->set_flashdata("msg","Withdrawal Request Submitted successfully!");
+                }
+                else{
+                    $this->session->set_flashdata("err_msg",$result['message']);
+                }
+			}
+			else{
+				$this->session->set_flashdata("err_msg","Invalid Request Amount!");
+			}
+		}
+		redirect('wallet/withdrawal/');
+	}
+	
+	public function oldrequestwithdrawal(){
+		if($this->input->post('requestwithdrawal')!==NULL){
+			$data=$this->input->post();
             $member=$this->member->getmemberdetails($data['regid']);
             $user=getuser();
             $avl_balance=getavlbalance($user);

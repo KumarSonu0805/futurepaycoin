@@ -149,7 +149,7 @@ class Wallet extends MY_Controller {
             $this->template->load('wallet','history',$data);          
         }
         else{
-            $requests=$this->member->getmemberrequests(['t1.status'=>1]);
+            $requests=$this->member->getmemberrequests(['t1.status'=>1],false,'t1.id desc');
             $requests=array_map(function($item) {
                 if(isset($item['id'])){
                     $item['id']=md5('withdrawal-request-id-'.$item['id']);

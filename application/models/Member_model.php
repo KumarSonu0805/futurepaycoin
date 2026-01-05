@@ -444,7 +444,7 @@ class Member_model extends CI_Model{
 		}
 	}
 	
-	public function getmemberrequests($where,$columns=false){
+	public function getmemberrequests($where,$columns=false,$order_by="t1.id"){
         if($columns){
             $columns ="t1.date,t1.amount, t1.status,";
             $columns.="case when isNULL(t1.order_id) or status!=1 then '' 
@@ -458,6 +458,7 @@ class Member_model extends CI_Model{
 		  $this->db->select("t1.*, t2.username,t2.name,t3.wallet_address");
         }
 		$this->db->where($where);
+		$this->db->order_by($order_by);
 		$this->db->from('withdrawals t1');
 		$this->db->join('users t2','t1.regid=t2.id','Left');
 		$this->db->join('members t3','t1.regid=t3.regid','Left');

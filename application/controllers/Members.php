@@ -53,7 +53,26 @@ class Members extends MY_Controller {
         $data['datatable']=true;
         $data['type']='downline';
         $user=getuser();
-        $data['members']=$this->member->getmembers($user['id']);
+        $members=$this->member->getmembers($user['id']);
+        $levelmembers=$this->member->levelwisemembers($user['id']);
+        $member_ids=!empty($levelmembers)?array_column($levelmembers,'member_id'):array();
+        if(!empty($members)){
+            foreach($members as $key=>$item){
+                if(isset($item['package'])){
+                    $item['package']=round($item['package'],4);
+                }
+                $index=array_search($item['regid'],$member_ids);
+                if($index!==false){
+                    $item['level']='Level '.$levelmembers[$index]['level'];
+                }
+                else{
+                    $item['level']='--';
+                }
+                $members[$key]=$item;
+            }
+        }
+        $data['members']=$members;
+        //print_pre($data,true);
         $this->template->load('members','memberlist',$data); 
     }
     

@@ -19,10 +19,11 @@
                                                 <th>Joining Date</th>
                                                 <?php if($this->session->role=='admin'){ ?>
                                                 <th>Mobile</th>
+                                                <th>Amount</th>
                                                 <th>Password</th>
-                                                <?php
-                                                    }
-                                                ?>
+                                                <?php }else{ ?>
+                                                <th class="select-filter">Level</th>
+                                                <?php } ?>
                                                 <th>Wallet Address</th>
                                                 <th>Status</th>
                                                 <?php if($this->session->role=='admin'){ ?>
@@ -51,10 +52,11 @@
                                                 <td><?= date('d-m-Y',strtotime($single['date'])) ?></td>
                                                 <?php if($this->session->role=='admin'){ ?>
                                                 <td><?= $single['mobile'] ?></td>
+                                                <td><?= $single['package'] ?></td>
                                                 <td><?= $single['password'] ?></td>
-                                                <?php
-                                                    }
-                                                ?>
+                                                <?php }else{ ?>
+                                                <td><?= $single['level']; ?></td>
+                                                <?php } ?>
                                                 <td><?= $single['wallet_address'] ?></td>
                                                 <td><?= $status; ?></td>
                                                 <?php if($this->session->role=='admin'){ ?>

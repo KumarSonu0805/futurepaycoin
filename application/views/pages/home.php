@@ -30,6 +30,11 @@
       padding: 5px 5px;
       border-radius: 5px;
     }
+    .status-card.blank{
+        background: transparent;
+        border: 0;
+        box-shadow: 0 0 0;
+    }
 </style>
 <?php
 $b=false;
@@ -192,6 +197,50 @@ if($this->session->role=='admin'){
                      <p>Monthly Loyalty Income</p>
                   </li>
             </ul>
+         </div>
+    </div>
+    <div class="status-wrapper">
+         <div class="status-card">
+            <ul>
+                  <li>
+                     <div class="status-icon">
+                        <svg width="46" height="46" viewBox="0 0 46 46" fill="none">
+                              <path d="M9 15C9 12.2386 11.2386 10 14 10H32C34.7614 10 37 12.2386 37 15V31C37 33.7614 34.7614 36 32 36H14C11.2386 36 9 33.7614 9 31V15Z"
+                                 stroke="#3AC977" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                              <path d="M9 18H37" stroke="#3AC977" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                              <path d="M32 23C33.6569 23 35 21.6569 35 20C35 18.3431 33.6569 17 32 17C30.3431 17 29 18.3431 29 20C29 21.6569 30.3431 23 32 23Z"
+                                 stroke="#3AC977" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                     </div>
+                  </li>
+                  <li>
+                     <h4><?= $this->amount->toDecimal($data['t_activation'],false); ?></h4>
+                     <p>Today Activation</p>
+                  </li>
+            </ul>
+         </div>
+         <div class="status-card">
+            <ul>
+                  <li>
+                     <div class="status-icon">
+                        <svg width="46" height="46" viewBox="0 0 46 46" fill="none">
+                              <path d="M9 15C9 12.2386 11.2386 10 14 10H32C34.7614 10 37 12.2386 37 15V31C37 33.7614 34.7614 36 32 36H14C11.2386 36 9 33.7614 9 31V15Z"
+                                 stroke="#3AC977" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                              <path d="M9 18H37" stroke="#3AC977" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                              <path d="M32 23C33.6569 23 35 21.6569 35 20C35 18.3431 33.6569 17 32 17C30.3431 17 29 18.3431 29 20C29 21.6569 30.3431 23 32 23Z"
+                                 stroke="#3AC977" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                     </div>
+                  </li>
+                  <li>
+                     <h4><?= $this->amount->toDecimal($data['t_withdrawals'],false); ?></h4>
+                     <p>Today Withdrawals</p>
+                  </li>
+            </ul>
+         </div>
+         <div class="status-card blank">
+         </div>
+         <div class="status-card blank">
          </div>
     </div>
 </div>

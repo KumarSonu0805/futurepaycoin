@@ -85,7 +85,7 @@
             */
             
             $result=array('deposits'=>0,'withdrawals'=>0,'topup'=>0,'rank_achiever'=>0,'rank_reward'=>0,'spin'=>0,
-                          'monthly'=>0);
+                          'monthly'=>0,'t_activation'=>0,'t_withdrawals'=>0);
             
             $CI->db->select_sum('amount');
             $deposits=$CI->db->get_where('investments',['auto'=>0])->unbuffered_row()->amount;
@@ -105,6 +105,13 @@
             $CI->db->select_sum('amount');
             $rank_reward=$CI->db->get_where('income',['type'=>'reward','status'=>1])->unbuffered_row()->amount;
             $result['rank_reward']=$rank_reward??0;
+            
+            $t_activation=$CI->db->get_where('members',['status'=>1,
+                                                        'activation_date'=>date('Y-m-d')])->num_rows();
+            $result['t_activation']=$t_activation??0;
+            
+            $t_withdrawals=$CI->db->get_where('withdrawals',['date'=>date('Y-m-d')])->num_rows();
+            $result['t_withdrawals']=$t_withdrawals??0;
             
             return $result;
 		}  

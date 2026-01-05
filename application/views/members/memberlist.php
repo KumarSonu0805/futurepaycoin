@@ -5,6 +5,11 @@
                     </div>
                     <div class="card-body">
                         <div class="row">
+                            <div class="col-md-4">
+                                <div id="status"></div>
+                            </div>
+                        </div><br>
+                        <div class="row">
                             <div class="col-12">   
                                 <?php /*?><div id="tabulator-table"></div><?php */?>
                                 <div class="table-responsive">
@@ -19,11 +24,11 @@
                                                 <th>Joining Date</th>
                                                 <?php if($this->session->role=='admin'){ ?>
                                                 <th>Mobile</th>
+                                                <th>Amount</th>
                                                 <th>Password</th>
-                                                <?php }elseif($type=='downline'){ ?>
+                                                <?php }else{ ?>
                                                 <th class="select-filter">Level</th>
                                                 <?php } ?>
-                                                <th>Amount</th>
                                                 <th>Wallet Address</th>
                                                 <th>Status</th>
                                                 <?php if($this->session->role=='admin'){ ?>
@@ -52,11 +57,11 @@
                                                 <td><?= date('d-m-Y',strtotime($single['date'])) ?></td>
                                                 <?php if($this->session->role=='admin'){ ?>
                                                 <td><?= $single['mobile'] ?></td>
+                                                <td><?= $single['package'] ?></td>
                                                 <td><?= $single['password'] ?></td>
-                                                <?php }elseif($type=='downline'){ ?>
+                                                <?php }else{ ?>
                                                 <td><?= $single['level']; ?></td>
                                                 <?php } ?>
-                                                <td><?= $single['package'] ?></td>
                                                 <td><?= $single['wallet_address'] ?></td>
                                                 <td><?= $status; ?></td>
                                                 <?php if($this->session->role=='admin'){ ?>
@@ -117,62 +122,9 @@
     <script>
 	
 		$(document).ready(function(e) {
-            $('#table').dataTable();
+            //$('#table').dataTable();
+            createDatatable();
             
-            var url="<?= base_url('members/getmembers/?type='.$type); ?>";
-            var columns=[
-                    { 
-                        title: "Sl.No.", 
-                        field: "serial", 
-                        type: "auto"
-                    },
-                    { title: "Member ID", field: "username" },
-                    { title: "Member Name", field: "name" },
-                    { title: "Sponsor ID", field: "sponsor_id" },
-                    { title: "Sponsor Name", field: "sponsor_name" },
-                    { 
-                        title: "Joining Date", 
-                        field: "date",
-                        formatter: function(cell){
-                            let dateStr = cell.getValue(); // Y-m-d format
-                            let formattedDate = dateStr.split("-").reverse().join("-");
-                            return formattedDate;
-                        }
-                    },
-                    <?php if($this->session->role=='admin'){ ?>
-                    { title: "Mobile", field: "mobile" },
-                    { title: "Email", field: "email" },
-                    { title: "Amount", field: "package" },
-                    { title: "Wallet Address", field: "wallet_address" },
-                    <?php }else{ ?>
-                    { title: "Wallet Address", field: "wallet_address", width:450 },
-                    <?php } ?>
-                ];
-
-            var pagination={
-                sizes:[10, 20, 50, 100]
-            }
-
-            //var table=createTabulator('tabulator-table',url,columns,pagination);
-
-            function refreshTableData() {
-                table.replaceData(url);
-            }
-            $('body').on('keyup','#searchInput',function(){
-                let value = $(this).val().toLowerCase();
-                console.log(value);
-                table.setFilter(function(data) {
-                    return Object.values(data).some(field => 
-                        field !== null && field !== undefined && field.toString().toLowerCase().includes(value)
-                    );
-                });
-            });
-
-            $('body').on('click','#clearSearch',function(){
-                document.getElementById("searchInput").value = "";
-                table.clearFilter();
-            });
-
             $('body').on('click','.activate',function(){
                 var id=$(this).val();
                 var amount=prompt("Enter Package Amount (Min $50)");
@@ -200,6 +152,23 @@
 
         });
 		
+        function createDatatable(){
+            $('#status').html('');
+            let table=$('#table').DataTable();
+            table.columns('.select-filter').every(function(){
+                var that = this;
+                var pos=$('#status');
+                // Create the select list and search operation
+                var select = $('<select class="form-control" />').appendTo(pos).on('change',function(){
+                                that.search("^" + $(this).val() + "$", true, false, true).draw();
+                            });
+                    select.append('<option value=".+">All</option>');
+                // Get the search data for the first column and add to the select list
+                this.cache( 'search' ).unique().each(function(d){
+                        select.append($('<option value="'+d+'">'+d+'</option>') );
+                });
+            });
+        }
         function validate(text){
             var message='';
             if(text=='Restart' || text=='Stop'){

@@ -550,6 +550,10 @@ else{
                            <td>Status</td>
                            <td class="left-record"><?= $member['status']==1?'<p class="textActive">Active</p>':'<p class="text-danger">In-Active</p>' ?></td>
                         </tr>
+                        <tr>
+                           <td>Activation Package</td>
+                           <td class="left-record"><?= empty($member['package']) || $member['package']==0?'<p class="text-danger">--</p>':'<p class="textActive">$'.round($member['package'],4).'</p>'; ?></td>
+                        </tr>
                         <?php /*?><tr>
                            <td>Direct Team</td>
                            <td class="left-record">Alt 0 <span>Active: </span> 0</td>

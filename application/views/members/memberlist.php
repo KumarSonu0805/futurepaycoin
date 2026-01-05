@@ -26,7 +26,7 @@
                                                 <th>Mobile</th>
                                                 <th>Amount</th>
                                                 <th>Password</th>
-                                                <?php }else{ ?>
+                                                <?php }elseif($type=='downline'){ ?>
                                                 <th class="select-filter">Level</th>
                                                 <?php } ?>
                                                 <th>Wallet Address</th>
@@ -59,7 +59,7 @@
                                                 <td><?= $single['mobile'] ?></td>
                                                 <td><?= $single['package'] ?></td>
                                                 <td><?= $single['password'] ?></td>
-                                                <?php }else{ ?>
+                                                <?php }elseif($type=='downline'){ ?>
                                                 <td><?= $single['level']; ?></td>
                                                 <?php } ?>
                                                 <td><?= $single['wallet_address'] ?></td>

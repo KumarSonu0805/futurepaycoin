@@ -328,6 +328,30 @@ class Income_model extends CI_Model{
         foreach($users as $user){
             $this->generateincome($user,$date);
         }
+        $sql="SELECT *
+            FROM ".TP."income i
+            WHERE NOT EXISTS (
+                SELECT 1
+                FROM ".TP."member_ranks mr
+                WHERE mr.regid = i.regid
+                  AND mr.rank_id = i.rank_id
+            ) AND i.type='reward';
+            ";
+        $query=$this->db->query($sql);
+        if($query->num_rows()>0){
+            $ranks=$this->db->get('ranks')->result_array();
+            $rank_ids=array_column($ranks,'id');
+            $pending=$query->result_array();
+            $data=array();
+            foreach($pending as $single){
+                $index=array_search($single['rank_id'],$rank_ids);
+                $data[]=array('date'=>$single['date'],'regid'=>$single['regid'],'rank_id'=>$single['rank_id'],
+                              'rank'=>$ranks[$index]['rank']);
+            }
+            if(!empty($data)){
+                $this->db->insert_batch('member_ranks',$data);
+            }
+        }
     }
     
     

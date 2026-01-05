@@ -10,10 +10,10 @@
 	}
 
 	if(!function_exists('countdirect')) {
-  		function countdirect() {
+  		function countdirect($status=false) {
     		$CI = get_instance();
             $user=getuser();
-            $members=$CI->member->getdirectmembers($user['id']);
+            $members=$CI->member->getdirectmembers($user['id'],$status);
             return !empty($members)?count($members):0;
 		}  
 	}

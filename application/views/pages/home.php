@@ -723,7 +723,7 @@ else{
               <div class="dash-user-profile">
                   <div class="row">
                       <?php
-                        $direct=countdirect();
+                        $direct=countdirect(1);
                         $where=['regid'=>$user['id'],'status'=>1];
                         $investments=$this->db->get_where('investments',$where)->result_array();
                         foreach($investments as $investment){

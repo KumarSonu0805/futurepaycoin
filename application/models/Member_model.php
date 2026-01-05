@@ -183,9 +183,13 @@ class Member_model extends CI_Model{
         return $result;
 	}
 		
-	public function getdirectmembers($regid){
+	public function getdirectmembers($regid,$status=false){
         $this->db->select("t1.*,t2.username,t2.mobile,t3.username as sponsor_id,t3.name as sponsor_name,0 as investment, 0 as team_business");
-        $this->db->where(['t1.refid'=>$regid]);
+        $where=['t1.refid'=>$regid];
+        if($status!==false){
+            $where['t1.status']=$status;
+        }
+        $this->db->where($where);
         $this->db->from('members t1');
         $this->db->join('users t2','t1.regid=t2.id');
         $this->db->join('users t3','t1.refid=t3.id');

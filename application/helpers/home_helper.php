@@ -106,11 +106,13 @@
             $rank_reward=$CI->db->get_where('income',['type'=>'reward','status'=>1])->unbuffered_row()->amount;
             $result['rank_reward']=$rank_reward??0;
             
+            $CI->db->select_sum('package');
             $t_activation=$CI->db->get_where('members',['status'=>1,
-                                                        'activation_date'=>date('Y-m-d')])->num_rows();
+                                                        'activation_date'=>date('Y-m-d')])->unbuffered_row()->package;
             $result['t_activation']=$t_activation??0;
             
-            $t_withdrawals=$CI->db->get_where('withdrawals',['date'=>date('Y-m-d')])->num_rows();
+            $CI->db->select_sum('payable_amount','amount');
+            $t_withdrawals=$CI->db->get_where('withdrawals',['approve_date'=>date('Y-m-d'),'status'=>1])->unbuffered_row()->amount;
             $result['t_withdrawals']=$t_withdrawals??0;
             
             return $result;

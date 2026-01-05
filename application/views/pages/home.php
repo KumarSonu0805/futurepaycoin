@@ -214,7 +214,7 @@ if($this->session->role=='admin'){
                      </div>
                   </li>
                   <li>
-                     <h4><?= $this->amount->toDecimal($data['t_activation'],false); ?></h4>
+                     <h4><?= $this->amount->toDecimal($data['t_activation'],true,4); ?></h4>
                      <p>Today Activation</p>
                   </li>
             </ul>
@@ -233,7 +233,7 @@ if($this->session->role=='admin'){
                      </div>
                   </li>
                   <li>
-                     <h4><?= $this->amount->toDecimal($data['t_withdrawals'],false); ?></h4>
+                     <h4><?= $this->amount->toDecimal($data['t_withdrawals'],true,4); ?></h4>
                      <p>Today Withdrawals</p>
                   </li>
             </ul>

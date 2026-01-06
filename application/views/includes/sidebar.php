@@ -122,6 +122,11 @@
          else{
       ?>
       <li class="nav-item">
+         <a class="nav-link" href="<?= base_url('settings/'); ?>">
+         <i class="fa-solid fa-cogs"></i> Settings
+         </a>
+      </li>
+      <li class="nav-item">
          <a class="nav-link" data-bs-toggle="collapse" href="#contractMenu" role="button" aria-expanded="false" aria-controls="contractMenu">
          <i class="fa-solid fa-money-bill-transfer"></i> Contract
          <i class="fas fa-chevron-down ms-auto"></i>

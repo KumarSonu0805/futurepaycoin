@@ -105,13 +105,13 @@ defined('MIN_WITHDRAW')        OR define('MIN_WITHDRAW',15);
 if(isset($_SERVER['HTTP_HOST']) && ($_SERVER['HTTP_HOST']=='localhost' || $_SERVER['HTTP_HOST']=='192.168.29.123')){
     defined('MIN_BAL')              OR define('MIN_BAL',0); //Minimum
     defined('MIN_DEPOSIT')          OR define('MIN_DEPOSIT',1); //Minimum Deposit
-    defined('ADMIN_ADDRESS')        OR define('ADMIN_ADDRESS','0x3599c27405c429bbe602649533ab9fc650fcd763'); //ADMIN Address
+    //defined('ADMIN_ADDRESS')        OR define('ADMIN_ADDRESS','0x3599c27405c429bbe602649533ab9fc650fcd763'); //ADMIN Address
     defined('WORK_ENV')             OR define('WORK_ENV','development'); 
 }
 else{
     defined('MIN_BAL')              OR define('MIN_BAL',0); //Minimum
     defined('MIN_DEPOSIT')          OR define('MIN_DEPOSIT',50); //Minimum Deposit
-    defined('ADMIN_ADDRESS')        OR define('ADMIN_ADDRESS','0x7C09243fc50E4389646671Dd2CF0C274f51d3638'); //ADMIN Address
+    //defined('ADMIN_ADDRESS')        OR define('ADMIN_ADDRESS','0x7C09243fc50E4389646671Dd2CF0C274f51d3638'); //ADMIN Address
     defined('WORK_ENV')             OR define('WORK_ENV','production'); 
 }
 

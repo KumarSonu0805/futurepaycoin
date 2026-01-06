@@ -117,6 +117,11 @@ class Income_model extends CI_Model{
         $member=$this->member->getmemberdetails($regid);
         //print_pre($member,true);
         if($user['status']==1 && $member['status']==1 && $member['income']==1 && $member['activation_date']!='0000-00-00' && $member['activation_date']<=$date){
+            $date1=date_create($member['activation_date']);
+            $date2=date_create($date);
+            $diff=date_diff($date1,$date2);
+            $days=$diff->days;
+            
             $booster=$member['booster']==1?TRUE:FALSE;
             $where=['regid'=>$regid,'date<='=>$date,'status'=>1];
             $investments=$this->db->get_where('investments',$where)->result_array();
@@ -300,7 +305,7 @@ class Income_model extends CI_Model{
             if(count($top_legs)==2){
                 $leg_1=$top_legs[0]['business'];
                 $leg_2=$top_legs[1]['business'];
-                $where="leg_1<='$leg_1' and leg_2<='$leg_2' and id not in (SELECT rank_id from ".TP."income where regid='$regid')";
+                $where="leg_1<='$leg_1' and leg_2<='$leg_2' and (duration=0 or duration>='$days') and id not in (SELECT rank_id from ".TP."income where regid='$regid')";
                 $ranks=$this->db->get_where('ranks',$where)->result_array();
                 if(!empty($ranks)){
                     foreach($ranks as $rank){

@@ -138,3 +138,27 @@
 		}  
 	}
 
+    if(!function_exists('logupdateoperations')) {
+        function logupdateoperations($table,$data,$where,$parent_id=NULL) {
+          $CI = get_instance();
+          $class=$CI->router->class;
+          $method=$CI->router->method;
+          $ref=array('class'=>$class,'method'=>$method);
+          $CI->load->library('DBOperations');
+          $result=$CI->dboperations->log_update($table,$data,$where,$ref,$parent_id);
+          return $result;
+      }
+  }
+
+  if(!function_exists('logdeleteoperations')) {
+        function logdeleteoperations($table,$where,$parent_id=NULL) {
+          $CI = get_instance();
+          $class=$CI->router->class;
+          $method=$CI->router->method;
+          $ref=array('class'=>$class,'method'=>$method);
+          $CI->load->library('DBOperations');
+          $result=$CI->dboperations->log_delete($table,$where,$ref,$parent_id);
+          return $result;
+      }
+  }
+

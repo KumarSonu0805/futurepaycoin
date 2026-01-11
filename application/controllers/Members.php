@@ -289,5 +289,30 @@ class Members extends MY_Controller {
             }
         }
         redirect($_SERVER['HTTP_REFERER']);
+    }
+    
+	public function updatewallet(){
+        if($this->session->role!='admin'){
+            redirect('/');
+        }
+        if($this->input->post('updatewallet')!==NULL){
+            $data=$this->input->post();
+            $getregid=$this->db->get_where('members',["md5(concat('regid-',regid))"=>$data['regid']]);
+            if($getregid->num_rows()==1){
+                $regid=$getregid->unbuffered_row()->regid;
+                $where=['regid'=>$regid];
+                unset($data['regid'],$data['updatewallet']);
+                logupdateoperations('members',$data,$where);
+                $result=$this->db->update('members',$data,$where);
+                if($result){
+                    $this->session->set_flashdata("msg","Member Wallet Updated Successfully!");
+                }
+                else{
+                    $result=$this->db->error();
+                    $this->session->set_flashdata("err_msg",$result['message']);
+                }
+            }
+        }
+        redirect($_SERVER['HTTP_REFERER']);
 	}
 }

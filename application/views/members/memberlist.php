@@ -1,4 +1,9 @@
 
+<style>
+    .wallet_address{
+        font-size: 12px;
+    }
+</style>
                 <div class="card">
                     <div class="card-header">
                         <h3 class="card-title"><?php echo $title; ?></h3>
@@ -62,10 +67,27 @@
                                                 <?php }elseif($type=='downline'){ ?>
                                                 <td><?= $single['level']; ?></td>
                                                 <?php } ?>
-                                                <td><?= $single['wallet_address'] ?></td>
+                                                <td>
+                                                    <?php if($this->session->role=='admin'){ ?>
+                                                    <span><?= $single['wallet_address'] ?> <button type="button" class="btn p-0 edit-wallet"><i class="fa fa-edit"></i></button></span>
+                                                    <?php
+                                                        if($this->session->role=='admin'){
+                                                            echo form_open('members/updatewallet','class="d-none"');
+                                                            echo create_form_input('text','wallet_address','',true,$single['wallet_address'],['class'=>'wallet_address','data-value'=>$single['wallet_address']]);
+                                                            echo create_form_input('hidden','regid','',true,md5('regid-'.$single['regid']));
+                                                    ?>
+                                                    <button type="submit" class="btn btn-sm btn-success" name="updatewallet"><i class="fa fa-check"></i></button>
+                                                    <button type="button" class="btn btn-sm btn-danger cancel-edit"><i class="fa fa-times"></i></button>
+                                                    <?php
+                                                            echo form_close();
+                                                        }
+                                                    ?>
+                                                    <?php }else{ echo $single['wallet_address']; } ?>
+                                                </td>
                                                 <td><?= $status; ?></td>
                                                 <?php if($this->session->role=='admin'){ ?>
                                                 <td>
+                                                    
                                                     <?php
                                                     if($single['status']==0){
                                                     ?>
@@ -139,6 +161,19 @@
                 else{
                     alert("Enter amount greater than 50!")
                 }
+            });
+            
+            $('body').on('click','.edit-wallet',function(){
+                var $col=$(this).closest('td');
+                $col.find('span').addClass('d-none');
+                $col.find('form').removeClass('d-none');
+            });
+            
+            $('body').on('click','.cancel-edit',function(){
+                var $col=$(this).closest('td');
+                $col.find('span').removeClass('d-none');
+                $col.find('form').addClass('d-none');
+                $col.find('.wallet_address').val($col.find('.wallet_address').attr('data-value'));
             });
             
             $('body').on('click','.activate-booster',function(){

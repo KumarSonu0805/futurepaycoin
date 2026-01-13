@@ -224,10 +224,10 @@
 		}
 	</script>
     <script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js/dist/web3.min.js"></script>
-    <script src="<?= file_url('assets/js/abi.js') ?>"></script>
+    <script src="<?= file_url('assets/js/abi.js?v=1') ?>"></script>
     <script>
         const BSC_CHAIN_ID = '0x38'; // 56 in decimal for Binance Smart Chain Mainnet
-        const TOKEN = "0x881946b551c767E0dE1EBb69867D9dE061658162";  // Your BEP20 token address
+        const TOKEN = "<?= TOKEN_ADDRESS ?>";  // Your BEP20 token address
         const USDT_CONTRACT_ADDRESS = '0x55d398326f99059fF775485246999027B3197955'; // USDT BEP20 Address
         const USDT_ABI2 = [ // Minimal ABI for token interactions
             {

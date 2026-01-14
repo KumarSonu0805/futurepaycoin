@@ -163,7 +163,7 @@
         <div id="unblacklistResult" class="result-box result-success"></div>
       </div>
 
-      <div class="section-divider"></div><?php */?>
+      <div class="section-divider"></div>
 
       <div class="section">
         <h4>Pause Token</h4>
@@ -177,7 +177,7 @@
         <h4>Unpause Token</h4>
         <button class="btn-green" onclick="unpauseToken()">Unpause</button>
         <div id="unpauseResult" class="result-box result-success"></div>
-      </div>
+      </div><?php */?>
 
       <div class="section-divider"></div>
 

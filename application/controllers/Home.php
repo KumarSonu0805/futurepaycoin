@@ -38,6 +38,10 @@ Google Authentication (only Admin)
         $data['datatable'] = true;
         $this->template->load('pages','home2',$data);
     }
+	public function spin(){
+        $data['title']="Spin";
+        $this->load->view('pages/spin',$data);
+    }
 	public function changepassword(){
         checklogin();
         $getuser=$this->account->getuser(array("md5(id)"=>$this->session->user));

@@ -115,7 +115,7 @@ $member['wallet_address']=empty($member['wallet_address'])?'':$member['wallet_ad
                const router = new web3.eth.Contract(ROUTER_ABI, ROUTER_ADDRESS);
 
                 // Replace with your RWC + USDT
-                const TOKEN = "0x881946b551c767E0dE1EBb69867D9dE061658162";  // Your BEP20 token address
+                const TOKEN = "<?= TOKEN_ADDRESS ?>";  // Your BEP20 token address
                 const USDT  = "0x55d398326f99059fF775485246999027B3197955"; // BSC USDT
                 async function getPrice() {
                   try {

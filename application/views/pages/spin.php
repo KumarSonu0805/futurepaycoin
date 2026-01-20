@@ -154,83 +154,107 @@ const themes = {
     sliceB: "#B8962E",   // bronze gold
     text: "#1A1408",     // dark contrast
     border: "#3A2C12",   // deep edge
-    center: "#1A1408",   // center dot
+    center: "#B8962E",   // center dot
     glow: "rgba(255,215,0,0.6)",
     font: "bold 18px 'Georgia', serif"
   }
 };
 
 
-let currentTheme = themes.classicCasino;
+let currentTheme = themes.futurePayCoin;
 
     
 /* DRAW WHEEL (UNCHANGED) */
 function drawWheel() {
   ctx.clearRect(0, 0, size, size);
 
+  /* ================= SLICES ================= */
   for (let i = 0; i < segments; i++) {
     const startAngle = rotation + i * arc - Math.PI / 2;
     const endAngle = startAngle + arc;
 
-    //ctx.fillStyle = i % 2 ? "#b94a48" : "#e8d37a";
-    const grad = ctx.createRadialGradient(center, center, 20, center, center, center);
-    grad.addColorStop(0, "#fff7cc");
-    grad.addColorStop(1, i % 2 ? "#d35400" : "#f1c40f");
-    //ctx.fillStyle = grad;
+    // Gold slices
     ctx.fillStyle = i % 2 ? currentTheme.sliceA : currentTheme.sliceB;
     ctx.beginPath();
     ctx.moveTo(center, center);
-    ctx.arc(center, center, center, startAngle, endAngle);
+    ctx.arc(center, center, center - 8, startAngle, endAngle);
     ctx.fill();
 
+    /* ========== ENGRAVED TEXT ========== */
     ctx.save();
     ctx.translate(center, center);
     ctx.rotate(startAngle + arc / 2);
     ctx.textAlign = "right";
-    //ctx.fillStyle = "#000";
-    //ctx.font = "16px Arial";
-    ctx.fillStyle = currentTheme.text;
     ctx.font = currentTheme.font;
-    //ctx.fillText(rewards[i].label, center - 20, 5);
 
-    // Dark inset shadow (engraving depth)
+    // Shadow (engrave depth)
     //ctx.fillStyle = "rgba(0,0,0,0.45)";
-    //ctx.fillText(rewards[i].label, center - 21, 6);
+    //ctx.fillText(rewards[i].label, center - 38, 6);
 
-    // Light highlight (metal edge)
+    // Highlight (metal edge)
     //ctx.fillStyle = "rgba(255,255,255,0.35)";
-    //ctx.fillText(rewards[i].label, center - 19, 4);
+    //ctx.fillText(rewards[i].label, center - 36, 4);
 
     // Main text
-    ctx.fillText(rewards[i].label, center - 20, 5);
+    ctx.fillStyle = currentTheme.text;
+    ctx.fillText(rewards[i].label, center - 37, 5);
 
     ctx.restore();
   }
-    ctx.strokeStyle = currentTheme.border;
-    ctx.lineWidth = 6;
-    ctx.beginPath();
-    ctx.arc(center, center, center - 3, 0, 2 * Math.PI);
-    ctx.stroke();
-    ctx.fillStyle = currentTheme.center;
-    ctx.beginPath();
-    ctx.arc(center, center, 12, 0, 2 * Math.PI);
-    ctx.fill();
-    ctx.shadowColor = currentTheme.glow;
-    ctx.shadowBlur = 15;
-    for (let i = 0; i < 48; i++) {
-      const a = (i / 48) * 2 * Math.PI;
-      ctx.fillStyle = "#F5E08A";
-      ctx.beginPath();
-      ctx.arc(
-        center + Math.cos(a) * (center - 10),
-        center + Math.sin(a) * (center - 10),
-        2.5,
-        0,
-        2 * Math.PI
-      );
-      ctx.fill();
-    }
 
+  /* ================= METALLIC LIGHT SWEEP ================= */
+  /*const sweepPos = (rotation % (2 * Math.PI)) / (2 * Math.PI);
+  const sweep = ctx.createLinearGradient(
+    0, 0, size, size
+  );
+
+  sweep.addColorStop(Math.max(0, sweepPos - 0.15), "rgba(255,255,255,0)");
+  sweep.addColorStop(sweepPos, "rgba(255,255,255,0.35)");
+  sweep.addColorStop(Math.min(1, sweepPos + 0.15), "rgba(255,255,255,0)");
+
+  ctx.globalCompositeOperation = "lighter";
+  ctx.fillStyle = sweep;
+  ctx.beginPath();
+  ctx.arc(center, center, center - 12, 0, 2 * Math.PI);
+  ctx.fill();
+  ctx.globalCompositeOperation = "source-over";*/
+
+  /* ================= ENGRAVED COIN RIM ================= */
+
+  // Outer rim groove
+  ctx.strokeStyle = "#B8962E";
+  ctx.lineWidth = 6;
+  ctx.beginPath();
+  ctx.arc(center, center, center - 3, 0, 2 * Math.PI);
+  ctx.stroke();
+
+  // Inner rim groove
+  ctx.strokeStyle = "#F5E08A";
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  ctx.arc(center, center, center - 14, 0, 2 * Math.PI);
+  ctx.stroke();
+
+  // Coin dots (engraved rim beads)
+  for (let i = 0; i < 48; i++) {
+    const a = (i / 48) * 2 * Math.PI;
+    ctx.fillStyle = "#F5E08A";
+    ctx.beginPath();
+    ctx.arc(
+      center + Math.cos(a) * (center - 9),
+      center + Math.sin(a) * (center - 9),
+      2.6,
+      0,
+      2 * Math.PI
+    );
+    ctx.fill();
+  }
+
+  /* ================= CENTER COIN ================= */
+  ctx.fillStyle = currentTheme.center;
+  ctx.beginPath();
+  ctx.arc(center, center, 12, 0, 2 * Math.PI);
+  ctx.fill();
 }
 
 drawWheel();

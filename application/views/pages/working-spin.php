@@ -29,7 +29,7 @@ canvas {
   left: 50%;
   transform: translateX(-50%);
   z-index: 5;
-  filter: drop-shadow(0 0 8px rgba(255,0,0,.8));
+  filter: drop-shadow(0 0 6px rgba(255,0,0,.8));
 }
 #confetti-canvas {
   position: fixed;
@@ -75,12 +75,6 @@ canvas {
       </div>
 
       <div class="modal-body text-center">
-<div class="mt-3 d-flex justify-content-center gap-2">
-  <button class="btn btn-sm btn-outline-dark" onclick="setTheme('classicCasino')">Classic</button>
-  <button class="btn btn-sm btn-outline-dark" onclick="setTheme('darkCasino')">Dark</button>
-  <button class="btn btn-sm btn-outline-dark" onclick="setTheme('neonVegas')">Neon</button>
-  <button class="btn btn-sm btn-outline-dark" onclick="setTheme('futurePayCoin')">Future Pay</button>
-</div>
 
         <div class="wheel-wrapper">
           <div class="pointer"></div>
@@ -97,15 +91,37 @@ canvas {
   </div>
 </div>
 <canvas id="confetti-canvas"></canvas>
-<div id="rewards">[{ "label": "Try Again", "weight": 0 },{ "label": "Free Shipping", "weight": 0 },{ "label": "20% OFF", "weight": 10 },{ "label": "₹100 Gift", "weight": 10 },{ "label": "10% OFF", "weight": 0 },{ "label": "₹50 Cashback", "weight": 10 },{ "label": "Try Again", "weight": 0 },{ "label": "Free Shipping", "weight": 0 },{ "label": "20% OFF", "weight": 10 },{ "label": "₹100 Gift", "weight": 10 },{ "label": "10% OFF", "weight": 0 },{ "label": "₹50 Cashback", "weight": 10 }]</div>
+<div id="rewards">[{ "label": "Try Again", "weight": 0 },{ "label": "Free Shipping", "weight": 70 },{ "label": "20% OFF", "weight": 0 },{ "label": "₹100 Gift", "weight": 30 },{ "label": "10% OFF", "weight": 0 },{ "label": "₹50 Cashback", "weight": 0 }]</div>
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
 <script>
 /* ================= CONFIG ================= */
-var r=$('#rewards').text();
-$('#rewards').remove();
-r=JSON.parse(r);
+const orewards = [
+  "Try Again",
+  "Free Shipping",
+  "20% OFF",
+  "₹100 Gift",
+  "10% OFF",
+  "₹50 Cashback",
+  "Try Again",
+  "Free Shipping",
+  "20% OFF",
+  "₹100 Gift",
+  "10% OFF",
+  "₹50 Cashback"
+];
+    var r=$('#rewards').text();
+    $('#rewards').remove();
+    r=JSON.parse(r);
 const rewards = r;
+const srewards = [
+  { label: "Try Again", weight: 0 },
+  { label: "Free Shipping", weight: 0 },
+  { label: "20% OFF", weight: 0 },
+  { label: "₹100 Gift", weight: 0 },
+  { label: "10% OFF", weight: 100 },
+  { label: "₹50 Cashback", weight: 0 }
+];
 /* ========================================= */
 
 const canvas = document.getElementById("wheel");
@@ -119,51 +135,6 @@ const arc = (2 * Math.PI) / segments;
 let rotation = 0;
 let spinning = false;
 
-const themes = {
-  classicCasino: {
-    sliceA: "#8b0000",
-    sliceB: "#f4d03f",
-    text: "#111",
-    border: "#2c2c2c",
-    center: "#111",
-    glow: "rgba(255,215,0,.6)",
-    font: "bold 18px Georgia"
-  },
-
-  darkCasino: {
-    sliceA: "#1f2933",
-    sliceB: "#374151",
-    text: "#f9fafb",
-    border: "#111827",
-    center: "#000",
-    glow: "rgba(0,255,255,.4)",
-    font: "bold 17px 'Segoe UI'"
-  },
-
-  neonVegas: {
-    sliceA: "#ff005d",
-    sliceB: "#00eaff",
-    text: "#000",
-    border: "#000",
-    center: "#000",
-    glow: "rgba(255,0,255,.8)",
-    font: "bold 18px Arial"
-  }, 
-  futurePayCoin: {
-    sliceA: "#D4AF37",   // rich gold
-    sliceB: "#B8962E",   // bronze gold
-    text: "#1A1408",     // dark contrast
-    border: "#3A2C12",   // deep edge
-    center: "#1A1408",   // center dot
-    glow: "rgba(255,215,0,0.6)",
-    font: "bold 18px 'Georgia', serif"
-  }
-};
-
-
-let currentTheme = themes.classicCasino;
-
-    
 /* DRAW WHEEL (UNCHANGED) */
 function drawWheel() {
   ctx.clearRect(0, 0, size, size);
@@ -176,8 +147,7 @@ function drawWheel() {
     const grad = ctx.createRadialGradient(center, center, 20, center, center, center);
     grad.addColorStop(0, "#fff7cc");
     grad.addColorStop(1, i % 2 ? "#d35400" : "#f1c40f");
-    //ctx.fillStyle = grad;
-    ctx.fillStyle = i % 2 ? currentTheme.sliceA : currentTheme.sliceB;
+    ctx.fillStyle = grad;
     ctx.beginPath();
     ctx.moveTo(center, center);
     ctx.arc(center, center, center, startAngle, endAngle);
@@ -187,49 +157,22 @@ function drawWheel() {
     ctx.translate(center, center);
     ctx.rotate(startAngle + arc / 2);
     ctx.textAlign = "right";
-    //ctx.fillStyle = "#000";
-    //ctx.font = "16px Arial";
-    ctx.fillStyle = currentTheme.text;
-    ctx.font = currentTheme.font;
-    //ctx.fillText(rewards[i].label, center - 20, 5);
-
-    // Dark inset shadow (engraving depth)
-    //ctx.fillStyle = "rgba(0,0,0,0.45)";
-    //ctx.fillText(rewards[i].label, center - 21, 6);
-
-    // Light highlight (metal edge)
-    //ctx.fillStyle = "rgba(255,255,255,0.35)";
-    //ctx.fillText(rewards[i].label, center - 19, 4);
-
-    // Main text
+    ctx.fillStyle = "#000";
+    ctx.font = "16px Arial";
     ctx.fillText(rewards[i].label, center - 20, 5);
-
     ctx.restore();
   }
-    ctx.strokeStyle = currentTheme.border;
-    ctx.lineWidth = 6;
-    ctx.beginPath();
-    ctx.arc(center, center, center - 3, 0, 2 * Math.PI);
-    ctx.stroke();
-    ctx.fillStyle = currentTheme.center;
-    ctx.beginPath();
-    ctx.arc(center, center, 12, 0, 2 * Math.PI);
-    ctx.fill();
-    ctx.shadowColor = currentTheme.glow;
-    ctx.shadowBlur = 15;
-    for (let i = 0; i < 48; i++) {
-      const a = (i / 48) * 2 * Math.PI;
-      ctx.fillStyle = "#F5E08A";
-      ctx.beginPath();
-      ctx.arc(
-        center + Math.cos(a) * (center - 10),
-        center + Math.sin(a) * (center - 10),
-        2.5,
-        0,
-        2 * Math.PI
-      );
-      ctx.fill();
-    }
+    ctx.strokeStyle = "#333";
+ctx.lineWidth = 6;
+ctx.beginPath();
+ctx.arc(center, center, center - 3, 0, 2 * Math.PI);
+ctx.stroke();
+ctx.fillStyle = "#111";
+ctx.beginPath();
+ctx.arc(center, center, 12, 0, 2 * Math.PI);
+ctx.fill();
+ctx.shadowColor = "rgba(255,200,0,.6)";
+ctx.shadowBlur = 20;
 
 }
 
@@ -304,16 +247,11 @@ document.getElementById("spinBtn").onclick = () => {
 function easeOut(t) {
   return 1 - Math.pow(1 - t, 3);
 }
-    function setTheme(name) {
-  currentTheme = themes[name];
-  drawWheel();
-}
-
     $(document).ready(function(){
         $("#modal-btn").click();
         $('#spinBtn').click();
         setInterval(function(){
-            //$('#spinBtn').click();
+            $('#spinBtn').click();
         },7000);
     });
 </script>

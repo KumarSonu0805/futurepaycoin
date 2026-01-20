@@ -40,7 +40,8 @@ Google Authentication (only Admin)
     }
 	public function spin(){
         $data['title']="Spin";
-        $this->load->view('pages/spin',$data);
+        //$this->load->view('pages/spin',$data);
+        $this->template->load('pages','spin',$data);
     }
 	public function changepassword(){
         checklogin();

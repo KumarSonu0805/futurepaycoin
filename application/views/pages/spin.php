@@ -200,13 +200,13 @@ function drawWheel() {
     ctx.fillText(rewards[i].label, center - 37, 5);
 
     ctx.restore();
+    ctx.shadowColor = currentTheme.glow;
+    ctx.shadowBlur = 15;
   }
 
   /* ================= METALLIC LIGHT SWEEP ================= */
   /*const sweepPos = (rotation % (2 * Math.PI)) / (2 * Math.PI);
-  const sweep = ctx.createLinearGradient(
-    0, 0, size, size
-  );
+  const sweep = ctx.createLinearGradient(0, 0, size, size);
 
   sweep.addColorStop(Math.max(0, sweepPos - 0.15), "rgba(255,255,255,0)");
   sweep.addColorStop(sweepPos, "rgba(255,255,255,0.35)");
@@ -219,10 +219,23 @@ function drawWheel() {
   ctx.fill();
   ctx.globalCompositeOperation = "source-over";*/
 
+  /* ================= GOLD GLOW RIM ================= */
+  ctx.save();
+  ctx.shadowColor = currentTheme.glow;
+  ctx.shadowBlur = 15;
+  ctx.strokeStyle = currentTheme.sliceA;
+  ctx.lineWidth = 6;
+  ctx.beginPath();
+  ctx.arc(center, center, center - 6, 0, 2 * Math.PI);
+  ctx.stroke();
+
+  ctx.restore();
+    
+    
   /* ================= ENGRAVED COIN RIM ================= */
 
   // Outer rim groove
-  ctx.strokeStyle = "#B8962E";
+  ctx.strokeStyle = currentTheme.sliceB;
   ctx.lineWidth = 6;
   ctx.beginPath();
   ctx.arc(center, center, center - 3, 0, 2 * Math.PI);

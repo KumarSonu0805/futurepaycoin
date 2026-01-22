@@ -55,4 +55,51 @@ class Setting_model extends CI_Model{
         }
     }
     
+    public function savereward($data){
+        $where=array('type'=>$data['type'],'value'=>$data['value']);
+        if($this->db->get_where('spin_rewards',$where)->num_rows()==0){
+            if($this->db->insert('spin_rewards',$data)){
+                return array("status"=>true,"message"=>"Reward Added Successfully!");
+            }
+            else{
+                $error=$this->db->error();
+                return array("status"=>false,"message"=>$error['message']);
+            }
+        }
+        else{
+            return array("status"=>false,"message"=>"Reward Already Added!");
+        }
+    }
+    
+    public function getspinrewards($where=array(),$type="all"){
+        $this->db->where($where);
+        $query=$this->db->get("spin_rewards");
+        if($type=='all'){
+            $array=$query->result_array();
+        }
+        else{
+            $array=$query->unbuffered_row('array');
+        }
+        return $array;
+    }
+    
+    public function updatereward($data){
+        $id=$data['id'];
+        unset($data['id']);
+        $where=array("id"=>$id);
+        $where2=array('type'=>$data['type'],'value'=>$data['value'],'id!='=>$id);
+        if($this->db->get_where('spin_rewards',$where2)->num_rows()==0){
+            if($this->db->update('spin_rewards',$data,$where)){
+                return array("status"=>true,"message"=>"Reward Added Successfully!");
+            }
+            else{
+                $error=$this->db->error();
+                return array("status"=>false,"message"=>$error['message']);
+            }
+        }
+        else{
+            return array("status"=>false,"message"=>"Reward Already Added!");
+        }
+    }
+    
 }

@@ -97,7 +97,7 @@ canvas {
   </div>
 </div>
 <canvas id="confetti-canvas"></canvas>
-<div id="rewards">[{ "label": "Try Again", "weight": 0 },{ "label": "Free Shipping", "weight": 0 },{ "label": "20% OFF", "weight": 10 },{ "label": "₹100 Gift", "weight": 10 },{ "label": "10% OFF", "weight": 0 },{ "label": "₹50 Cashback", "weight": 10 },{ "label": "Try Again", "weight": 0 },{ "label": "Free Shipping", "weight": 0 },{ "label": "20% OFF", "weight": 10 },{ "label": "₹100 Gift", "weight": 10 },{ "label": "10% OFF", "weight": 0 },{ "label": "₹50 Cashback", "weight": 10 }]</div>
+<div id="rewards"><?= json_encode($rewards); ?></div>
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
 <script>
@@ -159,7 +159,18 @@ const themes = {
     font: "bold 18px 'Georgia', serif"
   }
 };
+const segmentColors = [
+  "#D4AF37", // gold
+  "#C0392B", // red
+  "#27AE60", // green
+  "#2980B9", // blue
+  "#8E44AD", // purple
+  "#F39C12", // orange
+  "#16A085", // teal
+  "#E84393"  // pink
+];
 
+let multiColor = false;
 
 let currentTheme = themes.futurePayCoin;
 
@@ -174,7 +185,12 @@ function drawWheel() {
     const endAngle = startAngle + arc;
 
     // Gold slices
-    ctx.fillStyle = i % 2 ? currentTheme.sliceA : currentTheme.sliceB;
+    if(multiColor){
+        ctx.fillStyle = segmentColors[i % segmentColors.length];
+    }
+    else{
+        ctx.fillStyle = i % 2 ? currentTheme.sliceA : currentTheme.sliceB;
+    }
     ctx.beginPath();
     ctx.moveTo(center, center);
     ctx.arc(center, center, center - 8, startAngle, endAngle);

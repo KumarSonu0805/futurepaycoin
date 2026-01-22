@@ -41,6 +41,15 @@ Google Authentication (only Admin)
 	public function spin(){
         $data['title']="Spin";
         //$this->load->view('pages/spin',$data);
+        $rewards=$this->setting->getspinrewards();
+        foreach($rewards as $key=>$single){
+            $reward=$single['value'];
+            if($single['type']=='Amount'){
+                $reward='$'.$reward;
+            }
+            $rewards[$key]=array('label'=>$reward,'weight'=>0);
+        }
+        $data['rewards']=$rewards;
         $this->template->load('pages','spin',$data);
     }
 	public function changepassword(){
@@ -296,7 +305,13 @@ Google Authentication (only Admin)
     
     public function runquery(){
         $query=array(
-                    "ALTER TABLE `fp_withdrawals` CHANGE `amount_usdt` `amount_fpc` DECIMAL(40,20) NOT NULL;"
+                    "CREATE TABLE `fp_spin_rewards` (
+ `id` int(11) NOT NULL AUTO_INCREMENT,
+ `type` varchar(10) NOT NULL,
+ `value` varchar(50) NOT NULL,
+ `status` tinyint(1) NOT NULL DEFAULT 1,
+ PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4"
         );
         foreach($query as $sql){
             if(!$this->db->query($sql)){

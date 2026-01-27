@@ -69,13 +69,13 @@ class Income_model extends CI_Model{
     
     function getLevelPercentage($level,$directbusiness,$selfbusiness,$booster=false) {
         if ($level == 1) return 0.2;
-        if ($level == 2 && $directbusiness>=100){ 
+        if ($level == 2 && $directbusiness>=200 && $selfbusiness>=100){ 
             return $booster?0.20:0.10;
         }
-        if ($level >= 3 && $level <= 5 && $directbusiness>=300 && $selfbusiness>=100) return 0.05;
-        if ($level >= 6 && $level <= 10 && $directbusiness>=500 && $selfbusiness>=200) return 0.02;
-        if ($level >= 11 && $level <= 15 && $directbusiness>=1500 && $selfbusiness>=300) return 0.01;
-        if ($level >= 16 && $level <= 20 && $directbusiness>=3000 && $selfbusiness>=500) return 0.005;
+        if ($level >= 3 && $level <= 5 && $directbusiness>=500 && $selfbusiness>=200) return 0.05;
+        if ($level >= 6 && $level <= 10 && $directbusiness>=1000 && $selfbusiness>=300) return 0.02;
+        if ($level >= 11 && $level <= 15 && $directbusiness>=1500 && $selfbusiness>=400) return 0.01;
+        if ($level >= 16 && $level <= 20 && $directbusiness>=3000 && $selfbusiness>=500) return 0.01;
         return 0;
     }
 

@@ -11,7 +11,7 @@
 }
 
 /* Canvas responsive scaling */
-canvas.spin {
+canvas {
   width: 100%;
   height: auto;
   display: block;
@@ -32,11 +32,9 @@ canvas.spin {
   filter: drop-shadow(0 0 8px rgba(255,0,0,.8));
 }
 #confetti-canvas {
-  position: absolute;
-  margin: 0 auto;
+  position: fixed;
   inset: 0;
   z-index: 2000; /* ABOVE Bootstrap modal */
-  top: 40%;
   pointer-events: none;
 }
 
@@ -56,7 +54,7 @@ canvas.spin {
   }
 }
 </style>
-<button class="btn btn-dark px-4 d-none"
+<button class="btn btn-dark px-4"
         data-bs-toggle="modal"
         data-bs-target="#spinModal" id="modal-btn">
   🎉 Spin & Win
@@ -73,7 +71,7 @@ canvas.spin {
       </div>
 
       <div class="modal-body text-center">
-<div class="mt-3 d-flex justify-content-center gap-2 d-none">
+<div class="mt-3 d-flex justify-content-center gap-2">
   <button class="btn btn-sm btn-outline-dark" onclick="setTheme('classicCasino')">Classic</button>
   <button class="btn btn-sm btn-outline-dark" onclick="setTheme('darkCasino')">Dark</button>
   <button class="btn btn-sm btn-outline-dark" onclick="setTheme('neonVegas')">Neon</button>
@@ -83,7 +81,7 @@ canvas.spin {
         <div class="wheel-wrapper">
           <div class="pointer"></div>
           <!-- INTERNAL SIZE UNCHANGED -->
-          <canvas id="wheel" width="400" height="400" class="spin"></canvas>
+          <canvas id="wheel" width="400" height="400"></canvas>
         </div>
 
         <button id="spinBtn" class="btn btn-outline-dark mt-4 px-5">
@@ -107,7 +105,7 @@ const rewards = r;
 /* ========================================= */
 
 const canvas = document.getElementById("wheel");
-const s_ctx = canvas.getContext("2d");
+const ctx = canvas.getContext("2d");
 
 const size = canvas.width;
 const center = size / 2;
@@ -175,7 +173,7 @@ let currentTheme = themes.futurePayCoin;
     
 /* DRAW WHEEL (UNCHANGED) */
 function drawWheel() {
-  s_ctx.clearRect(0, 0, size, size);
+  ctx.clearRect(0, 0, size, size);
 
   /* ================= SLICES ================= */
   for (let i = 0; i < segments; i++) {
@@ -184,104 +182,104 @@ function drawWheel() {
 
     // Gold slices
     if(multiColor){
-        s_ctx.fillStyle = segmentColors[i % segmentColors.length];
+        ctx.fillStyle = segmentColors[i % segmentColors.length];
     }
     else{
-        s_ctx.fillStyle = i % 2 ? currentTheme.sliceA : currentTheme.sliceB;
+        ctx.fillStyle = i % 2 ? currentTheme.sliceA : currentTheme.sliceB;
     }
-    s_ctx.beginPath();
-    s_ctx.moveTo(center, center);
-    s_ctx.arc(center, center, center - 8, startAngle, endAngle);
-    s_ctx.fill();
+    ctx.beginPath();
+    ctx.moveTo(center, center);
+    ctx.arc(center, center, center - 8, startAngle, endAngle);
+    ctx.fill();
 
     /* ========== ENGRAVED TEXT ========== */
-    s_ctx.save();
-    s_ctx.translate(center, center);
-    s_ctx.rotate(startAngle + arc / 2);
-    s_ctx.textAlign = "right";
-    s_ctx.font = currentTheme.font;
+    ctx.save();
+    ctx.translate(center, center);
+    ctx.rotate(startAngle + arc / 2);
+    ctx.textAlign = "right";
+    ctx.font = currentTheme.font;
 
     // Shadow (engrave depth)
-    //s_ctx.fillStyle = "rgba(0,0,0,0.45)";
-    //s_ctx.fillText(rewards[i].label, center - 38, 6);
+    //ctx.fillStyle = "rgba(0,0,0,0.45)";
+    //ctx.fillText(rewards[i].label, center - 38, 6);
 
     // Highlight (metal edge)
-    //s_ctx.fillStyle = "rgba(255,255,255,0.35)";
-    //s_ctx.fillText(rewards[i].label, center - 36, 4);
+    //ctx.fillStyle = "rgba(255,255,255,0.35)";
+    //ctx.fillText(rewards[i].label, center - 36, 4);
 
     // Main text
-    s_ctx.fillStyle = currentTheme.text;
-    s_ctx.fillText(rewards[i].label, center - 37, 5);
+    ctx.fillStyle = currentTheme.text;
+    ctx.fillText(rewards[i].label, center - 37, 5);
 
-    s_ctx.restore();
-    s_ctx.shadowColor = currentTheme.glow;
-    s_ctx.shadowBlur = 15;
+    ctx.restore();
+    ctx.shadowColor = currentTheme.glow;
+    ctx.shadowBlur = 15;
   }
 
   /* ================= METALLIC LIGHT SWEEP ================= */
   /*const sweepPos = (rotation % (2 * Math.PI)) / (2 * Math.PI);
-  const sweep = s_ctx.createLinearGradient(0, 0, size, size);
+  const sweep = ctx.createLinearGradient(0, 0, size, size);
 
   sweep.addColorStop(Math.max(0, sweepPos - 0.15), "rgba(255,255,255,0)");
   sweep.addColorStop(sweepPos, "rgba(255,255,255,0.35)");
   sweep.addColorStop(Math.min(1, sweepPos + 0.15), "rgba(255,255,255,0)");
 
-  s_ctx.globalCompositeOperation = "lighter";
-  s_ctx.fillStyle = sweep;
-  s_ctx.beginPath();
-  s_ctx.arc(center, center, center - 12, 0, 2 * Math.PI);
-  s_ctx.fill();
-  s_ctx.globalCompositeOperation = "source-over";*/
+  ctx.globalCompositeOperation = "lighter";
+  ctx.fillStyle = sweep;
+  ctx.beginPath();
+  ctx.arc(center, center, center - 12, 0, 2 * Math.PI);
+  ctx.fill();
+  ctx.globalCompositeOperation = "source-over";*/
 
   /* ================= GOLD GLOW RIM ================= */
-  s_ctx.save();
-  s_ctx.shadowColor = currentTheme.glow;
-  s_ctx.shadowBlur = 15;
-  s_ctx.strokeStyle = currentTheme.sliceA;
-  s_ctx.lineWidth = 6;
-  s_ctx.beginPath();
-  s_ctx.arc(center, center, center - 6, 0, 2 * Math.PI);
-  s_ctx.stroke();
+  ctx.save();
+  ctx.shadowColor = currentTheme.glow;
+  ctx.shadowBlur = 15;
+  ctx.strokeStyle = currentTheme.sliceA;
+  ctx.lineWidth = 6;
+  ctx.beginPath();
+  ctx.arc(center, center, center - 6, 0, 2 * Math.PI);
+  ctx.stroke();
 
-  s_ctx.restore();
+  ctx.restore();
     
     
   /* ================= ENGRAVED COIN RIM ================= */
 
   // Outer rim groove
-  s_ctx.strokeStyle = currentTheme.sliceB;
-  s_ctx.lineWidth = 6;
-  s_ctx.beginPath();
-  s_ctx.arc(center, center, center - 3, 0, 2 * Math.PI);
-  s_ctx.stroke();
+  ctx.strokeStyle = currentTheme.sliceB;
+  ctx.lineWidth = 6;
+  ctx.beginPath();
+  ctx.arc(center, center, center - 3, 0, 2 * Math.PI);
+  ctx.stroke();
 
   // Inner rim groove
-  s_ctx.strokeStyle = "#F5E08A";
-  s_ctx.lineWidth = 2;
-  s_ctx.beginPath();
-  s_ctx.arc(center, center, center - 14, 0, 2 * Math.PI);
-  s_ctx.stroke();
+  ctx.strokeStyle = "#F5E08A";
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  ctx.arc(center, center, center - 14, 0, 2 * Math.PI);
+  ctx.stroke();
 
   // Coin dots (engraved rim beads)
   for (let i = 0; i < 48; i++) {
     const a = (i / 48) * 2 * Math.PI;
-    s_ctx.fillStyle = "#F5E08A";
-    s_ctx.beginPath();
-    s_ctx.arc(
+    ctx.fillStyle = "#F5E08A";
+    ctx.beginPath();
+    ctx.arc(
       center + Math.cos(a) * (center - 9),
       center + Math.sin(a) * (center - 9),
       2.6,
       0,
       2 * Math.PI
     );
-    s_ctx.fill();
+    ctx.fill();
   }
 
   /* ================= CENTER COIN ================= */
-  s_ctx.fillStyle = currentTheme.center;
-  s_ctx.beginPath();
-  s_ctx.arc(center, center, 12, 0, 2 * Math.PI);
-  s_ctx.fill();
+  ctx.fillStyle = currentTheme.center;
+  ctx.beginPath();
+  ctx.arc(center, center, 12, 0, 2 * Math.PI);
+  ctx.fill();
 }
 
 drawWheel();
@@ -308,7 +306,7 @@ function weightedRandomIndex(items) {
 document.getElementById("spinBtn").onclick = () => {
   if (spinning) return;
   spinning = true;
-  $('#spinBtn').remove();
+
   //const spinTurns = Math.random() * 4 + 5;
   //const targetRotation = spinTurns * 2 * Math.PI + Math.random() * 2 * Math.PI;
   const winIndex = weightedRandomIndex(rewards);
@@ -338,15 +336,14 @@ document.getElementById("spinBtn").onclick = () => {
       document.querySelector(".wheel-wrapper").classList.remove("spinning");
       const wonReward = rewards[index].label;
       console.log("🎉 You won:", wonReward);
-           
-      //$('#reward').append('<p>'+wonReward+'</p>');
+        
+      $('#reward').append('<p>'+wonReward+'</p>');
         myConfetti({
   particleCount: 150,
-  spread: 170,
+  spread: 70,
   origin: { y: 0.6 }
 });
-        saveReward(wonReward);
-        
+
     }
   }
 
@@ -361,15 +358,9 @@ function easeOut(t) {
   drawWheel();
 }
 
-    function saveReward(reward){
-        $.post('<?= base_url('wallet/savereward') ?>',{reward:reward},function(data){
-            alert(data);
-            $('#spin-div').remove();
-        });
-    }
     $(document).ready(function(){
-        //$("#modal-btn").click();
-        //$('#spinBtn').click();
+        $("#modal-btn").click();
+        $('#spinBtn').click();
         setInterval(function(){
             //$('#spinBtn').click();
         },7000);

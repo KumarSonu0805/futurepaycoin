@@ -386,4 +386,23 @@ class Wallet extends MY_Controller {
         $this->db->insert('errors',$data);
 	}
 	
+	public function savereward(){
+        $reward=$this->input->post('reward');
+        $user=getuser();
+        $getmyreward=$this->db->get_where('member_rewards',['regid'=>$user['id'],'status'=>0]);
+        $type=$value='';
+        if($getmyreward->num_rows()>0){
+            $myreward=$getmyreward->unbuffered_row('array');
+            $type=$myreward['type'];
+            $value=$myreward['reward'];
+            if($type=='Amount'){
+                $value='$'.$value;
+            }
+            if($value==$reward){
+                $this->db->update('member_rewards',['status'=>1,'updated_on'=>date('Y-m-d H:i:s')],['id'=>$myreward['id']]);
+                echo "Reward Saved Successfully!";
+            }
+        }
+	}
+	
 }

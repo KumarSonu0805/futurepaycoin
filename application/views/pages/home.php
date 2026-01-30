@@ -448,6 +448,28 @@ else{
          </div>
       </div>
      </div>
+       <?php
+        if(!empty($rewards)){
+        ?>
+         <div class="booster-timer d-flex justify-content-between align-items-center mt-2" id="spin-div">
+         <div class="booster-label">
+            <h5 class="mb-0 fw-bold">Spin Wheel</h5>
+         </div>
+         <div class="booster-status">
+            <div class="timer-box d-flex justify-content-center align-items-center gap-2 " id="timer2">
+                <div class="time-item d-none"><span id="days">07</span><small>Days</small></div>
+                <div class="time-item d-none"><span id="hours">06</span><small>Hrs</small></div>
+                <div class="time-item d-none"><span id="minutes">00</span><small>Min</small></div>
+                <div class="time-item d-none"><span id="seconds">00</span><small>Sec</small></div>
+                <a href="#" class="btn btn-active" data-bs-toggle="modal"
+        data-bs-target="#spinModal" id="">Spin Wheel</a>
+            </div>
+         </div>
+         </div>
+        <?php
+            $this->load->view('pages/spin');
+        }
+       ?>
    <!-- mobile device start -->
 <div class="d-none d-lg-none d-md-none d-block">
    <div class="mobilestatus-wrapper">
@@ -708,7 +730,7 @@ else{
          </div>
       </div>
        <style>   
-    canvas {
+    canvas#statusDoughnut {
       display: block;
       max-width: 100%;
       max-height: 240px; 

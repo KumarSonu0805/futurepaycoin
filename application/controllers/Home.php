@@ -23,6 +23,29 @@ Google Authentication (only Admin)
         else{
             $data['user']=getuser();
             $data['member']=$this->member->getmemberdetails($data['user']['id']);
+            $getmyreward=$this->db->get_where('member_rewards',['regid'=>$data['user']['id'],'status'=>0]);
+            $type=$value='';
+            if($getmyreward->num_rows()>0){
+                $myreward=$getmyreward->unbuffered_row('array');
+                $type=$myreward['type'];
+                $value=$myreward['reward'];
+            }
+            if(!empty($type) && !empty($value)){
+                $rewards=$this->setting->getspinrewards();
+                foreach($rewards as $key=>$single){
+                    $reward=$single['value'];
+                    $weight=0;
+                    if($single['type']=='Amount'){
+                        $reward='$'.$reward;
+                    }
+                    if($single['type']==$type && $single['value']==$value){
+                        $weight=100;
+                    }
+                    $rewards[$key]=array('label'=>$reward,'weight'=>$weight);
+                }
+                $data['rewards']=$rewards;
+            }
+            
         }  
         $this->template->load('pages','home',$data);
     }
@@ -305,11 +328,15 @@ Google Authentication (only Admin)
     
     public function runquery(){
         $query=array(
-                    "CREATE TABLE `fp_spin_rewards` (
+                    "CREATE TABLE `fp_member_rewards` (
  `id` int(11) NOT NULL AUTO_INCREMENT,
+ `date` date NOT NULL,
+ `regid` int(11) NOT NULL,
  `type` varchar(10) NOT NULL,
- `value` varchar(50) NOT NULL,
- `status` tinyint(1) NOT NULL DEFAULT 1,
+ `reward` varchar(50) NOT NULL,
+ `status` tinyint(1) NOT NULL,
+ `added_on` datetime NOT NULL,
+ `updated_on` datetime NOT NULL,
  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4"
         );

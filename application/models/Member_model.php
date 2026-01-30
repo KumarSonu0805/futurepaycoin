@@ -622,5 +622,35 @@ class Member_model extends CI_Model{
 		else{ $array=$query->row_array(); }
 		return $array;
 	}
+	
+	public function getspinmembers($where=array()){
+		$this->db->select("t1.*,t2.username,t2.name");
+		$this->db->from('members t1');
+		$this->db->join('users t2','t1.regid=t2.id');
+		$this->db->where($where);
+		$this->db->where(['t1.booster'=>1]);
+		$query=$this->db->get();
+        $array=$query->result_array();
+        if(!empty($array)){
+            $month=date('m');
+            $year=date('Y');
+            foreach($array as $key=>$row){
+                $type=$reward='';
+                $status=NULL;
+                $where="regid='$row[regid]' and month(date)='$month' and year(date)='$year'";
+                $getreward=$this->db->get_where('member_rewards',$where);
+                if($getreward->num_rows()>0){
+                    $myreward=$getreward->unbuffered_row('array');
+                    $type=$myreward['type'];
+                    $reward=$myreward['reward'];
+                    $status=$myreward['status'];
+                }
+                $array[$key]['type']=$type;
+                $array[$key]['reward']=$reward;
+                $array[$key]['spin_status']=$status;
+            }
+        }
+		return $array;
+	}
     
 }

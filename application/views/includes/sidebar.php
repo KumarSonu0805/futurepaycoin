@@ -139,6 +139,18 @@
          </div>
       </li>
       <li class="nav-item">
+         <a class="nav-link" data-bs-toggle="collapse" href="#spinMenu" role="button" aria-expanded="false" aria-controls="spinMenu">
+         <i class="fa-solid fa-spinner"></i> Spin Wheel
+         <i class="fas fa-chevron-down ms-auto"></i>
+         </a>
+         <div class="collapse" id="spinMenu" data-bs-parent="#sidebarAccordion">
+            <ul class="nav flex-column ms-3">
+               <li class="nav-item"><a class="nav-link" href="<?= base_url('settings/spinrewards/'); ?>">Spin Wheel Rewards</a></li>
+               <li class="nav-item"><a class="nav-link" href="<?= base_url('members/spinmembers/'); ?>"> Spin Member Rewards </a></li>
+            </ul>
+         </div>
+      </li>
+      <li class="nav-item">
          <a class="nav-link" data-bs-toggle="collapse" href="#walletMenu" role="button" aria-expanded="false" aria-controls="walletMenu">
          <i class="fa-solid fa-money-bill-transfer"></i> Wallet
          <i class="fas fa-chevron-down ms-auto"></i>

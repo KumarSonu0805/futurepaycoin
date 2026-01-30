@@ -110,6 +110,20 @@ class Members extends MY_Controller {
         $this->template->load('members','legbusiness',$data); 
     }
     
+    public function spinmembers(){
+        if($this->session->role!='admin'){
+            redirect('/');
+        }
+        $data=['title'=>'Spin Member Rewards'];
+        $data['datatable']=true;
+        $members=array();
+        $members=$this->member->getspinmembers();
+        $data['members']=$members;
+        $data['rewards']=$this->setting->getspinrewards();
+        //print_pre($data,true);
+        $this->template->load('members','spinmembers',$data); 
+    }
+    
 	public function getlegbusiness(){
         $members=array();
         $leg=$this->input->get('leg');
@@ -306,6 +320,32 @@ class Members extends MY_Controller {
                 $result=$this->db->update('members',$data,$where);
                 if($result){
                     $this->session->set_flashdata("msg","Member Wallet Updated Successfully!");
+                }
+                else{
+                    $result=$this->db->error();
+                    $this->session->set_flashdata("err_msg",$result['message']);
+                }
+            }
+        }
+        redirect($_SERVER['HTTP_REFERER']);
+	}
+	
+	public function savememberreward(){
+        if($this->session->role!='admin'){
+            redirect('/');
+        }
+        if($this->input->post('savememberreward')!==NULL){
+            $data=$this->input->post();
+            unset($data['savememberreward']);
+            $getregid=$this->db->get_where('members',["md5(concat('regid-',regid))"=>$data['regid']]);
+            if($getregid->num_rows()==1){
+                $regid=$getregid->unbuffered_row()->regid;
+                $data['regid']=$regid;
+                $data['date']=date('Y-m-d');
+                $data['added_on']=$data['updated_on']=date('Y-m-d H:i:s');
+                $result=$this->db->insert('member_rewards',$data);
+                if($result){
+                    $this->session->set_flashdata("msg","Member Spin Reward Added Successfully!");
                 }
                 else{
                     $result=$this->db->error();

@@ -328,6 +328,7 @@ Google Authentication (only Admin)
     
     public function runquery(){
         $query=array(
+            "ALTER TABLE `fp_income` ADD `mr_id` INT NOT NULL AFTER `royalty_id`;",
                     "CREATE TABLE `fp_member_rewards` (
  `id` int(11) NOT NULL AUTO_INCREMENT,
  `date` date NOT NULL,

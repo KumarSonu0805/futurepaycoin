@@ -54,8 +54,8 @@
             $index=array_search('royalty',$types);
             $incomes['royalty']=$index!==false?$array[$index]['amount']:0;
             
-            $index=array_search('ultraclub',$types);
-            $incomes['ultraclub']=$index!==false?$array[$index]['amount']:0;
+            $index=array_search('wheel',$types);
+            $incomes['wheel']=$index!==false?$array[$index]['amount']:0;
             
             $total=array_sum($incomes);
             $incomes['total']=$total;

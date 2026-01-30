@@ -389,6 +389,8 @@ class Wallet extends MY_Controller {
 	public function savereward(){
         $reward=$this->input->post('reward');
         $user=getuser();
+        $regid=$user['id'];
+        $date=date('Y-m-d');
         $getmyreward=$this->db->get_where('member_rewards',['regid'=>$user['id'],'status'=>0]);
         $type=$value='';
         if($getmyreward->num_rows()>0){
@@ -400,6 +402,17 @@ class Wallet extends MY_Controller {
             }
             if($value==$reward){
                 $this->db->update('member_rewards',['status'=>1,'updated_on'=>date('Y-m-d H:i:s')],['id'=>$myreward['id']]);
+                
+                if($type=='Amount'){
+                    $amount=$myreward['reward'];
+                    $where=array('regid'=>$regid,'date'=>$date,'mr_id'=>$myreward['id'],'type'=>'wheel','status'=>1);
+                    if($this->db->get_where('income',$where)->num_rows()==0){
+                        $data=array('regid'=>$regid,'date'=>$date,'mr_id'=>$myreward['id'],'type'=>'wheel',
+                                    'amount'=>$amount,'status'=>1,'added_on'=>date('Y-m-d H:i:s'),
+                                    'updated_on'=>date('Y-m-d H:i:s'));
+                        $this->db->insert('income',$data);
+                    }
+                }
                 echo "Reward Saved Successfully!";
             }
         }

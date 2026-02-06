@@ -2,7 +2,9 @@
 class Income_model extends CI_Model{
     
     private $targetRate=12;
-    private $targetRates=array(10=>[50,1000],11=>[1001,5000],12=>[5001,10000]);
+    private $per_day_rate=0.33;
+    private $top_up_rate=0.26;
+    private $targetRates=array(10=>[50,1000],15=>[1001,5000],20=>[5001,10000]);
     private $coinRate;
     private $active_ranks=array();
     private $percents=array();
@@ -192,8 +194,15 @@ class Income_model extends CI_Model{
                             break;
                         }
                     }
-                    $per_day_rate=$rate/30;
-                    $per_day_rate=round($per_day_rate,4);
+                    if($investment['auto']==0){
+                        $per_day_rate=$this->per_day_rate;
+                        if($booster){
+                            $per_day_rate+=($per_day_rate*$rate)/100;
+                        }
+                    }
+                    else{
+                        $per_day_rate=$this->top_up_rate;
+                    }
                     $amount=$investment['amount']*$per_day_rate/100;
                     
                     /*$total=$investment['amount']*$rate/100;

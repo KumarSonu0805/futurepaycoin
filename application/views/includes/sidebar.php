@@ -138,7 +138,7 @@
             </ul>
          </div>
       </li>
-      <li class="nav-item">
+      <li class="nav-item d-none">
          <a class="nav-link" data-bs-toggle="collapse" href="#spinMenu" role="button" aria-expanded="false" aria-controls="spinMenu">
          <i class="fa-solid fa-spinner"></i> Spin Wheel
          <i class="fas fa-chevron-down ms-auto"></i>

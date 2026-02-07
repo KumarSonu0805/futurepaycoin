@@ -169,7 +169,7 @@
                                    </ul>
                                 </div>
                              </li>
-                              <li class="nav-item">
+                              <li class="nav-item d-none">
                                  <a class="nav-link d-flex justify-content-between align-items-center" data-bs-toggle="collapse" href="#spinMenu">
                                  <i class="fa-solid fa-spinner"></i> Spin Wheel
                                  <i class="fas fa-chevron-down ms-auto"></i>

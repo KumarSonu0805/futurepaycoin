@@ -32,7 +32,8 @@
   		function getincome() {
     		$CI = get_instance();
             $user=getuser();
-            $incomes=array('roiincome'=>0,'matching'=>0,'monthly'=>0,'level'=>0,'reward'=>0,'wheel'=>0,'achievement'=>0);
+            $incomes=array('roiincome'=>0,'matching'=>0,'monthly'=>0,'level'=>0,'reward'=>0,'boosterincome'=>0,'wheel'=>0,
+                           'achievement'=>0);
             $CI->db->select('type,sum(amount) as amount');
             $CI->db->group_by('type');
             $query=$CI->db->get_where('income',['regid'=>$user['id']]);
@@ -56,6 +57,9 @@
             
             $index=array_search('wheel',$types);
             $incomes['wheel']=$index!==false?$array[$index]['amount']:0;
+            
+            $index=array_search('boosterincome',$types);
+            $incomes['boosterincome']=$index!==false?$array[$index]['amount']:0;
             
             $total=array_sum($incomes);
             $incomes['total']=$total;

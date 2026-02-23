@@ -20,6 +20,12 @@ class Income extends MY_Controller {
         $this->template->load('income','stakingreward',$data);      
     }
     
+	public function boosterincome(){
+        $data['title']="Booster Income";
+        $data['tabulator']=true;
+        $this->template->load('income','boosterincome',$data);      
+    }
+    
 	public function levelincome(){
         $data['title']="Level Income";
         $data['tabulator']=true;

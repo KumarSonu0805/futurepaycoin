@@ -708,8 +708,8 @@ else{
                   <div class="stakingicon">
                      <img src="<?= file_url('assets/images/future-coin.png'); ?>" width="24">
                   </div>
-                  <h5>Surprise Wheel (Lucky Bonus)</h5>
-                  <h2> <?= $this->amount->toDecimal($incomes['wheel'],true,5); ?></h2>
+                  <h5>Booster Income</h5>
+                  <h2> <?= $this->amount->toDecimal($incomes['boosterincome'],true,5); ?></h2>
             </div>
             <div class="staking-card">
                   <div class="stakingicon">

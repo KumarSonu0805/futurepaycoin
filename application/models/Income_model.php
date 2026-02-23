@@ -188,7 +188,7 @@ class Income_model extends CI_Model{
                     $start_date=$investment['date'];
                     $this->db->select_sum('amount');
                     
-                    $rate=0;
+                    $rate=$booster_rate=0;
                     foreach($this->targetRates as $rate=>$limits){
                         if($investment['amount']>=$limits[0] && $investment['amount']<=$limits[1]){
                             break;
@@ -197,7 +197,7 @@ class Income_model extends CI_Model{
                     if($investment['auto']==0){
                         $per_day_rate=$this->per_day_rate;
                         if($booster){
-                            $per_day_rate+=($per_day_rate*$rate)/100;
+                            $booster_rate=($per_day_rate*$rate)/100;
                         }
                     }
                     else{
@@ -244,6 +244,17 @@ class Income_model extends CI_Model{
                         if($this->db->get_where('income',$where)->num_rows()==0){
                             $data=array('regid'=>$regid,'date'=>$date,'inv_id'=>$inv_id,'type'=>'roiincome',
                                         'rate'=>$per_day_rate,'amount'=>$amount,'status'=>1,
+                                        'added_on'=>date('Y-m-d H:i:s'),'updated_on'=>date('Y-m-d H:i:s'));
+                            $this->db->insert('income',$data);
+                        }
+                    }
+                    
+                    if($booster_rate>0){
+                        $amount=$investment['amount']*$booster_rate/100;
+                        $where=array('regid'=>$regid,'date'=>$date,'inv_id'=>$inv_id,'type'=>'boosterincome','status'=>1);
+                        if($this->db->get_where('income',$where)->num_rows()==0){
+                            $data=array('regid'=>$regid,'date'=>$date,'inv_id'=>$inv_id,'type'=>'boosterincome',
+                                        'rate'=>$booster_rate,'amount'=>$amount,'status'=>1,
                                         'added_on'=>date('Y-m-d H:i:s'),'updated_on'=>date('Y-m-d H:i:s'));
                             $this->db->insert('income',$data);
                         }

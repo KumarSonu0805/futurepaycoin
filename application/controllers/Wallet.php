@@ -198,7 +198,7 @@ class Wallet extends MY_Controller {
         }      
     }
     
-	public function requestwithdrawal(){
+	public function newrequestwithdrawal(){
 		if($this->input->post('requestwithdrawal')!==NULL){
 			$data=$this->input->post();
             $rate=$data['rate'];
@@ -236,7 +236,7 @@ class Wallet extends MY_Controller {
 		redirect('wallet/withdrawal/');
 	}
 	
-	public function oldrequestwithdrawal(){
+	public function requestwithdrawal(){
 		if($this->input->post('requestwithdrawal')!==NULL){
 			$data=$this->input->post();
             $member=$this->member->getmemberdetails($data['regid']);

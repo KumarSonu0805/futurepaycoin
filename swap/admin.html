@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>FPC Admin Panel</title>
+
+    <!-- ✅ Ethers v5 (correct CDN) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/5.7.2/ethers.umd.min.js"></script>
+
+    <style>
+        body {
+            font-family: Arial;
+            background: #0f172a;
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .box {
+            background: #1e293b;
+            padding: 20px;
+            margin: 15px auto;
+            border-radius: 10px;
+            max-width: 400px;
+        }
+
+        input {
+            width: 90%;
+            padding: 10px;
+            margin: 5px;
+            border-radius: 5px;
+            border: none;
+        }
+
+        button {
+            width: 90%;
+            padding: 10px;
+            margin: 5px;
+            border-radius: 5px;
+            border: none;
+            background: #22c55e;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        button:disabled {
+            background: gray;
+        }
+
+        .status {
+            margin-top: 10px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+
+<body>
+
+<h2>⚙️ Admin Panel</h2>
+
+<div class="box">
+    <button onclick="connectWallet()">Connect Admin</button>
+    <p id="wallet"></p>
+    <div class="status" id="status"></div>
+</div>
+
+<div class="box">
+    <h3>💰 Deposit Liquidity</h3>
+    <input id="tokenAmt" placeholder="FPC amount">
+    <input id="usdtAmt" placeholder="USDT amount">
+
+    <button onclick="approveAll()">Approve Tokens</button>
+    <button onclick="deposit()">Deposit</button>
+</div>
+
+<div class="box">
+    <h3>📈 Price Control</h3>
+    <input id="newPrice" placeholder="Price (1e18)">
+    <button onclick="queuePrice()">Queue Price</button>
+    <button onclick="executePrice()">Execute Price</button>
+</div>
+
+<div class="box">
+    <h3>💰 Fees</h3>
+    <input id="buyFee" placeholder="Buy Fee (200 = 2%)">
+    <input id="sellFee" placeholder="Sell Fee">
+    <button onclick="queueFees()">Queue Fees</button>
+    <button onclick="executeFees()">Execute Fees</button>
+</div>
+
+<div class="box">
+    <h3>⏸ Pause</h3>
+    <button onclick="pause(true)">Pause</button>
+    <button onclick="pause(false)">Unpause</button>
+</div>
+
+<div class="box">
+    <h3>💸 Withdraw</h3>
+    <input id="withdrawToken" placeholder="Token Address">
+    <input id="withdrawAmount" placeholder="Amount">
+    <button onclick="withdraw()">Withdraw</button>
+</div>
+
+<div class="box">
+    <h3>📊 Contract Balances</h3>
+    <p>USDT: <span id="usdtBal">0</span></p>
+    <p>FPC: <span id="tokenBal">0</span></p>
+    <button onclick="loadBalances()">Refresh</button>
+</div>
+
+<script>
+
+// =========================
+// CONFIG
+// =========================
+const contractAddress = "0x52447fcdBd04657D79C7f2dCEC2345580FB755fF";
+const tokenAddress = "0xB123C666268edA865cC5361BD1785B91536Cbe4F";
+const usdtAddress = "0x55d398326f99059fF775485246999027B3197955";
+
+// ABI
+const abi = [
+    "function deposit(uint256,uint256)",
+    "function queuePrice(uint256)",
+    "function executePrice()",
+    "function queueFees(uint256,uint256)",
+    "function executeFees()",
+    "function pause(bool)",
+    "function withdraw(address,uint256)"
+];
+
+let provider, signer, contract;
+
+// =========================
+// STATUS
+// =========================
+function setStatus(msg, loading=false) {
+    document.getElementById("status").innerText =
+        loading ? "⏳ " + msg : msg;
+}
+
+// =========================
+// CONNECT
+// =========================
+async function connectWallet() {
+    provider = new ethers.providers.Web3Provider(window.ethereum);
+    await provider.send("eth_requestAccounts", []);
+    signer = provider.getSigner();
+
+    const address = await signer.getAddress();
+    document.getElementById("wallet").innerText = address;
+
+    contract = new ethers.Contract(contractAddress, abi, signer);
+
+    setStatus("Connected ✅");
+}
+
+// =========================
+// APPROVE TOKENS
+// =========================
+async function approveAll() {
+    try {
+        setStatus("Approving tokens...", true);
+
+        const token = new ethers.Contract(tokenAddress, [
+            "function approve(address,uint256) external returns(bool)"
+        ], signer);
+
+        const usdt = new ethers.Contract(usdtAddress, [
+            "function approve(address,uint256) external returns(bool)"
+        ], signer);
+
+        await (await token.approve(contractAddress, ethers.constants.MaxUint256)).wait();
+        await (await usdt.approve(contractAddress, ethers.constants.MaxUint256)).wait();
+
+        setStatus("Approved ✅");
+
+    } catch (err) {
+        setStatus("Error: " + err.message);
+    }
+}
+
+// =========================
+// DEPOSIT (FIXED)
+// =========================
+async function deposit() {
+    try {
+        setStatus("Depositing...", true);
+
+        const tokenAmt = document.getElementById("tokenAmt").value;
+        const usdtAmt = document.getElementById("usdtAmt").value;
+
+        const tokenC = new ethers.Contract(tokenAddress, [
+            "function decimals() view returns(uint8)"
+        ], provider);
+
+        const usdtC = new ethers.Contract(usdtAddress, [
+            "function decimals() view returns(uint8)"
+        ], provider);
+
+        const tokenDec = await tokenC.decimals();
+        const usdtDec = await usdtC.decimals();
+
+        const t = ethers.utils.parseUnits(tokenAmt, tokenDec);
+        const u = ethers.utils.parseUnits(usdtAmt, usdtDec);
+
+        const tx = await contract.deposit(t, u);
+        await tx.wait();
+
+        setStatus("Deposit Successful ✅");
+
+    } catch (err) {
+        console.error(err);
+        setStatus("Error: " + err.message);
+    }
+}
+
+// =========================
+// PRICE
+// =========================
+async function queuePrice() {
+    const p = document.getElementById("newPrice").value;
+    await (await contract.queuePrice(p)).wait();
+    setStatus("Price queued");
+}
+
+async function executePrice() {
+    await (await contract.executePrice()).wait();
+    setStatus("Price updated");
+}
+
+// =========================
+// FEES
+// =========================
+async function queueFees() {
+    const b = document.getElementById("buyFee").value;
+    const s = document.getElementById("sellFee").value;
+
+    await (await contract.queueFees(b, s)).wait();
+    setStatus("Fees queued");
+}
+
+async function executeFees() {
+    await (await contract.executeFees()).wait();
+    setStatus("Fees updated");
+}
+
+// =========================
+// PAUSE
+// =========================
+async function pause(state) {
+    await (await contract.pause(state)).wait();
+    setStatus(state ? "Paused" : "Unpaused");
+}
+
+// =========================
+// WITHDRAW
+// =========================
+async function withdraw() {
+    try {
+        const token = document.getElementById("withdrawToken").value;
+        const amt = document.getElementById("withdrawAmount").value;
+
+        const tokenC = new ethers.Contract(token, [
+            "function decimals() view returns(uint8)"
+        ], provider);
+
+        const dec = await tokenC.decimals();
+
+        const tx = await contract.withdraw(
+            token,
+            ethers.utils.parseUnits(amt, dec)
+        );
+
+        await tx.wait();
+        setStatus("Withdrawn ✅");
+
+    } catch (err) {
+        setStatus("Error: " + err.message);
+    }
+}
+
+// =========================
+// BALANCES
+// =========================
+async function loadBalances() {
+    const usdt = new ethers.Contract(usdtAddress, [
+        "function balanceOf(address) view returns(uint256)",
+        "function decimals() view returns(uint8)"
+    ], provider);
+
+    const token = new ethers.Contract(tokenAddress, [
+        "function balanceOf(address) view returns(uint256)",
+        "function decimals() view returns(uint8)"
+    ], provider);
+
+    const u = await usdt.balanceOf(contractAddress);
+    const t = await token.balanceOf(contractAddress);
+
+    const uDec = await usdt.decimals();
+    const tDec = await token.decimals();
+
+    document.getElementById("usdtBal").innerText =
+        ethers.utils.formatUnits(u, uDec);
+
+    document.getElementById("tokenBal").innerText =
+        ethers.utils.formatUnits(t, tDec);
+}
+
+</script>
+
+</body>
+</html>

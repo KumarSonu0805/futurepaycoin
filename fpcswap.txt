@@ -1,0 +1,248 @@
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.33;
+
+/*
+    =========================================================
+    FPC Swap (DynamicSwapSecureV3)
+    ---------------------------------------------------------
+    - Token ↔ USDT swap engine
+    - Admin price with timelock
+    - Slippage protection
+    - Fee capped (max 5%)
+    - Reentrancy safe
+    =========================================================
+*/
+
+interface IERC20 {
+    function transfer(address to, uint256 amount) external returns (bool);
+    function transferFrom(address from, address to, uint256 amount) external returns (bool);
+    function balanceOf(address account) external view returns (uint256);
+}
+
+// ================= SafeERC20 =================
+library SafeERC20 {
+    function safeTransfer(IERC20 token, address to, uint256 value) internal {
+        (bool success, bytes memory data) =
+            address(token).call(abi.encodeWithSelector(token.transfer.selector, to, value));
+        require(success && (data.length == 0 || abi.decode(data, (bool))), "Transfer failed");
+    }
+
+    function safeTransferFrom(IERC20 token, address from, address to, uint256 value) internal {
+        (bool success, bytes memory data) =
+            address(token).call(abi.encodeWithSelector(token.transferFrom.selector, from, to, value));
+        require(success && (data.length == 0 || abi.decode(data, (bool))), "TransferFrom failed");
+    }
+}
+
+// ================= Reentrancy =================
+abstract contract ReentrancyGuard {
+    uint256 private _status;
+    constructor() { _status = 1; }
+
+    modifier nonReentrant() {
+        require(_status != 2, "Reentrancy");
+        _status = 2;
+        _;
+        _status = 1;
+    }
+}
+
+// ================= MAIN =================
+contract FPCSwap is ReentrancyGuard {
+
+    using SafeERC20 for IERC20;
+
+    // Human-readable name
+    string public constant NAME = "FPC Swap";
+
+    address public owner;
+    IERC20 public token;
+    IERC20 public usdt;
+
+    uint256 public price; // 1e18 scale
+
+    uint256 public buyFee = 200;
+    uint256 public sellFee = 200;
+
+    uint256 public constant FEE_DENOM = 10000;
+    uint256 public constant MAX_FEE = 500; // 5%
+
+    bool public paused;
+
+    uint256 public delay = 6 hours;
+
+    // ===== TIMELOCK STORAGE =====
+    uint256 public pendingPrice;
+    uint256 public priceExecuteTime;
+
+    uint256 public pendingBuyFee;
+    uint256 public pendingSellFee;
+    uint256 public feeExecuteTime;
+
+    bool public pendingPause;
+    uint256 public pauseExecuteTime;
+
+    // ===== EVENTS =====
+    event Bought(address indexed user, uint256 usdtIn, uint256 tokenOut);
+    event Sold(address indexed user, uint256 tokenIn, uint256 usdtOut);
+
+    event PriceQueued(uint256 newPrice, uint256 executeTime);
+    event PriceExecuted(uint256 newPrice);
+
+    event FeesQueued(uint256 buyFee, uint256 sellFee, uint256 executeTime);
+    event FeesExecuted(uint256 buyFee, uint256 sellFee);
+
+    event PauseQueued(bool state, uint256 executeTime);
+    event PauseExecuted(bool state);
+
+    // ===== MODIFIERS =====
+    modifier onlyOwner() {
+        require(msg.sender == owner, "Not owner");
+        _;
+    }
+
+    modifier notPaused() {
+        require(!paused, "Paused");
+        _;
+    }
+
+    // ===== CONSTRUCTOR =====
+    constructor(address _token, address _usdt, uint256 _price) {
+        require(_token != address(0) && _usdt != address(0), "Zero address");
+
+        owner = msg.sender;
+        token = IERC20(_token);
+        usdt = IERC20(_usdt);
+        price = _price;
+    }
+
+    // =========================
+    // 💰 DEPOSIT
+    // =========================
+    function deposit(uint256 tokenAmount, uint256 usdtAmount) external onlyOwner {
+        require(tokenAmount > 0 && usdtAmount > 0, "Invalid");
+
+        token.safeTransferFrom(msg.sender, address(this), tokenAmount);
+        usdt.safeTransferFrom(msg.sender, address(this), usdtAmount);
+    }
+
+    // =========================
+    // 🔁 BUY
+    // =========================
+    function buy(uint256 usdtAmount, uint256 minOut)
+        external
+        nonReentrant
+        notPaused
+    {
+        require(usdtAmount > 0, "Invalid");
+
+        uint256 tokenAmount = (usdtAmount * 1e18) / price;
+        uint256 fee = (tokenAmount * buyFee) / FEE_DENOM;
+        uint256 finalAmount = tokenAmount - fee;
+
+        require(finalAmount >= minOut, "Slippage");
+        require(token.balanceOf(address(this)) >= finalAmount, "No liquidity");
+
+        usdt.safeTransferFrom(msg.sender, address(this), usdtAmount);
+        token.safeTransfer(msg.sender, finalAmount);
+
+        emit Bought(msg.sender, usdtAmount, finalAmount);
+    }
+
+    // =========================
+    // 🔁 SELL
+    // =========================
+    function sell(uint256 tokenAmount, uint256 minOut)
+        external
+        nonReentrant
+        notPaused
+    {
+        require(tokenAmount > 0, "Invalid");
+
+        uint256 usdtAmount = (tokenAmount * price) / 1e18;
+        uint256 fee = (usdtAmount * sellFee) / FEE_DENOM;
+        uint256 finalAmount = usdtAmount - fee;
+
+        require(finalAmount >= minOut, "Slippage");
+        require(usdt.balanceOf(address(this)) >= finalAmount, "No liquidity");
+
+        token.safeTransferFrom(msg.sender, address(this), tokenAmount);
+        usdt.safeTransfer(msg.sender, finalAmount);
+
+        emit Sold(msg.sender, tokenAmount, finalAmount);
+    }
+
+    // =========================
+    // ⏳ TIMELOCK PRICE
+    // =========================
+    function queuePrice(uint256 _price) external onlyOwner {
+        require(priceExecuteTime == 0, "Already queued");
+
+        pendingPrice = _price;
+        priceExecuteTime = block.timestamp + delay;
+
+        emit PriceQueued(_price, priceExecuteTime);
+    }
+
+    function executePrice() external onlyOwner {
+        require(block.timestamp >= priceExecuteTime, "Too early");
+
+        price = pendingPrice;
+        priceExecuteTime = 0;
+
+        emit PriceExecuted(price);
+    }
+
+    // =========================
+    // ⏳ TIMELOCK FEES
+    // =========================
+    function queueFees(uint256 _buyFee, uint256 _sellFee) external onlyOwner {
+        require(_buyFee <= MAX_FEE && _sellFee <= MAX_FEE, "Fee too high");
+
+        pendingBuyFee = _buyFee;
+        pendingSellFee = _sellFee;
+        feeExecuteTime = block.timestamp + delay;
+
+        emit FeesQueued(_buyFee, _sellFee, feeExecuteTime);
+    }
+
+    function executeFees() external onlyOwner {
+        require(block.timestamp >= feeExecuteTime, "Too early");
+
+        buyFee = pendingBuyFee;
+        sellFee = pendingSellFee;
+
+        emit FeesExecuted(buyFee, sellFee);
+    }
+
+    // =========================
+    // ⏳ TIMELOCK PAUSE
+    // =========================
+    function queuePause(bool _state) external onlyOwner {
+        pendingPause = _state;
+        pauseExecuteTime = block.timestamp + delay;
+
+        emit PauseQueued(_state, pauseExecuteTime);
+    }
+
+    function executePause() external onlyOwner {
+        require(block.timestamp >= pauseExecuteTime, "Too early");
+
+        paused = pendingPause;
+
+        emit PauseExecuted(paused);
+    }
+
+    // =========================
+    // 💸 WITHDRAW
+    // =========================
+    function withdraw(address _token, uint256 amount)
+        external
+        onlyOwner
+        nonReentrant
+    {
+        require(_token != address(0), "Zero address");
+
+        IERC20(_token).safeTransfer(msg.sender, amount);
+    }
+}

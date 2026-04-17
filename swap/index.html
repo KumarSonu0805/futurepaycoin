@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>FPC Swap</title>
+
+    <!-- Ethers v5 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/5.7.2/ethers.umd.min.js"></script>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <style>
+        body {
+            font-family: Arial;
+            background: #0f172a;
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .box {
+            background: #1e293b;
+            padding: 20px;
+            border-radius: 12px;
+            max-width: 400px;
+            margin: auto;
+        }
+
+        input {
+            width: 90%;
+            padding: 12px;
+            margin: 10px 0;
+            border-radius: 6px;
+            border: none;
+        }
+
+        button {
+            width: 90%;
+            padding: 12px;
+            margin: 5px;
+            border-radius: 6px;
+            border: none;
+            background: #22c55e;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        button:disabled {
+            background: gray;
+        }
+
+        .status {
+            margin-top: 10px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+
+<body>
+
+<h2>🚀 FPC Swap</h2>
+
+<div class="box">
+
+    <button onclick="connectWallet()">Connect Wallet</button>
+    <p id="wallet">Not Connected</p>
+
+    <div class="status" id="status"></div>
+    <hr>
+
+    <h3>💰 Balances</h3>
+    <p>USDT: <span id="usdtBalance">0</span></p>
+    <p>FPC: <span id="tokenBalance">0</span></p>
+
+    <button onclick="loadBalances()">Refresh Balances</button>
+    <hr>
+
+    <h3>Buy FPC</h3>
+    <input id="buyAmount" placeholder="USDT amount">
+    <p id="buyEstimate"></p>
+    <button onclick="approveUSDT()">Approve USDT</button>
+    <button onclick="buy()">Buy</button>
+
+    <hr>
+
+    <h3>Sell FPC</h3>
+    <input id="sellAmount" placeholder="FPC amount">
+    <p id="sellEstimate"></p>
+    <button onclick="approveToken()">Approve FPC</button>
+    <button onclick="sell()">Sell</button>
+
+</div>
+
+<script>
+
+// ============================
+// 🔧 CONFIG
+// ============================
+const contractAddress = "0x52447fcdBd04657D79C7f2dCEC2345580FB755fF";
+const tokenAddress = "0xB123C666268edA865cC5361BD1785B91536Cbe4F";
+const usdtAddress = "0x55d398326f99059fF775485246999027B3197955"; // BSC USDT
+
+const BSC_CHAIN_ID = "0x38";
+
+// ============================
+// ABI
+// ============================
+const contractABI = [
+    "function buy(uint256,uint256) external",
+    "function sell(uint256,uint256) external",
+    "function getBuyAmount(uint256) view returns(uint256)",
+    "function getSellAmount(uint256) view returns(uint256)"
+];
+
+const erc20ABI = [
+    "function approve(address spender,uint256 amount) external returns(bool)"
+];
+
+// ============================
+// GLOBALS
+// ============================
+let provider, signer, contract;
+
+// ============================
+// UI HELPERS
+// ============================
+function setStatus(msg, loading=false) {
+    document.getElementById("status").innerText = loading ? "⏳ " + msg : msg;
+}
+
+// ============================
+// NETWORK SWITCH
+// ============================
+async function switchToBSC() {
+    try {
+        await window.ethereum.request({
+            method: "wallet_switchEthereumChain",
+            params: [{ chainId: BSC_CHAIN_ID }]
+        });
+    } catch (err) {
+        alert("Switch to BSC manually");
+    }
+}
+
+// ============================
+// CONNECT WALLET
+// ============================
+async function connectWallet() {
+    if (!window.ethereum) return alert("Install MetaMask");
+
+    await switchToBSC();
+
+    provider = new ethers.providers.Web3Provider(window.ethereum);
+    await provider.send("eth_requestAccounts", []);
+
+    signer = provider.getSigner();
+    const address = await signer.getAddress();
+
+    document.getElementById("wallet").innerText = address;
+
+    contract = new ethers.Contract(contractAddress, contractABI, signer);
+
+    setStatus("Wallet Connected ✅");
+    // ✅ LOAD BALANCES
+    loadBalances();
+}
+
+// ============================
+// LOAD BALANCES
+// ============================
+async function loadBalances() {
+    try {
+        const address = await signer.getAddress();
+
+        // ===== USDT =====
+        const usdt = new ethers.Contract(
+            usdtAddress,
+            [
+                "function balanceOf(address) view returns (uint256)",
+                "function decimals() view returns (uint8)"
+            ],
+            provider
+        );
+
+        const usdtBal = await usdt.balanceOf(address);
+        const usdtDec = await usdt.decimals();
+
+        document.getElementById("usdtBalance").innerText =
+            parseFloat(ethers.utils.formatUnits(usdtBal, usdtDec)).toFixed(3);
+
+        // ===== FPC TOKEN =====
+        const token = new ethers.Contract(
+            tokenAddress,
+            [
+                "function balanceOf(address) view returns (uint256)",
+                "function decimals() view returns (uint8)"
+            ],
+            provider
+        );
+
+        const tokenBal = await token.balanceOf(address);
+        const tokenDec = await token.decimals();
+
+        document.getElementById("tokenBalance").innerText =
+            parseFloat(ethers.utils.formatUnits(tokenBal, tokenDec)).toFixed(3);
+
+        console.log("FPC RAW:", tokenBal.toString());
+        console.log("FPC DEC:", tokenDec);
+
+    } catch (err) {
+        console.error("Balance error:", err);
+    }
+}
+// ============================
+// APPROVE USDT
+// ============================
+async function approveUSDT() {
+    try {
+        setStatus("Approving USDT...", true);
+
+        const usdt = new ethers.Contract(usdtAddress, erc20ABI, signer);
+        const tx = await usdt.approve(contractAddress, ethers.constants.MaxUint256);
+
+        setStatus("Waiting confirmation...", true);
+        await tx.wait();
+
+        setStatus("USDT Approved ✅");
+    } catch (err) {
+        setStatus("Error: " + err.message);
+    }
+}
+
+// ============================
+// APPROVE TOKEN
+// ============================
+async function approveToken() {
+    try {
+        setStatus("Approving FPC...", true);
+
+        const token = new ethers.Contract(tokenAddress, erc20ABI, signer);
+        const tx = await token.approve(contractAddress, ethers.constants.MaxUint256);
+
+        await tx.wait();
+        setStatus("FPC Approved ✅");
+    } catch (err) {
+        setStatus("Error: " + err.message);
+    }
+}
+
+// ============================
+// BUY
+// ============================
+async function buy() {
+    try {
+        const val = document.getElementById("buyAmount").value;
+
+        const usdtAmount = ethers.utils.parseUnits(val, 6);
+
+        setStatus("Processing Buy...", true);
+
+        const tx = await contract.buy(usdtAmount, 0);
+        await tx.wait();
+
+        setStatus("Buy Successful ✅");
+    } catch (err) {
+        setStatus("Error: " + err.message);
+    }
+}
+
+// ============================
+// SELL
+// ============================
+async function sell() {
+    try {
+        const val = document.getElementById("sellAmount").value;
+
+        const tokenAmount = ethers.utils.parseUnits(val, 18);
+
+        setStatus("Processing Sell...", true);
+
+        const tx = await contract.sell(tokenAmount, 0);
+        await tx.wait();
+
+        setStatus("Sell Successful ✅");
+    } catch (err) {
+        setStatus("Error: " + err.message);
+    }
+}
+
+// ============================
+// LIVE ESTIMATE
+// ============================
+document.getElementById("buyAmount").addEventListener("input", async () => {
+    if (!contract) return;
+
+    const val = document.getElementById("buyAmount").value;
+    if (!val) return;
+
+    const out = await contract.getBuyAmount(ethers.utils.parseUnits(val, 6));
+
+    document.getElementById("buyEstimate").innerText =
+        "You get: " + ethers.utils.formatUnits(out, 18) + " FPC";
+});
+
+document.getElementById("sellAmount").addEventListener("input", async () => {
+    if (!contract) return;
+
+    const val = document.getElementById("sellAmount").value;
+    if (!val) return;
+
+    const out = await contract.getSellAmount(ethers.utils.parseUnits(val, 18));
+
+    document.getElementById("sellEstimate").innerText =
+        "You get: " + ethers.utils.formatUnits(out, 6) + " USDT";
+});
+
+</script>
+
+</body>
+</html>

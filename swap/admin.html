@@ -56,7 +56,7 @@
 
 <body>
 
-<h2>⚙️ Admin Panel</h2>
+<h2>Admin Panel</h2>
 
 <div class="box">
     <button onclick="connectWallet()">Connect Admin</button>
@@ -65,7 +65,14 @@
 </div>
 
 <div class="box">
-    <h3>💰 Deposit Liquidity</h3>
+    <h3>Contract Balances</h3>
+    <p>USDT: <span id="usdtBal">0</span></p>
+    <p>FPC: <span id="tokenBal">0</span></p>
+    <button onclick="loadBalances()">Refresh</button>
+</div>
+
+<div class="box">
+    <h3>Deposit Liquidity</h3>
     <input id="tokenAmt" placeholder="FPC amount">
     <input id="usdtAmt" placeholder="USDT amount">
 
@@ -74,14 +81,14 @@
 </div>
 
 <div class="box">
-    <h3>📈 Price Control</h3>
+    <h3>Price Control</h3>
     <input id="newPrice" placeholder="Price (1e18)">
     <button onclick="queuePrice()">Queue Price</button>
     <button onclick="executePrice()">Execute Price</button>
 </div>
 
 <div class="box">
-    <h3>💰 Fees</h3>
+    <h3>Fees</h3>
     <input id="buyFee" placeholder="Buy Fee (200 = 2%)">
     <input id="sellFee" placeholder="Sell Fee">
     <button onclick="queueFees()">Queue Fees</button>
@@ -89,23 +96,16 @@
 </div>
 
 <div class="box">
-    <h3>⏸ Pause</h3>
+    <h3>Pause</h3>
     <button onclick="pause(true)">Pause</button>
     <button onclick="pause(false)">Unpause</button>
 </div>
 
 <div class="box">
-    <h3>💸 Withdraw</h3>
+    <h3>Withdraw</h3>
     <input id="withdrawToken" placeholder="Token Address">
     <input id="withdrawAmount" placeholder="Amount">
     <button onclick="withdraw()">Withdraw</button>
-</div>
-
-<div class="box">
-    <h3>📊 Contract Balances</h3>
-    <p>USDT: <span id="usdtBal">0</span></p>
-    <p>FPC: <span id="tokenBal">0</span></p>
-    <button onclick="loadBalances()">Refresh</button>
 </div>
 
 <script>

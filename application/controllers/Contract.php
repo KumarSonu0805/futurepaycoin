@@ -24,6 +24,18 @@ class Contract extends MY_Controller {
         $this->template->load('contract','admin-interface',$data);
     }
     
+    public function swapadmin(){
+        $data=['title'=>'Swap Admin Interface'];
+        $user=getuser();
+        $this->template->load('contract','swap-admin-interface',$data);
+    }
+    
+    public function swap(){
+        $data=['title'=>'Swap Interface'];
+        $user=getuser();
+        $this->template->load('contract','swap',$data);
+    }
+    
     public function index2(){
         $data=['title'=>'Contract Details'];
         $user=getuser();

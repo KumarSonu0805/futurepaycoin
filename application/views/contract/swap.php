@@ -129,6 +129,8 @@ const BSC_CHAIN_ID = "0x38";
 
 // ================= ABI =================
 const contractABI = [
+    "function buy(uint256,uint256) external",
+    "function sell(uint256,uint256) external",
     "function price() view returns(uint256)",
     "function buyFee() view returns(uint256)",
     "function sellFee() view returns(uint256)",
@@ -322,7 +324,12 @@ async function swap() {
         let tx;
 
         if (isBuying) {
-            tx = await contract.buy(ethers.utils.parseUnits(val, 6), 0);
+            const usdt = ethers.utils.parseUnits(val, 6);
+
+            // convert 6 to 18 decimals
+            const usdt18 = usdt.mul(ethers.utils.parseUnits("1", 12));
+
+            tx = await contract.buy(usdt18, 0);
         } else {
             tx = await contract.sell(ethers.utils.parseUnits(val, 18), 0);
         }
@@ -345,14 +352,14 @@ async function swap() {
 let estimateTimeout;
 
 // cache values (loaded once)
-let price, buyFee, sellFee;
+let price, buyFee, sellFee, priceFormatted;
 
 // ================= LOAD CONFIG =================
 async function loadConfig() {
     price = await contract.price();     // 1e18 scaled
     buyFee = await contract.buyFee();   // e.g. 200
     sellFee = await contract.sellFee();
-
+    priceFormatted = ethers.utils.formatUnits(price, 18);
     log("?? Config loaded");
 }
 
@@ -382,8 +389,12 @@ async function runEstimate() {
             // USDT ? FPC
             const usdt = ethers.utils.parseUnits(val, 6);
 
-            // EXACT contract logic (no custom scaling)
-            let tokenAmount = usdt.mul("1000000000000000000").div(price);
+            // normalize to 18 decimals
+            const usdt18 = usdt.mul(ethers.utils.parseUnits("1", 12));
+
+            let tokenAmount = usdt18
+              .mul(ethers.constants.WeiPerEther) // 
+              .div(price);
 
             let fee = tokenAmount.mul(buyFee).div(10000);
 

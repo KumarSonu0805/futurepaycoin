@@ -136,6 +136,8 @@
             <ul class="nav flex-column ms-3">
                <li class="nav-item"><a class="nav-link" href="<?= base_url('contract/'); ?>">User Interface</a></li>
                <li class="nav-item"><a class="nav-link" href="<?= base_url('contract/admin/'); ?>"> Admin Interface</a></li>
+               <li class="nav-item"><a class="nav-link" href="<?= base_url('contract/swap/'); ?>">FPC Swap</a></li>
+               <li class="nav-item"><a class="nav-link" href="<?= base_url('contract/swapadmin/'); ?>">FPC Swap Admin Interface</a></li>
             </ul>
          </div>
       </li>

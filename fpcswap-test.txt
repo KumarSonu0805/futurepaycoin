@@ -69,7 +69,7 @@ contract FPCSwap is ReentrancyGuard {
 
     bool public paused;
 
-    uint256 public delay = 1 hours;
+    uint256 public delay = 6 hours;
 
     // ===== TIMELOCK STORAGE =====
     uint256 public pendingPrice;

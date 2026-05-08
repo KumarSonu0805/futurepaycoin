@@ -1,7 +1,4 @@
-<?php
-header("HTTP/1.1 503 Service Unavailable");
-exit;
-?><!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
    <head>
       <meta charset="UTF-8" />

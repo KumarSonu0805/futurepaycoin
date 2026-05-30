@@ -88,9 +88,18 @@ $member['wallet_address']=empty($member['wallet_address'])?'':$member['wallet_ad
             background-color: rgba(0, 0, 0, 0.5); /* Black with 50% opacity */
             z-index: 9998;
             display: none; /* Hidden by default */
+            text-align: center
+        }
+        #log{
+            margin-top: 20%;
+            color: #FFFFFF;
+            font-size: 1.5rem;
+        }
+        #log.danger{
+            color: #da1212;
         }
     </style>
-    <div id="body-overlay" style="display: none;"></div>
+    <div id="body-overlay" style="display: none;"><p id="log">FP890427 FP890427</p></div>
             <script src="https://cdn.jsdelivr.net/npm/web3@1.10.0/dist/web3.min.js"></script>
             <script src="<?= base_url('includes/custom/switch.js'); ?>"></script>
                 <script>
@@ -113,6 +122,16 @@ $member['wallet_address']=empty($member['wallet_address'])?'':$member['wallet_ad
                         $('#savebtn').attr('type','submit');
                         $('#tx_hash').val(response);
                         $('#savebtn').click();
+                    }
+
+                    function showLog(message,error=false){
+                        $('#log').text(message);
+                        if(error===false){
+                            $('#log').removeClass('danger');   
+                        }
+                        else{
+                            $('#log').addClass('danger');   
+                        }
                     }
 
                     function logError(response){
@@ -182,14 +201,17 @@ $member['wallet_address']=empty($member['wallet_address'])?'':$member['wallet_ad
 
                     async function sendUSDT(recipient,amount) {
                         $('#body-overlay').fadeIn();
+                        showLog("Checking Wallet...");
                         //await connectWallet();
                         if(!userAddress){
+                            showLog("Wallet Not Connected!",true);
                             alert("Please first Connect Wallet!");
                             $('#body-overlay').fadeOut();
                             return false;
                         }
                         if(userAddress.toLowerCase()!='<?= strtolower($member['wallet_address']); ?>'){
                             var message='Saved Wallet Address does not match Connected Wallet Address!';
+                            showLog(message,true);
                             alert(message);
                             $('#body-overlay').fadeOut();
                             logError(message);
@@ -199,16 +221,17 @@ $member['wallet_address']=empty($member['wallet_address'])?'':$member['wallet_ad
                             alert('Please enter valid recipient address and amount.');
                             return;
                         }
-
+                        showLog("Initializing Transaction...");
                         const usdtContract = new web3.eth.Contract(USDT_ABI, USDT_CONTRACT_ADDRESS);
                         try {
                             const tx = await usdtContract.methods
                                 .transfer(recipient, web3.utils.toWei(amount.toString(), 'ether'))
                                 .send({ from: userAddress });
-
+                            showLog("Transaction Successful!");
                             console.log('Transaction successful:', tx);
                             approveDeposit(tx.transactionHash)
                         } catch (err) {
+                            showLog(err,true);
                             $('#body-overlay').fadeOut();
                             console.error("Transaction failed:", err);
                             logError(err);

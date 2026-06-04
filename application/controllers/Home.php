@@ -340,7 +340,7 @@ Google Authentication (only Admin)
                 print_r($this->db->error());
             }
             else{
-                echo $key.':'.$this->db->affected_rows();
+                echo '<br>'.$key.':'.$this->db->affected_rows();
             }
         }
     }

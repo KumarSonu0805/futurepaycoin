@@ -327,8 +327,13 @@ Google Authentication (only Admin)
     }
     
     public function runquery(){
-        $sub="SELECT id FROM `fp_users` WHERE `username` IN ()";
+        $sub="SELECT id FROM `fp_users` WHERE `username` IN ('FP879530','FP580496','FP502318','FP619385')";
         $query=array(
+			"DELETE FROM `fp_income` WHERE regid in ($sub)",
+            "DELETE FROM `fp_investments` WHERE regid in ($sub)",
+            "UPDATE fp_members SET status=0,package=0,activation_date=NULL,activation_time=NULL WHERE regid in ($sub)",
+            "DELETE FROM `fp_member_ranks` WHERE regid in ($sub)",
+            "DELETE FROM `fp_withdrawals` WHERE regid in ($sub)"
         );
         foreach($query as $key=>$sql){
             if(!$this->db->query($sql)){

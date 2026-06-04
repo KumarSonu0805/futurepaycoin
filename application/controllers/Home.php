@@ -327,20 +327,8 @@ Google Authentication (only Admin)
     }
     
     public function runquery(){
-        $sub="SELECT id FROM `fp_users` WHERE `username` IN ('FP547210','FP360452','FP093581','FP210365','FP069178','FP047638','FP871690','FP819527','FP193207','FP765840',
-        'FP318740','FP375901','FP635219','FP384179','FP357248','FP346982','FP209485','FP937502','FP193264','FP390852',
-        'FP501782','FP864123','FP275430','FP145607','FP567108','FP451983','FP204915','FP762418','FP612079','FP351968',
-        'FP968354','FP198056','FP379105','FP471580','FP503174','FP634805','FP608314','FP702659','FP348792','FP163594',
-        'FP175809','FP823746','FP795108','FP460298','FP954623')";
+        $sub="SELECT id FROM `fp_users` WHERE `username` IN ()";
         $query=array(
-            "DELETE FROM `fp_income` WHERE regid in ($sub)",
-            "DELETE FROM `fp_investments` WHERE regid in ($sub)",
-            "DELETE FROM `fp_level_members` WHERE regid in ($sub)",
-            "DELETE FROM `fp_level_members` WHERE member_id in ($sub)",
-            "DELETE FROM `fp_members` WHERE regid in ($sub)",
-            "DELETE FROM `fp_member_ranks` WHERE regid in ($sub)",
-            "DELETE FROM `fp_withdrawals` WHERE regid in ($sub)",
-            "DELETE FROM `fp_users` WHERE id in ($sub)"
         );
         foreach($query as $key=>$sql){
             if(!$this->db->query($sql)){

@@ -327,22 +327,17 @@ Google Authentication (only Admin)
     }
     
     public function runquery(){
+        $sub="SELECT id FROM `fp_users` WHERE `username` IN ('FP879530','FP580496','FP502318','FP619385')";
         $query=array(
-            "ALTER TABLE `fp_income` ADD `mr_id` INT NOT NULL AFTER `royalty_id`;",
-                    "CREATE TABLE `fp_member_rewards` (
- `id` int(11) NOT NULL AUTO_INCREMENT,
- `date` date NOT NULL,
- `regid` int(11) NOT NULL,
- `type` varchar(10) NOT NULL,
- `reward` varchar(50) NOT NULL,
- `status` tinyint(1) NOT NULL,
- `added_on` datetime NOT NULL,
- `updated_on` datetime NOT NULL,
- PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4"
+            "DELETE FROM `fp_income` WHERE regid in ($sub)",
+            "DELETE FROM `fp_investments` WHERE regid in ($sub)",
+            "UPDATE fp_members SET status=0,package=0,activation_date=NULL,activation_time=NULL WHERE regid in ($sub)",
+            "DELETE FROM `fp_member_ranks` WHERE regid in ($sub)",
+            "DELETE FROM `fp_withdrawals` WHERE regid in ($sub)"
         );
-        foreach($query as $sql){
+        foreach($query as $key=>$sql){
             if(!$this->db->query($sql)){
+                echo $key.':'.$this->db->affected_rows();
                 print_r($this->db->error());
             }
         }

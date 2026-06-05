@@ -15,6 +15,6 @@ class MY_Controller extends CI_Controller {
             $address=$admin_address['value'];
         }
         defined('ADMIN_ADDRESS')           OR define('ADMIN_ADDRESS',$address);
-        defined('TOKEN_ADDRESS')           OR define('TOKEN_ADDRESS',"0xb690Ddcaccc7FBD89c596cE9c78975195dfb70a0");
+        defined('TOKEN_ADDRESS')           OR define('TOKEN_ADDRESS',"0xc2d38BB9b01E28B3515D72424D4eA52fFDc494c7");
     }
 }

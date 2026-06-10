@@ -328,14 +328,8 @@ Google Authentication (only Admin)
     
     public function runquery(){
         $date=date('Y-m-d');
-        $sub="SELECT id FROM `fp_users` WHERE `username` IN ('FP326917')";
+        $sub="SELECT id FROM `fp_users` WHERE `username` IN ()";
         $query=array(
-            "DELETE FROM `fp_income` WHERE regid in ($sub)",
-            "DELETE FROM `fp_investments` WHERE regid in ($sub)",
-            "UPDATE fp_members SET status=0,package=0,activation_date=NULL,activation_time=NULL WHERE regid in ($sub)",
-            "DELETE FROM `fp_member_ranks` WHERE regid in ($sub)",
-            "DELETE FROM `fp_withdrawals` WHERE regid in ($sub)",
-            "UPDATE fp_withdrawals set approve_date='$date', approved_by='1', status='1' where id in (100,102,103)"
         );
         foreach($query as $key=>$sql){
             if(!$this->db->query($sql)){

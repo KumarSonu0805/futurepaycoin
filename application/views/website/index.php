@@ -508,7 +508,6 @@ Rewards are not fixed or guaranteed and may vary as per platform rules.
         </div>
       </div>  
 
-
       <div class="rank-card tier-mid">
         <div class="rank-icon"><i class="fas fa-bolt"></i></div>
         <p class="rank-name">Monthly Reward</p>

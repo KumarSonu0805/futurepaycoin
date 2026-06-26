@@ -13,38 +13,39 @@
           <div class="container">
             <div class="hero-content">
               <h1 class="fade-in">Future Pay Coin</h1>
-              <p class="tagline">Decentralised. Global. Borderless.</p>
-              <p class="description">
-                A decentralised blockchain-powered digital utility ecosystem built for secure transactions, platform utilities, and next-generation financial participation — inspired by global financial hubs like Dubai.
-              </p>
-              
+              <p class="tagline">Trade. Invest. Grow.</p>
+              <p style="font-size: 20px; color: #fff1c3;">
+                To create innovative and user-friendly solutions through FuturePay Swap, FutureEx Exchange, Future Pay, Forex & Crypto Trading, and Real Estate, delivering value, transparency, and long-term growth for our community. 
+              </p>              
             </div>
+
               <div class="hero-buttons">
-                <a href="#" class="btn btn-primary">Launch DApp</a>
-                <a href="#" class="btn btn-outline">Read Whitepaper</a>
-                <a href="#" class="btn btn-secondary">Join Community</a>
+                <a href="#" class="btn btn-primary">FuturePay Swap <br> Secure & Seamless Swapping</a>
+                <a href="#" class="btn btn-outline">FutureEx Exchange <br> Next-Generation Exchange Vision</a>
+                <a href="#" class="btn btn-secondary">Real utility <br> Payments & Digital Solutions</a>
+                <a href="#" class="btn btn-secondary">Growth Ecosystem <br> Trading, Real Estate & Community</a>
               </div>
           </div>
         </section>
       
-        <section class="trust-strip">
+        <section class="trust-strip" style="background-color: #816200;">
           <div class="container">
             <div class="trust-grid">
               <div class="trust-item">
                 <i class="fa-solid fa-link"></i>
-                <span>Fully Decentralised Network</span>
+                <span>Binance Wallet</span>
               </div>
               <div class="trust-item">
                 <i class="fa-brands fa-btc"></i>
-                <span>Built on BNB Smart Chain</span>
+                <span>Metamask</span>
               </div>
               <div class="trust-item">
                 <i class="fa-solid fa-coins"></i>
-                <span>Fixed Supply Utility Token</span>
+                <span>Trustwallet</span>
               </div>
               <div class="trust-item">
                 <i class="fa-solid fa-file-contract"></i>
-                <span>Transparent Smart Contract</span>
+                <span>SafePal</span>
               </div>
             </div>
           </div>
@@ -53,16 +54,11 @@
 
 <!-- ---------------project overview -->
 <section class="project-overview">
-
-    <div class="container">
-    
-    <div class="overview-wrapper">
-    
+    <div class="container">    
+    <div class="overview-wrapper">    
     <!-- Animated Coin -->
-    <div class="coin-animation">
-    
-    <div class="coin">
-    
+    <div class="coin-animation">    
+    <div class="coin">    
     <div class="coin-inner">
     <span>FPC</span>
     </div>
@@ -70,73 +66,45 @@
     </div>
     
     <div class="orbit"></div>
-    <div class="orbit orbit2"></div>
-    
+    <div class="orbit orbit2"></div>    
     </div>
     
     
     <!-- Content -->
     <div class="overview-content">
     
-    <h2 class="section-title">PROJECT OVERVIEW</h2>
+    <h2 class="section-title">OVERVIEW</h2>
     
     <p class="overview-text">
-    <strong>Future Pay Coin (FPC)</strong> is a BEP-20 utility token built on the 
-    <strong>BNB Smart Chain</strong>, designed to support a growing digital ecosystem.
-    </p>
-    <p class="overview-text">
-        It is focused on enabling <strong>secure digital transactions,ecosystem participation, and 
-             </strong> <strong>real-world utility integration</strong> through technology-driven platforms.
-    </p>
-    <ul class="overview-list">
-    
+    <strong>Future Pay Coin (FPC)</strong>  A next-generation digital finance ecosystem connecting swapping, trading, payments, and real-world opportunities through one powerful platform.
+    <strong>Future Pay Coin </strong>  is a digital finance ecosystem focused on innovation, technology, and community growth.Building the Future of Finance & Opportunity.
+    <strong>Future Pay Coin </strong>  connects technology, finance, and real-world opportunities through one powerful ecosystem.
+    </p> 
+    <ul class="overview-list">    
     <li>Utility-based digital payments</li>
     <li>Platform and service access</li>
     <li>Community participation framework</li>
     <li>Achievement-driven benefits</li>
-    <li>Long-term ecosystem development</li>
-    
-    </ul>
-    <p class="overview-text">Future <strong>Pay Coin</strong> emphasizes <strong>utility, transparency, and sustainabilty, </strong>
-    avoidding <strong>hype-based</strong> or misleading financial representations.</p>
-    
-    </div>
-    
-    </div>
-    
-    </div>
-    
+    <li>Long-term ecosystem development</li>    
+    </ul> 
+    </div> 
+    </div> 
+    </div> 
     </section>
 
     <!----------- ABOUT SECTION ------------------------>
 <section class="about-section">
-
-    <div class="container">
-    
-    
-    <div class="about-content">
-    
-    <h2>ABOUT SECTION</h2>
-    
-    <h3>A Decentralised Global Utility Platform</h3>
-    
-    <p>
-    Future Pay Coin (FPC) is a decentralised digital utility token designed to power a growing ecosystem of blockchain-based services.
-    The platform operates without central control, enabling permissionless access, transparent transactions, and community-driven participation.
-    Inspired by the innovation and regulatory-forward approach of international financial centers such as Dubai, Future Pay Coin focuses on scalability, security, and long-term ecosystem sustainability.
-    </p>
-    
+    <div class="container">    
+    <div class="about-content">    
+    <h3>Future Pay Coin (FPC) Empowering the future of finance</h3>    
     </div>
     
     
     
     <!-- VISION & MISSION -->
-    <div class="vision-mission">
-    
-    <h2>VISION & MISSION</h2>
-    <div class="vision-mission-grid">
-
-        
+    <div class="vision-mission">    
+    <h2>OUR VISION & MISSION</h2>
+    <div class="vision-mission-grid">        
         <div class="coin-box">
         <img src="/images/future_pay_coin.webp" alt="Future Pay Coin">
         </div>
@@ -152,8 +120,7 @@
         <h3>MISSION</h3>
         
         <p>
-        Future Pay Coin envisions a borderless, utility-based digital economy where users earn and spend freely,
-        access services easily, and benefit from a secure, decentralized ecosystem driving sustainable growth.
+       To create innovative and user-friendly solutions through FuturePay Swap, FutureEx Exchange, FuturePay Pay, Trading, and Real Estate.
         </p>
         
         </div>
@@ -169,24 +136,7 @@
         <h3>VISION</h3>
         
         <p>
-        Future Pay Coin envisions a borderless, utility-based digital economy where users earn and spend freely,
-        access services easily, and benefit from a secure, decentralized ecosystem driving sustainable growth.
-        </p>
-        
-        </div>
-        
-        
-        <!-- SECOND MISSION -->
-        <div class="mission-box">
-        
-        <div class="box-icon">
-        <i class="fa-solid fa-shield-halved"></i>
-        </div>
-        
-        <h3>MISSION</h3>
-        
-        <p>
-        Our mission is to empower the future of digital payments and blockchain adoption by providing a utility-driven ecosystem that focuses on practical use cases, ensures security
+       To build a trusted global ecosystem that connects blockchain technology, digital finance, and real-world opportunities.
         </p>
         
         </div>
@@ -201,7 +151,7 @@
 </button>    
 </div>
     
-    </section>
+</section>
  <!-- ========== Ecosystem Overview ========== -->
 <section class="eco-simple-section">
   <div class="container">
@@ -238,10 +188,9 @@
 
   </div>
 </section>
-</section>
 
  <!-- ========== UTILITY OVERVIEW SECTION ========== -->
-<section class="utility-overview">
+<section class="utility-overview" style="background-color: #312500!important;">
     <div class="container">
   
       <div class="utility-header">
@@ -304,14 +253,14 @@
   Read More
 </button> 
     </div>
-  </section>
+</section>
 
   
 <!-- ═══════════════ TOKENOMICS ═══════════════ -->
 <section id="tokenomics" class="fpc-section">
   <div class="container">
     <h1 class="part-title reveal">
-      TOKENOMIC </h1>
+      TOKENOMICS </h1>
       <h3>100% Transparent Allocation</h3>
     <p class="swap-tagline reveal">
       Total Supply: <strong>100,000,000 FPC</strong>
@@ -466,257 +415,145 @@ Rewards are not fixed or guaranteed and may vary as per platform rules.
 </section>
 
 
-
-
 <!------------------RANK And Rewards -------------->
 <section id="rank-and-rewards">
   <div class="container">
 
-    <h2 class="part-title">Rank & Rewards</h2>
+    <h2 class="part-title">Monthy Leadership Rewards</h2>
     <hr class="part-divider">
 
     <div class="ranks-grid">
 
-      <!-- STARTER -->
-      <div class="rank-card tier-basic">
-        <div class="rank-icon"><i class="fas fa-gamepad"></i></div>
-        <p class="rank-name">Starter</p>
-        <div class="rank-reward">Reward: $50</div>
-        <hr class="rank-sep">
-        <ul class="rank-info">
-          <li><span class="info-label">Matching</span><span class="info-val">$2,000</span></li>
-          <li><span class="info-label">Duration</span><span class="info-val">30 Days</span></li>
-        </ul>
-      </div>
-
-      <!-- BUILDER -->
-      <div class="rank-card tier-basic">
-        <div class="rank-icon"><i class="fas fa-hammer"></i></div>
-        <p class="rank-name">Builder</p>
-        <div class="rank-reward">Reward: $150</div>
-        <hr class="rank-sep">
-        <ul class="rank-info">
-          <li><span class="info-label">Matching</span><span class="info-val">$5,000</span></li>
-          <li><span class="info-label">Duration</span><span class="info-val">60 Days</span></li>
-        </ul>
-      </div>
-
-      <!-- ACHIEVER -->
-      <div class="rank-card tier-basic">
-        <div class="rank-icon"><i class="fas fa-trophy"></i></div>
-        <p class="rank-name">Achiever</p>
-        <div class="rank-reward">Reward: $250</div>
-        <hr class="rank-sep">
-        <ul class="rank-info">
-          <li><span class="info-label">Matching</span><span class="info-val">$10,000</span></li>
-          <li><span class="info-label">Duration</span><span class="info-val">90 Days</span></li>
-        </ul>
-      </div>
-
-      <!-- LEADER -->
-      <div class="rank-card tier-mid">
-        <div class="rank-icon"><i class="fas fa-shield-alt"></i></div>
-        <p class="rank-name">Leader</p>
-        <div class="rank-reward">Reward: $500</div>
-        <hr class="rank-sep">
-        <ul class="rank-info">
-          <b>Requirements</b>
-          <li><span class="info-label">Self</span><span class="info-val">$100</span></li>
-          <li><span class="info-label">Direct Business</span><span class="info-val">$1,000</span></li>
-          <li><span class="info-label">Direct ID</span><span class="info-val">10</span></li>
-        </ul>
-        <div class="rank-team">
-          <p class="team-label">Team Structure</p>
-          <p class="team-val">1 Achiever (Power Leg)  Achiever (Other Leg)</p>
-        </div>
-      </div>
-
       <!-- CHALLENGER -->
       <div class="rank-card tier-mid">
         <div class="rank-icon"><i class="fas fa-bolt"></i></div>
-        <p class="rank-name">Challenger</p>
-        <div class="rank-reward">Reward: $1,000</div>
+        <p class="rank-name">Monthly Reward</p>
+        <div class="rank-reward">$100/month</div>
         <hr class="rank-sep">
         <ul class="rank-info">
-          <li><span class="info-label">Self</span><span class="info-val">$200</span></li>
-          <li><span class="info-label">Direct Business</span><span class="info-val">$1,500</span></li>
-          <li><span class="info-label">Direct ID</span><span class="info-val">15</span></li>
+          <li><span class="info-label">Condition : </span><span class="info-val">5 Direct x $50</span></li>
+          <li><span class="info-label">Team Business : </span><span class="info-val">$5,000</span></li>
         </ul>
         <div class="rank-team">
-          <p class="team-label">Team Structure</p>
-          <p class="team-val">2 Leaders</p>
+          <p class="team-label">Self ID Active</p>                  
         </div>
-      </div>
+        <div class="rank-team">          
+          <p class="team-label">All Directs Must be Active</p>      
+        </div>
+         <div class="rank-team">          
+          <p class="team-label">Monthly Team Business Maintained</p>          
+        </div>
+      </div>  
 
-      <!-- MASTER -->
+
       <div class="rank-card tier-mid">
-        <div class="rank-icon"><i class="fas fa-chess-king"></i></div>
-        <p class="rank-name">Master</p>
-        <div class="rank-reward">Reward: $2,000</div>
+        <div class="rank-icon"><i class="fas fa-bolt"></i></div>
+        <p class="rank-name">Monthly Reward</p>
+        <div class="rank-reward">$200/month</div>
         <hr class="rank-sep">
         <ul class="rank-info">
-          <li><span class="info-label">Self</span><span class="info-val">$300</span></li>
-          <li><span class="info-label">Direct Business</span><span class="info-val">$3,000</span></li>
-          <li><span class="info-label">Direct Team</span><span class="info-val">20</span></li>
+          <li><span class="info-label">Condition : </span><span class="info-val">10 Direct x $50</span></li>
+          <li><span class="info-label">Team Business : </span><span class="info-val">$10,000</span></li>
         </ul>
         <div class="rank-team">
-          <p class="team-label">Team Structure</p>
-          <p class="team-val">2 Challengers</p>
+          <p class="team-label">Self ID Active</p>                  
         </div>
-        <p class="rank-note">Reward Distribution: As per platform policy</p>
-      </div>
+        <div class="rank-team">          
+          <p class="team-label">All Directs Must be Active</p>      
+        </div>
+         <div class="rank-team">          
+          <p class="team-label">Monthly Team Business Maintained</p>          
+        </div>
+      </div>  
+      
 
-      <!-- DIRECTOR -->
-      <div class="rank-card tier-high">
-        <div class="rank-icon"><i class="fas fa-dragon"></i></div>
-        <p class="rank-name">Director</p>
-        <div class="rank-reward">Reward: $4,000</div>
+    <div class="rank-card tier-mid">
+        <div class="rank-icon"><i class="fas fa-bolt"></i></div>
+        <p class="rank-name">Monthly Reward</p>
+        <div class="rank-reward">$500/month</div>
         <hr class="rank-sep">
         <ul class="rank-info">
-          <li><span class="info-label">Self</span><span class="info-val">$500</span></li>
-          <li><span class="info-label">Direct Business</span><span class="info-val">$4,000</span></li>
+          <li><span class="info-label">Condition : </span><span class="info-val">20 Direct x $50</span></li>
+          <li><span class="info-label">Team Business : </span><span class="info-val">$25,000</span></li>
         </ul>
         <div class="rank-team">
-          <p class="team-label">Team Structure</p>
-          <p class="team-val">2 Masters</p>
+          <p class="team-label">Self ID Active</p>                  
         </div>
-      </div>
+        <div class="rank-team">          
+          <p class="team-label">All Directs Must be Active</p>      
+        </div>
+         <div class="rank-team">          
+          <p class="team-label">Monthly Team Business Maintained</p>          
+        </div>
+      </div>  
 
-      <!-- MENTOR -->
-      <div class="rank-card tier-high">
-        <div class="rank-icon"><i class="fas fa-hat-wizard"></i></div>
-        <p class="rank-name">Mentor</p>
-        <div class="rank-reward">Reward: $8,000</div>
+
+      <div class="rank-card tier-mid">
+        <div class="rank-icon"><i class="fas fa-bolt"></i></div>
+        <p class="rank-name">Monthly Reward</p>
+        <div class="rank-reward">$1,000/month</div>
         <hr class="rank-sep">
         <ul class="rank-info">
-          <li><span class="info-label">Self</span><span class="info-val">$1,000</span></li>
-          <li><span class="info-label">Direct Business</span><span class="info-val">$6,000</span></li>
+          <li><span class="info-label">Condition : </span><span class="info-val">30 Direct x $50</span></li>
+          <li><span class="info-label">Team Business : </span><span class="info-val">$50,000</span></li>
         </ul>
         <div class="rank-team">
-          <p class="team-label">Team Structure</p>
-          <p class="team-val">2 Directors</p>
+          <p class="team-label">Self ID Active</p>                  
         </div>
+        <div class="rank-team">          
+          <p class="team-label">All Directs Must be Active</p>      
+        </div>
+         <div class="rank-team">          
+          <p class="team-label">Monthly Team Business Maintained</p>          
+        </div>
+      </div>  
 
 
-      </div>
-
-
-      <!-- CREATOR -->
-      <div class="rank-card tier-high">
-        <div class="rank-icon"><i class="fas fa-wand-magic-sparkles"></i></div>
-        <p class="rank-name">Creator</p>
-        <div class="rank-reward">Reward: $15,000</div>
+      <div class="rank-card tier-mid">
+        <div class="rank-icon"><i class="fas fa-bolt"></i></div>
+        <p class="rank-name">Monthly Reward</p>
+        <div class="rank-reward">$2,000/month</div>
         <hr class="rank-sep">
         <ul class="rank-info">
-          <li><span class="info-label">Self</span><span class="info-val">$1,500</span></li>
-          <li><span class="info-label">Direct Business</span><span class="info-val">$8,000</span></li>
+          <li><span class="info-label">Condition : </span><span class="info-val">50 Direct x $50</span></li>
+          <li><span class="info-label">Team Business : </span><span class="info-val">$100,000</span></li>
         </ul>
         <div class="rank-team">
-          <p class="team-label">Team Structure</p>
-          <p class="team-val">2 Mentors</p>
+          <p class="team-label">Self ID Active</p>                  
         </div>
-      </div>
-
-      <!-- VISIONARY -->
-      <div class="rank-card tier-elite">
-        <div class="rank-icon"><i class="fas fa-eye"></i></div>
-        <p class="rank-name">Visionary</p>
-        <div class="rank-reward">Reward: $30,000</div>
-        <hr class="rank-sep">
-        <ul class="rank-info">
-          <li><span class="info-label">Self</span><span class="info-val">$3,000</span></li>
-          <li><span class="info-label">Direct Business</span><span class="info-val">$10,000</span></li>
-        </ul>
-        <div class="rank-team">
-          <p class="team-label">Team Structure</p>
-          <p class="team-val">2 Creators</p>
+        <div class="rank-team">          
+          <p class="team-label">All Directs Must be Active</p>      
         </div>
-      </div>
-
-      <!-- ICON -->
-      <div class="rank-card tier-elite">
-        <div class="rank-icon"><i class="fas fa-crown"></i></div>
-        <p class="rank-name">Icon</p>
-        <div class="rank-reward">Reward: $50,000</div>
-        <hr class="rank-sep">
-        <ul class="rank-info">
-          <li><span class="info-label">Self</span><span class="info-val">$5,000</span></li>
-          <li><span class="info-label">Direct Business</span><span class="info-val">$15,000</span></li>
-        </ul>
-        <div class="rank-team">
-          <p class="team-label">Team Structure</p>
-          <p class="team-val">2 Visionaries</p>
+         <div class="rank-team">          
+          <p class="team-label">Monthly Team Business Maintained</p>          
         </div>
-      </div>
-
-      <!-- LEGEND -->
-      <div class="rank-card tier-elite">
-        <div class="rank-icon"><i class="fas fa-fire"></i></div>
-        <p class="rank-name">Legend</p>
-        <div class="rank-reward">Reward: $80,000</div>
-        <hr class="rank-sep">
-        <ul class="rank-info">
-          <li><span class="info-label">Self</span><span class="info-val">$8,000</span></li>
-          <li><span class="info-label">Direct Business</span><span class="info-val">$20,000</span></li>
-        </ul>
-        <div class="rank-team">
-          <p class="team-label">Team Structure</p>
-          <p class="team-val">2 Icons</p>
-        </div>
-      </div>
-
-      <!-- CROWN -->
-      <div class="rank-card tier-elite">
-        <div class="rank-icon"><i class="fas fa-gem"></i></div>
-        <p class="rank-name">Crown</p>
-        <div class="rank-reward">Reward: $1,20,000</div>
-        <hr class="rank-sep">
-        <ul class="rank-info">
-          <li><span class="info-label">Self</span><span class="info-val">$10,000</span></li>
-          <li><span class="info-label">Direct Business</span><span class="info-val">$25,000</span></li>
-        </ul>
-        <div class="rank-team">
-          <p class="team-label">Team Structure</p>
-          <p class="team-val">2 Legends</p>
-        </div>
-      </div>
-
-      <!-- ROYAL STAR -->
-      <div class="rank-card tier-elite">
-        <div class="rank-icon"><i class="fas fa-star"></i></div>
-        <p class="rank-name">Royal Star</p>
-        <div class="rank-reward">Reward: $2,00,000</div>
-        <hr class="rank-sep">
-        <ul class="rank-info">
-          <li><span class="info-label">Self</span><span class="info-val">$25,000</span></li>
-          <li><span class="info-label">Direct ID</span><span class="info-val">40</span></li>
-        </ul>
-        <div class="rank-team">
-          <p class="team-label">Team Structure</p>
-          <p class="team-val">2 Crowns</p>
-        </div>
-      </div>
-
-      <!-- EMPOWER -->
-      <div class="rank-card tier-elite">
-        <div class="rank-icon"><i class="fas fa-rocket"></i></div>
-        <p class="rank-name">Empower</p>
-        <div class="rank-reward">Reward: $5,00,000</div>
-        <hr class="rank-sep">
-        <ul class="rank-info">
-          <li><span class="info-label">Self</span><span class="info-val">$50,000</span></li>
-          <li><span class="info-label">Direct ID</span><span class="info-val">50</span></li>
-        </ul>
-        <div class="rank-team">
-          <p class="team-label">Team Structure</p>
-          <p class="team-val">2 Royal Stars</p>
-        </div>
-        <p class="rank-note">Reward Distribution: As per platform policy</p>
-      </div>
+      </div>  
 
     </div>
     <!-- END ranks-grid -->
 
+  </div>
+</section>
+
+
+<section class="eco-simple-section" style="background-color: #111111!important;">
+  <div class="container">
+
+    <!-- ECOSYSTEM -->
+    <div class="eco-block">
+      <h2>Document</h2>
+      <h3>FuturePay Coin (FPC) is presented as a blockchain-based ecosystem combining :- </h3> 
+      <ul>
+        <li style="color: #f0b90b;">FuturePay Swap – Token swapping platform</li>
+        <li style="color: #f0b90b;">FutureEx Exchange – Cryptocurrency exchange</li>
+        <li style="color: #f0b90b;">FuturePay Pay – Payment and digital solutions</li>
+        <li style="color: #f0b90b;">Growth Ecosystem – Trading, real estate, and community expansion initiatives</li> 
+      </ul>
+    </div>
+
+    <!-- DOCUMENT SECTION -->
+    <div class="how-block">      
+      <iframe src="/document/Future-Pay-Coin-2026.pdf" width="100%" height="340px"></iframe> 
   </div>
 </section>
  

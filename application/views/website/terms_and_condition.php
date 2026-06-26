@@ -14,15 +14,13 @@
     <hr class="part-divider">
     <div class="terms-card">
       <ul class="terms-list">
-        <li><span class="t-label">Deposit / Withdrawal</span><span class="t-val">USDT &amp; FPC</span></li>
-        <li><span class="t-label">Minimum Withdrawal</span><span class="t-val">$1</span></li>
-        <li><span class="t-label">Withdrawal Fee</span><span class="t-val">6%</span></li>
+        <li><span class="t-label">Deposit / Withdrawal</span><span class="t-val">Accepted In USDT &amp; FPC</span></li>
+        <li><span class="t-label">Minimum Withdrawal</span><span class="t-val">$15</span></li>
+        <li><span class="t-label">Withdrawal Fee</span><span class="t-val">6% platform processing fee</span></li>
         <li><span class="t-label">Working Income</span><span class="t-val">Instant Withdrawal</span></li>
-        <li><span class="t-label">Staking Income</span><span class="t-val">30 Days Cycle</span></li>
-        <li><span class="t-label">Min Withdrawal (Staking)</span><span class="t-val">$15</span></li>
-        <li class="t-note"><span class="t-label">FPC staking is utility-based participation</span></li>
-        <li class="t-note"><span class="t-label">Staked principal is non-withdrawable</span></li>
-        <li class="t-note"><span class="t-label">Rewards are variable &amp; platform-rule based</span></li>
+        <li class="t-note"><span class="t-label">For Being a Part of the FuturePay Ecosystem Together, we are building the future of finance, technology, and opportunity.</span></li>
+        <li class="t-note"><span class="t-label"><h1>24 X 7 Customer Support</h1></span></li>
+        <li class="t-note"><span class="t-label">support@futurepaycoin.com</span></li>
       </ul>
     </div>
   </div>

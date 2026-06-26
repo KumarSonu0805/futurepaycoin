@@ -16,24 +16,20 @@
 <!-- ABOUT TEXT -->
 <div class="about-content">
 
-<h2>ABOUT SECTION</h2>
-
-<h3>A Decentralised Global Utility Platform</h3>
-
+<h2>ABOUT Future Pay Coin</h2> 
 <p>
-Future Pay Coin (FPC) is a decentralised digital utility token designed to power a growing ecosystem of blockchain-based services.
-The platform operates without central control, enabling permissionless access, transparent transactions, and community-driven participation.
-Inspired by the innovation and regulatory-forward approach of international financial centers such as Dubai, Future Pay Coin focuses on scalability, security, and long-term ecosystem sustainability.
+A next-generation digital finance ecosystem connecting swapping, trading, payments, and real-world opportunities through one powerful platform.
+FuturePay Coin is a digital finance ecosystem focused on innovation, technology, and community growth.Building the Future of Finance & Opportunity.
+FuturePay Coin connects technology, finance, and real-world opportunities through one powerful ecosystem.
 </p>
 
 <!-- GAP -->
 <div class="about-gap"></div>
-
 <!-- GRID WRAPPER -->
 <div class="why-security-wrapper">
 
     <!-- WHY DECENTRALISED -->
-    <div class="why-box">
+    <div class="why-box" style="background-color: #352707;">
         <h4>WHY DECENTRALISED</h4>
         <h5>Built in the principles of decentralisation</h5>
 
@@ -47,7 +43,7 @@ Inspired by the innovation and regulatory-forward approach of international fina
     </div>
 
     <!-- SECURITY & TRANSPARENCY -->
-    <div class="security-box">
+    <div class="security-box" style="background-color: #352707;">
         <h4>SECURITY & TRANSPARENCY</h4>
         <h5>Trust Through Code, Not Promises</h5>
 
@@ -83,7 +79,7 @@ Inspired by the innovation and regulatory-forward approach of international fina
 
 
 <!-- MISSION -->
-<div class="mission-box">
+<div class="mission-box" style="background-color: #352707;">
 
 <div class="box-icon">
 <i class="fa-solid fa-coins"></i>
@@ -92,15 +88,14 @@ Inspired by the innovation and regulatory-forward approach of international fina
 <h3>MISSION</h3>
 
 <p>
-Future Pay Coin envisions a borderless, utility-based digital economy where users earn and spend freely,
-access services easily, and benefit from a secure, decentralized ecosystem driving sustainable growth.
+ To create innovative and user-friendly solutions through FuturePay Swap, FutureEx Exchange, FuturePay Pay, Trading, and Real Estate.
 </p>
 
 </div>
 
 
 <!-- VISION -->
-<div class="vision-box">
+<div class="vision-box" style="background-color: #352707;">
 
 <div class="box-icon">
 <i class="fa-solid fa-eye"></i>
@@ -109,28 +104,9 @@ access services easily, and benefit from a secure, decentralized ecosystem drivi
 <h3>VISION</h3>
 
 <p>
-Future Pay Coin envisions a borderless, utility-based digital economy where users earn and spend freely,
-access services easily, and benefit from a secure, decentralized ecosystem driving sustainable growth.
+To build a trusted global ecosystem that connects blockchain technology, digital finance, and real-world opportunities.
 </p>
-
 </div>
-
-
-<!-- SECOND MISSION -->
-<div class="mission-box">
-
-<div class="box-icon">
-<i class="fa-solid fa-shield-halved"></i>
-</div>
-
-<h3>MISSION</h3>
-
-<p>
-Our mission is to empower the future of digital payments and blockchain adoption by providing a utility-driven ecosystem that focuses on practical use cases, ensures security
-</p>
-
-</div>
-
 </div>
 
 <!-- GLOBAL VISION -->

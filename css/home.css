@@ -372,7 +372,7 @@ ANIMATIONS
 .about-section {
   padding: 100px 0;
   color: #fff;
-  background: #0b0b0b;
+  background: rgba(212, 175, 55, 0.4);
 }
 .about-section .container {
   margin: auto;
@@ -2319,7 +2319,7 @@ RESPONSIVE
   }
 }
 .hero-buttons {
-  margin-top: 150px;
+  margin-top: 52px;
   display: flex;
   flex-wrap: wrap;
   justify-content: flex-start;

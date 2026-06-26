@@ -102,7 +102,7 @@ defined('CONTENT_BG')          OR define('CONTENT_BG','dark');
 defined('DEDUCTION')           OR define('DEDUCTION',6); 
 defined('MIN_WITHDRAW')        OR define('MIN_WITHDRAW',15); 
 
-if(isset($_SERVER['HTTP_HOST']) && ($_SERVER['HTTP_HOST']=='localhost' || $_SERVER['HTTP_HOST']=='192.168.29.123')){
+if(isset($_SERVER['HTTP_HOST']) && ($_SERVER['HTTP_HOST']=='localhost' || $_SERVER['HTTP_HOST']=='192.168.29.123' || $_SERVER['HTTP_HOST']=='127.0.0.1:800')){
     defined('MIN_BAL')              OR define('MIN_BAL',0); //Minimum
     defined('MIN_DEPOSIT')          OR define('MIN_DEPOSIT',1); //Minimum Deposit
     //defined('ADMIN_ADDRESS')        OR define('ADMIN_ADDRESS','0x3599c27405c429bbe602649533ab9fc650fcd763'); //ADMIN Address
@@ -114,8 +114,7 @@ else{
     //defined('ADMIN_ADDRESS')        OR define('ADMIN_ADDRESS','0x7C09243fc50E4389646671Dd2CF0C274f51d3638'); //ADMIN Address
     defined('WORK_ENV')             OR define('WORK_ENV','production'); 
 }
-
-if(isset($_SERVER['HTTP_HOST']) && $_SERVER['HTTP_HOST']=='localhost'){
+if(isset($_SERVER['HTTP_HOST']) && ($_SERVER['HTTP_HOST']=='localhost' || $_SERVER['HTTP_HOST']=='127.0.0.1:800')){
     defined('DB_HOST')          OR define('DB_HOST','localhost'); 
     defined('DB_USER')          OR define('DB_USER','root'); 
     defined('DB_PASS')          OR define('DB_PASS',''); 

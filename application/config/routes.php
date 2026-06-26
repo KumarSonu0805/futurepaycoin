@@ -53,6 +53,12 @@ $route['default_controller'] = 'website';
 $route['404_override'] = 'home/error';
 $route['translate_uri_dashes'] = FALSE;
 
+$route['about'] = 'website/about';
+$route['ecosystem'] = 'website/ecosystem';
+$route['tokenomics'] = 'website/tokenomics';
+$route['rewards'] = 'website/rewards';
+$route['terms_and_condition'] = 'website/terms';
+
 //$route['login'] = 'login/adminlogin';
 $route['register'] = 'login/register';
 $route['Admin'] = 'login/adminlogin';
